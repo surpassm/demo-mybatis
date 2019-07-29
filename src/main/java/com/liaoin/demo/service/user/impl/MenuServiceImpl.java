@@ -211,10 +211,7 @@ public class MenuServiceImpl implements MenuService {
 			builder.where(WeekendSqls.<Menu>custom().andIsNull(Menu::getParentId));
 		}
 		Page<Menu> all = (Page<Menu>) menuMapper.selectByExample(builder.build());
-		Map<String, Object> map = new HashMap<>(16);
-		map.put("total", all.getTotal());
-		map.put("rows", all.getResult());
-		return ok(map);
+		return ok(all.toPageInfo());
 	}
 
 	@Override

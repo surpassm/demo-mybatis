@@ -216,10 +216,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			}
 		}
 		Page<UserInfo> all = (Page<UserInfo>) userInfoMapper.selectByExample(builder.build());
-		Map<String, Object> map = new HashMap<>(16);
-		map.put("total", all.getTotal());
-		map.put("rows", all.getResult());
-		return ok(map);
+		return ok(all.toPageInfo());
 	}
 
 	/**

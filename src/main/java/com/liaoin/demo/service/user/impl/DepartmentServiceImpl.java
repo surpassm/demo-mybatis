@@ -175,10 +175,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 			builder.where(WeekendSqls.<Department>custom().andIsNull(Department::getParentId));
 		}
 		Page<Department> all = (Page<Department>) departmentMapper.selectByExample(builder.build());
-		Map<String, Object> map = new HashMap<>(16);
-		map.put("total", all.getTotal());
-		map.put("rows", all.getResult());
-		return ok(map);
+		return ok(all.toPageInfo());
 	}
 
 	@Override

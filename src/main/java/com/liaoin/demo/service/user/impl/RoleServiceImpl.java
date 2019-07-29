@@ -146,10 +146,7 @@ public class RoleServiceImpl implements RoleService {
 			}
 		}
 		Page<Role> all = (Page<Role>) roleMapper.selectByExample(builder.build());
-		Map<String, Object> map = new HashMap<>(16);
-		map.put("total", all.getTotal());
-		map.put("rows", all.getResult());
-		return ok(map);
+		return ok(all.toPageInfo());
 	}
 
 	@Override

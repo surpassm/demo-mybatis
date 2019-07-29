@@ -171,10 +171,7 @@ public class RegionServiceImpl implements RegionService {
 			builder.where(WeekendSqls.<Region>custom().andIsNull(Region::getParentId));
 		}
 		Page<Region> all = (Page<Region>) regionMapper.selectByExample(builder.build());
-		Map<String, Object> map = new HashMap<>(16);
-		map.put("total", all.getTotal());
-		map.put("rows", all.getResult());
-		return ok(map);
+		return ok(all.toPageInfo());
 	}
 
 	@Override

@@ -183,10 +183,7 @@ public class GroupServiceImpl implements GroupService {
 			builder.where(WeekendSqls.<Group>custom().andIsNull(Group::getParentId));
 		}
 		Page<Group> all = (Page<Group>) groupMapper.selectByExample(builder.build());
-		Map<String, Object> map = new HashMap<>(16);
-		map.put("total", all.getTotal());
-		map.put("rows", all.getResult());
-		return ok(map);
+		return ok(all.toPageInfo());
 	}
 
 	@Override
@@ -270,7 +267,7 @@ public class GroupServiceImpl implements GroupService {
 		builder.where(WeekendSqls.<Menu>custom().andEqualTo(Menu::getIsDelete, 0));
 		builder.where(WeekendSqls.<Menu>custom().andIn(Menu::getId, select));
 		Page<Menu> all = (Page<Menu>) menuMapper.selectByExample(builder.build());
-		return ok(all);
+		return ok(all.toPageInfo());
 	}
 
 	@Override
@@ -286,7 +283,7 @@ public class GroupServiceImpl implements GroupService {
 		builder.where(WeekendSqls.<Role>custom().andEqualTo(Role::getIsDelete, 0));
 		builder.where(WeekendSqls.<Role>custom().andIn(Role::getId, select));
 		Page<Role> all = (Page<Role>) roleMapper.selectByExample(builder.build());
-		return ok(all);
+		return ok(all.toPageInfo());
 	}
 }
 
