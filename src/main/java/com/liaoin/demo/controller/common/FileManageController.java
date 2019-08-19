@@ -41,7 +41,7 @@ public class FileManageController {
     @Resource
     private FileManageService fileManageService;
 
-    @PostMapping("getById")
+    @PostMapping("v1/getById")
     @ApiOperation(value = "根据主键删除")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -53,7 +53,7 @@ public class FileManageController {
         return fileManageService.deleteGetById(accessToken,id);
     }
 
-    @PostMapping("findById")
+    @PostMapping("v1/findById")
     @ApiOperation(value = "根据主键查询")
     @ApiResponses({
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
@@ -65,7 +65,7 @@ public class FileManageController {
         return fileManageService.findById(accessToken,id);
     }
 
-    @PostMapping("pageQuery")
+    @PostMapping("v1/pageQuery")
     @ApiOperation(value = "条件分页查询")
     @ApiResponses({@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=FileManage.class),
                    @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG)})
@@ -80,7 +80,7 @@ public class FileManageController {
 
 
 
-	@PostMapping("uploads")
+	@PostMapping("v1/uploads")
 	@ApiOperation("批量文件上传")
 	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result uploads(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam MultipartFile[] files) {
@@ -98,7 +98,7 @@ public class FileManageController {
 		return Result.ok(result);
 	}
 
-	@PostMapping("/upload")
+	@PostMapping("v1/upload")
 	@ApiOperation(value = "文件上传")
 	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result store(@ApiParam(hidden = true) @AuthorizationToken String accessToken,
@@ -107,7 +107,7 @@ public class FileManageController {
 		return Result.ok(store);
 	}
 
-	@GetMapping("getFileNameUrl")
+	@GetMapping("v1/getFileNameUrl")
 	@ApiOperation(value = "文件下载")
 	public ResponseEntity<org.springframework.core.io.Resource> getFileNameUrl(@RequestParam String getFileNameUrl){
 		FileSystemResource file = fileManageService.loadAsResource(getFileNameUrl);
@@ -125,7 +125,7 @@ public class FileManageController {
 	}
 
 
-	@GetMapping("listUploadedFiles")
+	@GetMapping("v1/listUploadedFiles")
 	@ApiOperation(value = "返回所有文件列表")
 	public Result listUploadedFiles() {
 		List<String> serveFile = fileManageService
@@ -139,7 +139,7 @@ public class FileManageController {
 		return Result.ok(serveFile);
 	}
 
-	@GetMapping("getPath")
+	@GetMapping("v1/getPath")
 	@ApiOperation(value = "后端专用",hidden = true)
 	public ResponseEntity<org.springframework.core.io.Resource> serveFile(@RequestParam String path) throws IOException {
 		org.springframework.core.io.Resource file = fileManageService.serveFile(path);

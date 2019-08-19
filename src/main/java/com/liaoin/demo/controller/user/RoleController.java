@@ -32,7 +32,7 @@ public class RoleController {
     @Resource
     private RoleService roleService;
 
-    @PostMapping("insert")
+    @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -47,7 +47,7 @@ public class RoleController {
         return roleService.insert(accessToken,role);
     }
 
-    @PostMapping("update")
+    @PostMapping("v1/update")
     @ApiOperation(value = "修改")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -62,7 +62,7 @@ public class RoleController {
         return roleService.update(accessToken,role);
     }
 
-    @PostMapping("getById")
+    @PostMapping("v1/getById")
     @ApiOperation(value = "根据主键删除")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -74,7 +74,7 @@ public class RoleController {
         return roleService.deleteGetById(accessToken,id);
     }
 
-    @PostMapping("findById")
+    @PostMapping("v1/findById")
     @ApiOperation(value = "根据主键查询")
     @ApiResponses({
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
@@ -86,7 +86,7 @@ public class RoleController {
         return roleService.findById(accessToken,id);
     }
 
-    @PostMapping("pageQuery")
+    @PostMapping("v1/pageQuery")
     @ApiOperation(value = "条件分页查询")
     @ApiResponses({@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=Role.class),
                    @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG)})
@@ -99,7 +99,7 @@ public class RoleController {
         return roleService.pageQuery(accessToken,page, size, sort, role);
     }
 
-	@PostMapping("findMenus")
+	@PostMapping("v1/findMenus")
 	@ApiOperation(value = "根据主键查询角色及权限列表")
 	@ApiResponses({@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 				   @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=Role.class),
@@ -110,7 +110,7 @@ public class RoleController {
 		return roleService.findMenus(accessToken,id);
 	}
 
-	@PostMapping("setRoleByMenu")
+	@PostMapping("v1/setRoleByMenu")
 	@ApiOperation(value = "设置角色权限",notes = "每次均需传全部权限ID，会把角色原有的所有权限做物理删除")
 	@ApiResponses({@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),

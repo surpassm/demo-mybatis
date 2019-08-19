@@ -6,6 +6,7 @@ import com.github.surpassm.common.service.InsertView;
 import com.github.surpassm.common.service.UpdateView;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,6 +39,7 @@ import java.util.*;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 @SuppressWarnings("serial")
 @ApiModel(value = "用户")
 @NameStyle(Style.camelhump)

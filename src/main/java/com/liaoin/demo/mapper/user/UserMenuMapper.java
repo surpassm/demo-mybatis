@@ -1,6 +1,5 @@
 package com.liaoin.demo.mapper.user;
 
-import com.example.demo.entity.user.UserMenu;
 import com.liaoin.demo.entity.user.UserMenu;
 import org.apache.ibatis.annotations.Mapper;
 

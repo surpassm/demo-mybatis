@@ -1,6 +1,5 @@
 package com.liaoin.demo.mapper.common;
 
-import com.example.demo.entity.common.FileManage;
 import com.liaoin.demo.entity.common.FileManage;
 import org.apache.ibatis.annotations.Mapper;
 

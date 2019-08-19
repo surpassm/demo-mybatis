@@ -29,7 +29,7 @@ public class DepartmentController {
     @Resource
     private DepartmentService departmentService;
 
-    @PostMapping("insert")
+    @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -44,7 +44,7 @@ public class DepartmentController {
         return departmentService.insert(accessToken,department);
     }
 
-    @PostMapping("update")
+    @PostMapping("v1/update")
     @ApiOperation(value = "修改")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -59,7 +59,7 @@ public class DepartmentController {
         return departmentService.update(accessToken,department);
     }
 
-    @PostMapping("getById")
+    @PostMapping("v1/getById")
     @ApiOperation(value = "根据主键删除")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -71,7 +71,7 @@ public class DepartmentController {
         return departmentService.deleteGetById(accessToken,id);
     }
 
-    @PostMapping("findById")
+    @PostMapping("v1/findById")
     @ApiOperation(value = "根据主键查询,不返回子级")
     @ApiResponses({
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
@@ -83,7 +83,7 @@ public class DepartmentController {
         return departmentService.findById(accessToken,id);
     }
 
-	@PostMapping("findChildren")
+	@PostMapping("v1/findChildren")
 	@ApiOperation(value = "根据父级Id查询所有子级")
 	@ApiResponses({
 			@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
@@ -95,7 +95,7 @@ public class DepartmentController {
 		return departmentService.getParentId(accessToken,parentId);
 	}
 
-	@PostMapping("findByOnlyAndChildren")
+	@PostMapping("v1/findByOnlyAndChildren")
 	@ApiOperation(value = "根据主键查询自己和所有子级")
 	@ApiResponses({
 			@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
@@ -107,7 +107,7 @@ public class DepartmentController {
 		return departmentService.findByOnlyAndChildren(accessToken,id);
 	}
 
-    @PostMapping("pageQuery")
+    @PostMapping("v1/pageQuery")
     @ApiOperation(value = "条件分页查询返回所有父级")
     @ApiResponses({@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=Department.class),
                    @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG)})

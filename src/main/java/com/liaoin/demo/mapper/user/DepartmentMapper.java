@@ -1,6 +1,5 @@
 package com.liaoin.demo.mapper.user;
 
-import com.example.demo.entity.user.Department;
 import com.liaoin.demo.entity.user.Department;
 
 import java.util.List;

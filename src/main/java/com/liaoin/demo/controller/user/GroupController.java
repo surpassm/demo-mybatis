@@ -32,7 +32,7 @@ public class GroupController {
     @Resource
     private GroupService groupService;
 
-    @PostMapping("insert")
+    @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -47,7 +47,7 @@ public class GroupController {
         return groupService.insert(accessToken,group);
     }
 
-    @PostMapping("update")
+    @PostMapping("v1/update")
     @ApiOperation(value = "修改")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -62,7 +62,7 @@ public class GroupController {
         return groupService.update(accessToken,group);
     }
 
-    @PostMapping("getById")
+    @PostMapping("v1/getById")
     @ApiOperation(value = "根据主键删除")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -74,7 +74,7 @@ public class GroupController {
         return groupService.deleteGetById(accessToken,id);
     }
 
-    @PostMapping("findById")
+    @PostMapping("v1/findById")
     @ApiOperation(value = "根据主键查询")
     @ApiResponses({
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
@@ -86,7 +86,7 @@ public class GroupController {
         return groupService.findById(accessToken,id);
     }
 
-    @PostMapping("pageQuery")
+    @PostMapping("v1/pageQuery")
     @ApiOperation(value = "条件分页查询")
     @ApiResponses({@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=Group.class),
                    @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG)})
@@ -99,7 +99,7 @@ public class GroupController {
         return groupService.pageQuery(accessToken,page, size, sort, group);
     }
 
-	@PostMapping("findChildren")
+	@PostMapping("v1/findChildren")
 	@ApiOperation(value = "根据父级Id查询所有子级")
 	@ApiResponses({
 			@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
@@ -111,7 +111,7 @@ public class GroupController {
 		return groupService.getParentId(accessToken,parentId);
 	}
 
-	@PostMapping("findByOnlyAndChildren")
+	@PostMapping("v1/findByOnlyAndChildren")
 	@ApiOperation(value = "根据主键查询自己和所有子级")
 	@ApiResponses({
 			@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
@@ -123,7 +123,7 @@ public class GroupController {
 		return groupService.findByOnlyAndChildren(accessToken,id);
 	}
 
-	@PostMapping("setGroupByMenu")
+	@PostMapping("v1/setGroupByMenu")
 	@ApiOperation(value = "设置组的权限",notes = "每次均需传全部权限ID，会把组原有的所有权限做物理删除")
 	@ApiResponses({@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -135,7 +135,7 @@ public class GroupController {
 		return groupService.setGroupByMenu(accessToken,id,menuId);
 	}
 
-	@PostMapping("setGroupByRole")
+	@PostMapping("v1/setGroupByRole")
 	@ApiOperation(value = "设置组的角色",notes = "每次均需传全部角色ID，会把组原有的所有角色做物理删除")
 	@ApiResponses({@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -147,7 +147,7 @@ public class GroupController {
 		return groupService.setGroupByRole(accessToken,id,roleIds);
 	}
 
-	@PostMapping("findGroupToMenu")
+	@PostMapping("v1/findGroupToMenu")
 	@ApiOperation(value = "查询组的权限")
 	public Result findGroupToMenu(@ApiParam(value = "授权码", required = true) @RequestParam(value = "accessToken") @NotEmpty String accessToken,
 											  @ApiParam(value = "主键", required = true) @RequestParam(value = "groupId") @NotNull Long groupId,

@@ -1,7 +1,6 @@
 package com.liaoin.demo.mapper.user;
 
 
-import com.example.demo.entity.user.UserRole;
 import com.liaoin.demo.entity.user.UserRole;
 
 /**

@@ -30,7 +30,7 @@ public class MenuController {
     @Resource
     private MenuService menuService;
 
-    @PostMapping("insert")
+    @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -45,7 +45,7 @@ public class MenuController {
         return menuService.insert(accessToken,menu);
     }
 
-    @PostMapping("update")
+    @PostMapping("v1/update")
     @ApiOperation(value = "修改")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -60,7 +60,7 @@ public class MenuController {
         return menuService.update(accessToken,menu);
     }
 
-    @PostMapping("getById")
+    @PostMapping("v1/getById")
     @ApiOperation(value = "根据主键删除")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -72,7 +72,7 @@ public class MenuController {
         return menuService.deleteGetById(accessToken,id);
     }
 
-    @PostMapping("findById")
+    @PostMapping("v1/findById")
     @ApiOperation(value = "根据主键查询")
     @ApiResponses({
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
@@ -84,7 +84,7 @@ public class MenuController {
         return menuService.findById(accessToken,id);
     }
 
-    @PostMapping("pageQuery")
+    @PostMapping("v1/pageQuery")
     @ApiOperation(value = "条件分页查询")
     @ApiResponses({@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=Menu.class),
                    @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG)})
@@ -97,7 +97,7 @@ public class MenuController {
         return menuService.pageQuery(accessToken,page, size, sort, menu);
     }
 
-	@PostMapping("findChildren")
+	@PostMapping("v1/findChildren")
 	@ApiOperation(value = "根据父级Id查询所有子级")
 	@ApiResponses({
 			@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
@@ -109,7 +109,7 @@ public class MenuController {
 		return menuService.getParentId(accessToken,parentId);
 	}
 
-	@PostMapping("findByOnlyAndChildren")
+	@PostMapping("v1/findByOnlyAndChildren")
 	@ApiOperation(value = "根据主键查询自己和所有子级")
 	@ApiResponses({
 			@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
@@ -121,7 +121,7 @@ public class MenuController {
 		return menuService.findByOnlyAndChildren(accessToken,id);
 	}
 
-	@PostMapping("resourcesUpdate")
+	@PostMapping("v1/resourcesUpdate")
 	@ApiOperation(value = "后台所有接口更新")
     @ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
     public Result resourcesUpdate(@ApiParam(hidden = true)@AuthorizationToken String accessToken) {

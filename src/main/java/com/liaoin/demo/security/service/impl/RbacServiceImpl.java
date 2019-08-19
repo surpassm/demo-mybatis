@@ -1,6 +1,5 @@
 package com.liaoin.demo.security.service.impl;
 
-import com.example.demo.security.service.RbacService;
 import com.liaoin.demo.security.service.RbacService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
