@@ -19,9 +19,7 @@
     <select id="selectSelfAndChildByParentId" resultMap="BaseResultMap">
         select id,`name`,parent_id from t_region
         <where>
-            <if test="id != null">
-                and id=#{id}
-            </if>
+            and id=#{id}
             and is_delete = 0
         </where>
     </select>
