@@ -48,11 +48,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 		if (department == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
-		Region queryRegion = Region.builder().id(department.getRegionId()).build();
-		Region region = regionMapper.selectOne(queryRegion);
-		if (region == null) {
-			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
-		}
 
 		UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
 		Department build = Department.builder().name(department.getName()).build();
@@ -74,11 +69,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 		}
 		Department department1 = departmentMapper.selectByPrimaryKey(department.getId());
 		if (department1.getIsDelete() == 1){
-			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
-		}
-		Region queryRegion = Region.builder().id(department.getRegionId()).build();
-		Region region = regionMapper.selectOne(queryRegion);
-		if (region == null) {
 			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
 		}
 
