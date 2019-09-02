@@ -120,7 +120,6 @@ public class RegionServiceImpl implements RegionService {
 			return fail("存在下级关联，无法删除");
 		}
 		Department department = new Department();
-		department.setRegionId(id);
 		department.setIsDelete(0);
 		int departmentCount = departmentMapper.selectCount(department);
 		if (departmentCount !=0){
