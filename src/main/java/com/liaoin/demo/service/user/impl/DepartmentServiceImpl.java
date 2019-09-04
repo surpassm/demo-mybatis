@@ -5,7 +5,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.surpassm.common.jackson.Result;
 import com.github.surpassm.common.jackson.ResultCode;
 import com.liaoin.demo.entity.user.Department;
-import com.liaoin.demo.entity.user.Region;
 import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.mapper.user.DepartmentMapper;
 import com.liaoin.demo.mapper.user.RegionMapper;
