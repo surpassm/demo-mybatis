@@ -52,17 +52,7 @@
         <dependency>
             <groupId>com.github.surpassm</groupId>
             <artifactId>security-spring-boot-starter</artifactId>
-            <version>0.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.surpassm</groupId>
-            <artifactId>config-spring-boot-starter</artifactId>
-            <version>0.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.surpassm</groupId>
-            <artifactId>common-spring-boot-starter</artifactId>
-            <version>0.0.2</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>

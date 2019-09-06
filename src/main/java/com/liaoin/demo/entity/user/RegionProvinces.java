@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  * @author mc
- * Create date 2019/8/24 13:50
+ * Create date 2019/8/24 13:45
  * Version 1.0
  * Description
  */
@@ -26,12 +26,12 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SuppressWarnings("serial")
-@ApiModel(description = "区县信息表")
+@ApiModel(description = "省")
 @NameStyle(Style.camelhump)
-@Table(name = "t_areas")
-@org.hibernate.annotations.Table(appliesTo = "t_areas", comment = "区县信息表")
-public class Areas {
+@Table(name = "t_region_provinces")
+@org.hibernate.annotations.Table(appliesTo = "t_region_provinces", comment = "省")
+public class RegionProvinces {
+
 	@Id
 	@Min(0)
 	@KeySql(useGeneratedKeys = true)
@@ -41,8 +41,8 @@ public class Areas {
 	@NotNull(groups = UpdateView.class,message = "参数不能为空")
 	private Long id;
 
-	@ApiModelProperty("区县编码")
-	@Column(columnDefinition="varchar(255) COMMENT '区县编码'")
+	@ApiModelProperty("省份编码")
+	@Column(columnDefinition="varchar(255) COMMENT '省份编码'")
 	@NotBlank(groups = {InsertView.class,UpdateView.class},message = "参数不能为为空或空串")
 	private String code ;
 
@@ -51,8 +51,4 @@ public class Areas {
 	@NotBlank(groups = {InsertView.class,UpdateView.class},message = "参数不能为为空或空串")
 	private String name ;
 
-	@ApiModelProperty("所属城市编码")
-	@Column(columnDefinition="varchar(255) COMMENT '所属城市编码'")
-	@NotBlank(groups = {InsertView.class,UpdateView.class},message = "参数不能为为空或空串")
-	private String citiesCode ;
 }
