@@ -1,5 +1,6 @@
 package com.liaoin.demo.config;
 
+import com.github.surpassm.config.annotation.EnableExemptionAuth;
 import com.github.surpassm.config.token.WebAppConfigurer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -49,8 +50,9 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 			Annotation[] annotations = method1.getAnnotations();
 			boolean tag = false;
 			for (Annotation annotation : annotations) {
-				String typeName = annotation.annotationType().getTypeName();
-				System.out.println(typeName);
+				if (annotation.annotationType().isAnnotationPresent(EnableExemptionAuth.class)) {
+					tag = true;
+				}
 			}
 			if (tag) {
 				PatternsRequestCondition p = info.getPatternsCondition();
