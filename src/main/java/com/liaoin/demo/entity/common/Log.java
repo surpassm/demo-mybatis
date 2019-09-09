@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "rec_sys_log")
+@Table(name = "f_log")
 @NameStyle(Style.camelhump)
 public class Log implements Serializable {
 	@Id

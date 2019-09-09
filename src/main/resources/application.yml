@@ -75,7 +75,7 @@ surpassm:
         #刷新token时长 过期时间默认30天
         refresh-token-validity-seconds: 2592000
     login-type: JSON
-      登陆页面设置
+#      登陆页面设置
     no-verify[0]: /swagger-**
     no-verify[1]: /images/**
     no-verify[2]: /webjars/**
@@ -100,13 +100,13 @@ swagger:
   docket:
     user:
       title: "用户"
-      base-package: com.example.demo.controller.user
+      base-package: com.liaoin.demo.controller.user
     common:
       title: "公共"
-      base-package: com.example.demo.controller.common
+      base-package: com.liaoin.demo.controller.common
     mobile:
       title: "移动端"
-      base-package: com.example.demo.controller.mobile
+      base-package: com.liaoin.demo.controller.mobile
 
 mybatis:
   type-aliases-package: com.example.demo.controller

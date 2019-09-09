@@ -60,9 +60,4 @@ public interface MenuService {
 	 */
 	Result findByOnlyAndChildren(String accessToken, Long id);
 
-	/**
-	 * 后台所有接口更新
-	 * @return
-	 */
-	Result resourcesUpdate(String accessToken);
 }

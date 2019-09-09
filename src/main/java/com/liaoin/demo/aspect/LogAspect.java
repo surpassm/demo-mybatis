@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.surpassm.common.jackson.Result;
 import com.liaoin.demo.entity.common.Log;
+import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.mapper.common.LogMapper;
+import com.liaoin.demo.security.BeanConfig;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -27,14 +29,16 @@ import java.time.LocalDateTime;
  *
  * @author zhangquanli
  */
-//@Slf4j
-//@Aspect
-//@Component
+@Slf4j
+@Aspect
+@Component
 public class LogAspect {
-	private ObjectMapper objectMapper = new ObjectMapper();
-
+	@Resource
+	private ObjectMapper objectMapper;
 	@Resource
 	private LogMapper logMapper;
+	@Resource
+	private BeanConfig beanConfig;
 
 	@Before("execution(* com.liaoin.*.controller..*.insert*(..)) || " +
 			"execution(* com.liaoin.*.controller..*.update*(..)) || " +
@@ -66,10 +70,11 @@ public class LogAspect {
 			String header = request.getHeader("Authorization");
 			if (header != null && header.startsWith("Bearer ")) {
 				String token = header.substring(7);
+				UserInfo loginUser = beanConfig.getAccessToken(token);
 				// 操作开始时间
 				log.setOperateStartTime(LocalDateTime.now());
 				// 用户主键
-				log.setUserId(UserIdHolder.get());
+				log.setUserId(loginUser.getId());
 				// 保存日志到本地线程
 				LogHolder.set(log);
 			}
