@@ -2,6 +2,7 @@ package com.liaoin.demo.entity.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.liaoin.demo.entity.user.UserInfo;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,12 +22,14 @@ import java.time.LocalDateTime;
  * @author zhangquanli
  */
 @Data
+@Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Entity
 @Table(name = "f_log")
+@ApiModel(value = "日志管理")
 @NameStyle(Style.camelhump)
+@org.hibernate.annotations.Table(appliesTo = "f_log", comment = "日志管理")
 public class Log implements Serializable {
 	@Id
 	@KeySql(useGeneratedKeys = true)
