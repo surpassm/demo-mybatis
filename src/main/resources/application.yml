@@ -63,25 +63,33 @@ surpassm:
       clients[0]:
         clientId: user_1
         clientIdSecret: 123456
+        #成功token时长 过期时间默认24小时
+        access-token-validity-seconds: 86400
+        #刷新token时长 过期时间默认30天
+        refresh-token-validity-seconds: 2592000
       clients[1]:
         clientId: user_2
         clientIdSecret: 123456
+        #成功token时长 过期时间默认24小时
+        access-token-validity-seconds: 86400
+        #刷新token时长 过期时间默认30天
+        refresh-token-validity-seconds: 2592000
     login-type: JSON
-#      登陆页面设置
-#    no-verify[0]: /swagger-**
-#    no-verify[1]: /images/**
-#    no-verify[2]: /webjars/**
-#    no-verify[3]: /v2/api-docs**
-#    no-verify[4]: /swagger-resources/configuration/ui**
-#    no-verify[5]: /swagger-resources/configuration/security**
-#    no-verify[6]: /websocket/socketServer.ws**
-#    no-verify[7]: /sockjs/socketServer.ws**
-#    no-verify[8]: /login/refreshToken**
-#    no-verify[9]: /mobile/getPhone**
-#    no-verify[10]: /menu/resourcesUpdate**
-#    no-verify[11]: /file/getFileNameUrl**
-#    no-verify[12]: /file/listUploadedFiles**
-#    no-verify[13]: /file/getPath**
+      登陆页面设置
+    no-verify[0]: /swagger-**
+    no-verify[1]: /images/**
+    no-verify[2]: /webjars/**
+    no-verify[3]: /v2/api-docs**
+    no-verify[4]: /swagger-resources/configuration/ui**
+    no-verify[5]: /swagger-resources/configuration/security**
+    no-verify[6]: /websocket/socketServer.ws**
+    no-verify[7]: /sockjs/socketServer.ws**
+    no-verify[8]: /login/refreshToken**
+    no-verify[9]: /mobile/getPhone**
+    no-verify[10]: /menu/resourcesUpdate**
+    no-verify[11]: /file/getFileNameUrl**
+    no-verify[12]: /file/listUploadedFiles**
+    no-verify[13]: /file/getPath**
 #    用户名密码登录请求处理url
     default-login-processing-url-from: /authentication/form
 #    default-property-inclusion: NON_NULL
