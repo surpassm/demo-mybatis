@@ -38,9 +38,15 @@ public class FileManage implements Serializable {
 	/**
 	 * 文件名称
 	 */
-	@ApiModelProperty(value = "文件名称",hidden = true)
+	@ApiModelProperty(value = "文件旧名称",hidden = true)
 	@Column(columnDefinition="varchar(255) COMMENT '文件名称'")
-	private String fileName;
+	private String fileOldName;
+	/**
+	 * 文件名称
+	 */
+	@ApiModelProperty(value = "文件新名称",hidden = true)
+	@Column(columnDefinition="varchar(255) COMMENT '文件名称'")
+	private String fileNewName;
 	/**
 	 * 文件后缀
 	 */

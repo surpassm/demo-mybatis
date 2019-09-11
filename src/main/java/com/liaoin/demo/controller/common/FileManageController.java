@@ -81,25 +81,14 @@ public class FileManageController {
 
 
 	@PostMapping("v1/uploads")
-	@ApiOperation("批量文件上传")
+	@ApiOperation("文件上传{文件不会重名}")
 	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
-	public Result uploads(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam MultipartFile[] files) {
-		List<SurpassmFile> result = new ArrayList<>();
-		if (files != null && files.length != 0) {
-			for (MultipartFile file : files) {
-				try {
-					SurpassmFile upload = FileUtils.upload(file, request, "upload");
-					result.add(upload);
-				} catch (Exception e) {
-					log.info("文件上传失败", e);
-				}
-			}
-		}
-		return Result.ok(result);
+	public Result uploads(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam MultipartFile file) {
+		return fileManageService.insert(request,file);
 	}
 
 	@PostMapping("v1/upload")
-	@ApiOperation(value = "文件上传")
+	@ApiOperation(value = "文件上传{文件会重名}")
 	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result store(@ApiParam(hidden = true) @AuthorizationToken String accessToken,
 						@RequestParam("file") MultipartFile file) {

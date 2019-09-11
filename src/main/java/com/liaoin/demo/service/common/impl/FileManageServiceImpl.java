@@ -23,6 +23,7 @@ import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -111,8 +112,8 @@ public class FileManageServiceImpl implements FileManageService {
         if (fileManage.getId() != null){
             builder.where(WeekendSqls.<FileManage>custom().andEqualTo(FileManage::getId,fileManage.getId()));
         }
-        if (fileManage.getFileName() != null && !"".equals(fileManage.getFileName().trim())){
-            builder.where(WeekendSqls.<FileManage>custom().andLike(FileManage::getFileName,"%"+fileManage.getFileName()+"%"));
+        if (fileManage.getFileNewName() != null && !"".equals(fileManage.getFileNewName().trim())){
+            builder.where(WeekendSqls.<FileManage>custom().andLike(FileManage::getFileNewName,"%"+fileManage.getFileNewName()+"%"));
         }
         if (fileManage.getFileSuffix() != null && !"".equals(fileManage.getFileSuffix().trim())){
             builder.where(WeekendSqls.<FileManage>custom().andLike(FileManage::getFileSuffix,"%"+fileManage.getFileSuffix()+"%"));
@@ -205,6 +206,24 @@ public class FileManageServiceImpl implements FileManageService {
 		else {
 			throw new StorageException("Could not read file: " + fileUrl);
 		}
+	}
+
+	@Override
+	public Result insert(HttpServletRequest request,MultipartFile file) {
+		try {
+			SurpassmFile upload = FileUtils.upload(file, request, "upload");
+			fileManageMapper.insert(FileManage.builder()
+					.fileOldName(upload.getFileOldName())
+					.fileNewName(upload.getFileNewName())
+					.fileSuffix(upload.getFileSuffix())
+					.url(upload.getUrl())
+					.build());
+			return ok(upload);
+		} catch (Exception e) {
+			log.info("文件上传失败", e);
+			return fail();
+		}
+
 	}
 }
 

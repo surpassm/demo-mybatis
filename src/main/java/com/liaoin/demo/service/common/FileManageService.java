@@ -7,6 +7,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -63,4 +64,6 @@ public interface FileManageService {
 	void deleteAll();
 
 	Resource serveFile(String fileUrl);
+
+	Result insert(HttpServletRequest request,MultipartFile file);
 }
