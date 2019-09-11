@@ -4,9 +4,7 @@ package com.liaoin.demo.aspect;
 import com.liaoin.demo.entity.common.Log;
 
 /**
- * LogHolder
- *
- * @author zhangquanli
+ * @author Administrator
  */
 public class LogHolder {
 

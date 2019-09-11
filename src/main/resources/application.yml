@@ -84,12 +84,12 @@ surpassm:
     no-verify[5]: /swagger-resources/configuration/security**
     no-verify[6]: /websocket/socketServer.ws**
     no-verify[7]: /sockjs/socketServer.ws**
-    no-verify[8]: /login/refreshToken**
-    no-verify[9]: /mobile/getPhone**
-    no-verify[10]: /menu/resourcesUpdate**
-    no-verify[11]: /file/getFileNameUrl**
-    no-verify[12]: /file/listUploadedFiles**
-    no-verify[13]: /file/getPath**
+    no-verify[8]: /login/v1/refreshToken**
+    no-verify[9]: /mobile/v1/getPhone**
+    no-verify[10]: /menu/v1/resourcesUpdate**
+    no-verify[11]: /fileManage/v1/getFileNameUrl**
+    no-verify[12]: /fileManage/v1/listUploadedFiles**
+    no-verify[13]: /fileManage/v1/getPath**
     no-verify[14]: /upload/**
 #    用户名密码登录请求处理url
     default-login-processing-url-from: /authentication/form

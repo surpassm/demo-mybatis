@@ -3,10 +3,9 @@ package com.liaoin.demo.controller.common;
 import com.github.surpassm.common.constant.Constant;
 import com.github.surpassm.common.jackson.Result;
 import com.github.surpassm.common.pojo.SurpassmFile;
-import com.github.surpassm.common.tool.util.FileUtils;
 import com.github.surpassm.config.annotation.AuthorizationToken;
 import com.liaoin.demo.entity.common.FileManage;
-import com.liaoin.demo.exception.StorageException;
+import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.service.common.FileManageService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,6 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,15 +78,15 @@ public class FileManageController {
 
 
 
-	@PostMapping("v1/uploads")
-	@ApiOperation("文件上传{文件不会重名}")
+	@PostMapping("v1/insert/upload")
+	@ApiOperation("文件上传{文件不会重名,存入数据库}")
 	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
-	public Result uploads(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam MultipartFile file) {
+	public Result insert(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam MultipartFile file) {
 		return fileManageService.insert(request,file);
 	}
 
 	@PostMapping("v1/upload")
-	@ApiOperation(value = "文件上传{文件会重名}")
+	@ApiOperation(value = "文件上传{文件会重名,不存入数据库}")
 	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result store(@ApiParam(hidden = true) @AuthorizationToken String accessToken,
 						@RequestParam("file") MultipartFile file) {
@@ -108,8 +106,8 @@ public class FileManageController {
 				.body(file);
 	}
 
-	@ExceptionHandler(StorageException.class)
-	public Result handleStorageFileNotFound(StorageException exc) {
+	@ExceptionHandler(CustomException.class)
+	public Result handleStorageFileNotFound(CustomException exc) {
 		return Result.fail("文件有重名,请重命名文件");
 	}
 

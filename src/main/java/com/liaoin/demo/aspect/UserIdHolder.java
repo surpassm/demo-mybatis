@@ -3,9 +3,7 @@ package com.liaoin.demo.aspect;
 
 
 /**
- * UserIdHolder
- *
- * @author zhangquanli
+ * @author Administrator
  */
 public class UserIdHolder {
 

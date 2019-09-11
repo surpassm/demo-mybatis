@@ -3,6 +3,7 @@ package com.liaoin.demo.aspect;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.surpassm.common.jackson.Result;
+import com.github.surpassm.security.properties.SecurityProperties;
 import com.liaoin.demo.entity.common.Log;
 import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.mapper.common.LogMapper;
@@ -25,9 +26,7 @@ import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 
 /**
- * LogAspect
- *
- * @author zhangquanli
+ * @author Administrator
  */
 @Slf4j
 @Aspect
@@ -39,6 +38,8 @@ public class LogAspect {
 	private LogMapper logMapper;
 	@Resource
 	private BeanConfig beanConfig;
+	@Resource
+	private SecurityProperties securityProperties;
 
 	@Before("execution(* com.liaoin.*.controller..*.insert*(..)) || " +
 			"execution(* com.liaoin.*.controller..*.update*(..)) || " +
@@ -65,26 +66,46 @@ public class LogAspect {
 		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		if (requestAttributes != null) {
 			HttpServletRequest request = requestAttributes.getRequest();
-			log.setUri(request.getRequestURI());
+			String url = request.getRequestURI();
+			log.setUri(url);
 			log.setClientIp(request.getRemoteHost());
-			String header = request.getHeader("Authorization");
-			if (header != null && header.startsWith("Bearer ")) {
-				String token = header.substring(7);
-				UserInfo loginUser = beanConfig.getAccessToken(token);
-				// 操作开始时间
-				log.setOperateStartTime(LocalDateTime.now());
-				// 用户主键
-				log.setUserId(loginUser.getId());
-				// 保存日志到本地线程
-				LogHolder.set(log);
+			if (!checkAuthorization(url)) {
+				String header = request.getHeader("Authorization");
+				if (header != null && header.startsWith("Bearer ")) {
+					String token = header.substring(7);
+					UserInfo loginUser = beanConfig.getAccessToken(token);
+					// 用户主键
+					log.setUserId(loginUser.getId());
+				}
 			}
+			// 操作开始时间
+			log.setOperateStartTime(LocalDateTime.now());
+			// 保存日志到本地线程
+			LogHolder.set(log);
 		}
-
 	}
 
-	@AfterReturning(pointcut = "execution(* com.liaoin.*.service..*.insert(..)) || " +
-			"execution(* com.liaoin.*.service..*.update(..)) || " +
-			"execution(* com.liaoin.*.service..*.deleteById(..))", returning = "result")
+	/**
+	 * 效验当前请求是否属于免验证接口
+	 * @param url 接口
+	 * @return boolean
+	 */
+	private boolean checkAuthorization(String url){
+		boolean flag =false;
+		url = url + "**";
+		String[] noVerify = securityProperties.getNoVerify();
+		for (String s : noVerify) {
+			 if (url.equals(s)){
+				 flag = true;
+				 break;
+			 }
+		}
+		return flag;
+	}
+
+	@AfterReturning(pointcut = "execution(* com.liaoin.*.service..*.insert*(..)) || " +
+			"execution(* com.liaoin.*.service..*.update*(..)) || " +
+			"execution(* com.liaoin.*.service..*.deleteById*(..))", returning = "result")
 	public void setLogData(Result result) throws JsonProcessingException {
 		if (200 == result.getCode()) {
 			// 获取日志

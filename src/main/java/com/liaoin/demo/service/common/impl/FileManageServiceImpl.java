@@ -8,7 +8,7 @@ import com.github.surpassm.common.pojo.SurpassmFile;
 import com.github.surpassm.common.tool.util.FileUtils;
 import com.liaoin.demo.entity.common.FileManage;
 import com.liaoin.demo.entity.user.UserInfo;
-import com.liaoin.demo.exception.StorageException;
+import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.mapper.common.FileManageMapper;
 import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.common.FileManageService;
@@ -134,7 +134,7 @@ public class FileManageServiceImpl implements FileManageService {
 	public SurpassmFile store(MultipartFile file) {
 		try {
 			if (file.isEmpty()) {
-				throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
+				throw new CustomException("Failed to store empty file " + file.getOriginalFilename());
 			}
 			String coustem = FileUtils.nowDate() + "/" + file.getOriginalFilename();
 			Path resolve = this.rootLocation.resolve(coustem);
@@ -147,7 +147,7 @@ public class FileManageServiceImpl implements FileManageService {
 			String path = resolve.toFile().getPath().replace("\\", "/");
 			return SurpassmFile.builder().url(path).build();
 		} catch (IOException e) {
-			throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
+			throw new CustomException("Failed to store file " + file.getOriginalFilename(), e);
 		}
 	}
 
@@ -162,7 +162,9 @@ public class FileManageServiceImpl implements FileManageService {
 		List<Path> paths = new ArrayList<>();
 		private void func(java.io.File fileNow){
 			java.io.File[] fileOld = fileNow.listFiles();
-			assert fileOld != null;
+			if (fileOld == null){
+				throw new NullPointerException("空指针异常");
+			}
 			for(java.io.File file:fileOld){
 				//若是目录，则递归打印该目录下的文件
 				if(file.isDirectory()) {
@@ -189,7 +191,7 @@ public class FileManageServiceImpl implements FileManageService {
 			return fileSystemResource;
 		}
 		else {
-			throw new StorageException("Could not read file: " + getFileNameUrl);
+			throw new CustomException("Could not read file: " + getFileNameUrl);
 		}
 	}
 
@@ -204,7 +206,7 @@ public class FileManageServiceImpl implements FileManageService {
 			return resource;
 		}
 		else {
-			throw new StorageException("Could not read file: " + fileUrl);
+			throw new CustomException("Could not read file: " + fileUrl);
 		}
 	}
 
