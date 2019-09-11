@@ -115,4 +115,4 @@ mybatis:
 
 logging:
   level:
-    com.example.demo.mapper.user: trace
+    com.liaoin.demo.mapper.user: trace
