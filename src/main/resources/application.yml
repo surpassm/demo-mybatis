@@ -49,12 +49,12 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
 # 参考配置https://www.cnblogs.com/liaojie970/p/8857710.html
-  activiti:
-    # 自动建表
-    database-schema: TEST
-    database-schema-update: true
-    history-level: full
-    db-history-used: true
+#  activiti:
+#    # 自动建表
+#    database-schema: TEST
+#    database-schema-update: true
+#    history-level: full
+#    db-history-used: true
 
 
 surpassm:
