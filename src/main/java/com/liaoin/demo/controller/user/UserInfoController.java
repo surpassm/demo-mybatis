@@ -31,7 +31,7 @@ public class UserInfoController {
     @Resource
     private UserInfoService userInfoService;
 
-    @PostMapping("insert")
+    @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -46,7 +46,7 @@ public class UserInfoController {
         return userInfoService.insert(accessToken,userInfo);
     }
 
-    @PostMapping("update")
+    @PostMapping("v1/update")
     @ApiOperation(value = "修改")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -61,7 +61,7 @@ public class UserInfoController {
         return userInfoService.update(accessToken,userInfo);
     }
 
-    @PostMapping("getById")
+    @PostMapping("v1/getById")
     @ApiOperation(value = "根据主键删除")
     @ApiResponses({
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -73,7 +73,7 @@ public class UserInfoController {
         return userInfoService.deleteGetById(accessToken,id);
     }
 
-    @PostMapping("findById")
+    @PostMapping("v1/findById")
     @ApiOperation(value = "根据主键查询")
     @ApiResponses({
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
@@ -85,7 +85,7 @@ public class UserInfoController {
         return userInfoService.findById(accessToken,id);
     }
 
-    @PostMapping("pageQuery")
+    @PostMapping("v1/pageQuery")
     @ApiOperation(value = "条件分页查询")
     @ApiResponses({@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=UserInfo.class),
                    @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG)})
@@ -98,7 +98,7 @@ public class UserInfoController {
         return userInfoService.pageQuery(accessToken,page, size, sort, userInfo);
     }
 
-	@PostMapping("findRolesAndMenus")
+	@PostMapping("v1/findRolesAndMenus")
 	@ApiOperation(value = "根据主键查询用户及角色、权限列表")
 	@ApiResponses({@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=UserInfo.class),
@@ -109,7 +109,7 @@ public class UserInfoController {
 		return userInfoService.findRolesAndMenus(accessToken,id);
 	}
 
-	@PostMapping("setUserByGroups")
+	@PostMapping("v1/setUserByGroups")
 	@ApiOperation(value = "设置用户、组",notes = "每次均需传全部组ID，会把用户原有的所有组做物理删除")
 	@ApiResponses({@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -121,7 +121,7 @@ public class UserInfoController {
     	return userInfoService.setUserByGroup(accessToken,id,groupIds);
 	}
 
-	@PostMapping("setUserByMenus")
+	@PostMapping("v1/setUserByMenus")
 	@ApiOperation(value = "设置用户、权限",notes = "每次均需传全部权限ID，会把用户原有的所有权限做物理删除")
 	@ApiResponses({@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
@@ -132,7 +132,7 @@ public class UserInfoController {
 								@ApiParam(value = "权限系统标识 多个权限请使用 ，分割",required = true)@RequestParam(value = "menuIds")@NotEmpty String menuIds) {
 		return userInfoService.setUserByMenu(accessToken,id,menuIds);
 	}
-	@PostMapping("setUserByRoles")
+	@PostMapping("v1/setUserByRoles")
 	@ApiOperation(value = "设置用户、角色",notes = "每次均需传全部角色ID，会把用户原有的所有角色做物理删除")
 	@ApiResponses({@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
