@@ -5,10 +5,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * wxpay pay properties
- *
- * @author Binary Wang
+ * @author mc
+ * Create date 2019/2/13 10:35
+ * Version 1.0
+ * Description 微信支付数据配置
  */
+
 @ConfigurationProperties(prefix = "wx.pay")
 public class WxPayProperties {
   /**

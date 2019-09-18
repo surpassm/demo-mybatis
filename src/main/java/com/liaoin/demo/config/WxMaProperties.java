@@ -5,6 +5,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
 
+/**
+ * @author mc
+ * Create date 2019/2/13 10:35
+ * Version 1.0
+ * Description 微信小程序数据配置
+ */
+
 @Data
 @ConfigurationProperties(prefix = "wx.miniapp")
 public class WxMaProperties {

@@ -59,6 +59,7 @@ spring:
 
 surpassm:
   security:
+    enabled: true
     o-auth2:
       store-type: redis
       clients[0]:
@@ -94,6 +95,7 @@ surpassm:
     no-verify[14]: /upload/**
 #    用户名密码登录请求处理url
     default-login-processing-url-from: /authentication/form
+
 #    default-property-inclusion: NON_NULL
 
 swagger:

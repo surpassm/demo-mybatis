@@ -22,6 +22,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * @author mc
+ * Create date 2019/2/13 10:35
+ * Version 1.0
+ * Description 微信小程序配置
+ */
+
 @Configuration
 @EnableConfigurationProperties(WxMaProperties.class)
 public class WxMaConfiguration {

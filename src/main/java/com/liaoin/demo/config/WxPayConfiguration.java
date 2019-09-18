@@ -12,7 +12,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author Binary Wang
+ * @author mc
+ * Create date 2019/2/13 10:35
+ * Version 1.0
+ * Description 微信支付配置
  */
 @Configuration
 @ConditionalOnClass(WxPayService.class)
