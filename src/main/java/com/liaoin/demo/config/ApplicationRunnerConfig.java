@@ -3,6 +3,7 @@ package com.liaoin.demo.config;
 import com.github.surpassm.common.jackson.Result;
 import com.github.surpassm.config.annotation.EnableExemptionAuth;
 import com.github.surpassm.config.token.WebAppConfigurer;
+import com.github.surpassm.security.properties.SecurityProperties;
 import com.liaoin.demo.entity.user.Menu;
 import com.liaoin.demo.mapper.user.MenuMapper;
 import io.swagger.models.Path;
@@ -22,10 +23,7 @@ import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2Mapper;
 import javax.annotation.Resource;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author mc
@@ -42,6 +40,8 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 	private DocumentationCache documentationCache;
 	@Resource
 	private MenuMapper menuMapper;
+	@Resource
+	private SecurityProperties securityProperties;
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
@@ -52,6 +52,7 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 
 	private void resourcesUpdate(){
 		String[] groupName = new String[]{"user","common","mobile"};
+		List<String> noVerify = Arrays.asList(securityProperties.getNoVerify());
 		for (String group:groupName ){
 			Documentation documentation = documentationCache.documentationByGroup(group);
 			if (documentation != null) {
@@ -60,26 +61,29 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 				paths.forEach((key, value) -> {
 					// 链接
 					String url = key + "**";
-					// 名称
-					if (value.getPost() != null){
-						String name = value.getPost().getSummary();
-						// 描述
-						String description = value.getPost().getTags().get(0);
-						// 权限
-						Menu build = Menu.builder().name(description).build();
-						build.setIsDelete(0);
-						Menu menu = menuMapper.selectOne(build);
-						menuInsertAndUpdata(url, name, description, menu);
-					}
-					if (value.getGet() != null){
-						String name = value.getGet().getSummary();
-						// 描述
-						String description = value.getGet().getTags().get(0);
-						// 权限
-						Menu build = Menu.builder().name(description).build();
-						build.setIsDelete(0);
-						Menu menu = menuMapper.selectOne(build);
-						menuInsertAndUpdata(url, name, description, menu);
+					// 排除不验证的url
+					if (!noVerify.contains(url)) {
+						// 名称
+						if (value.getPost() != null) {
+							String name = value.getPost().getSummary();
+							// 描述
+							String description = value.getPost().getTags().get(0);
+							// 权限
+							Menu build = Menu.builder().name(description).build();
+							build.setIsDelete(0);
+							Menu menu = menuMapper.selectOne(build);
+							menuInsertAndUpdata(url, name, description, menu);
+						}
+						if (value.getGet() != null) {
+							String name = value.getGet().getSummary();
+							// 描述
+							String description = value.getGet().getTags().get(0);
+							// 权限
+							Menu build = Menu.builder().name(description).build();
+							build.setIsDelete(0);
+							Menu menu = menuMapper.selectOne(build);
+							menuInsertAndUpdata(url, name, description, menu);
+						}
 					}
 				});
 			}

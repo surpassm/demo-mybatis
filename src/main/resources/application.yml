@@ -95,8 +95,11 @@ surpassm:
     no-verify[14]: /upload/**
 #    用户名密码登录请求处理url
     default-login-processing-url-from: /authentication/form
+    #默认的登陆属性名称
+#    username-parameter: username
+    #登陆的密码属性名称
+#    password-parameter: password
 
-#    default-property-inclusion: NON_NULL
 
 swagger:
   enabled: true
