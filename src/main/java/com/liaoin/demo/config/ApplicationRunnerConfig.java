@@ -1,8 +1,5 @@
 package com.liaoin.demo.config;
 
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.config.annotation.EnableExemptionAuth;
-import com.github.surpassm.config.token.WebAppConfigurer;
 import com.github.surpassm.security.properties.SecurityProperties;
 import com.liaoin.demo.entity.user.Menu;
 import com.liaoin.demo.mapper.user.MenuMapper;
@@ -12,17 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import springfox.documentation.service.Documentation;
 import springfox.documentation.spring.web.DocumentationCache;
 import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2Mapper;
 
 import javax.annotation.Resource;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.*;
 
 /**
