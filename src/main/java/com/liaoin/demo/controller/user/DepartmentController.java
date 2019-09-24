@@ -4,7 +4,6 @@ import com.github.surpassm.common.constant.Constant;
 import com.github.surpassm.common.jackson.Result;
 import com.github.surpassm.common.service.InsertView;
 import com.github.surpassm.config.annotation.AuthorizationToken;
-import com.github.surpassm.config.annotation.EnableExemptionAuth;
 import com.liaoin.demo.entity.user.Department;
 import com.liaoin.demo.service.user.DepartmentService;
 import io.swagger.annotations.*;
@@ -30,7 +29,6 @@ public class DepartmentController {
     @Resource
     private DepartmentService departmentService;
 
-	@EnableExemptionAuth
     @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
     @ApiResponses({
