@@ -16,6 +16,7 @@ import java.util.*;
  *
  * 最后在启动类中加入注解 @ServletComponentScan
  */
+
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
