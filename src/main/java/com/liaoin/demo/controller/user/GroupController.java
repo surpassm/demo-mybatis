@@ -148,7 +148,7 @@ public class GroupController {
 		return groupService.findGroupToMenu(accessToken, groupId, page, size, sort);
 	}
 
-	@PostMapping("findGroupToRole")
+	@PostMapping("v1/findGroupToRole")
 	@ApiOperation(value = "查询组的角色")
 	public Result findGroupToRole(@ApiParam(value = "授权码", required = true) @RequestParam(value = "accessToken") @NotEmpty String accessToken,
 											  @ApiParam(value = "主键", required = true) @RequestParam(value = "groupId") @NotNull Long groupId,
