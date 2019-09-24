@@ -27,7 +27,7 @@ public class MobileController {
 	@Resource
 	private MobileService mobileService;
 
-	@PostMapping("v1/getPhone")
+	@PostMapping("v1/auth/getPhone")
 	@ApiOperation(value = "发送短信验证码")
 	@ApiImplicitParam(name = "surpassm", value = "设备ID参数不能为空,具体自定义永久字符", required = true, dataType = "string", paramType = "header")
 	public Result sendPhoneMsgCode(HttpServletRequest request,

@@ -36,7 +36,6 @@ public class MenuController {
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
             @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    @ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
     public Result insert(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
 						 @Validated(InsertView.class)@RequestBody Menu menu, BindingResult errors) {
         if (errors.hasErrors()){
@@ -51,7 +50,6 @@ public class MenuController {
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
             @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    @ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
     public Result update(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
 						 @Validated(UpdateView.class)@RequestBody Menu menu, BindingResult errors) {
         if (errors.hasErrors()){
@@ -66,7 +64,6 @@ public class MenuController {
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
             @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    @ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
     public Result deleteGetById(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
                                 @ApiParam(value = "主键",required = true)@RequestParam(value = "id") Long id) {
         return menuService.deleteGetById(accessToken,id);
@@ -78,7 +75,6 @@ public class MenuController {
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=Menu.class),
             @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    @ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
     public Result findById(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
                            @ApiParam(value = "主键",required = true)@RequestParam(value = "id") Long id) {
         return menuService.findById(accessToken,id);
@@ -88,7 +84,6 @@ public class MenuController {
     @ApiOperation(value = "条件分页查询")
     @ApiResponses({@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=Menu.class),
                    @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG)})
-    @ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
     public Result pageQuery(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
                             @ApiParam(value = "第几页", required = true) @RequestParam(value = "page") Integer page,
                             @ApiParam(value = "多少条",required = true)@RequestParam(value = "size") Integer size,
@@ -103,7 +98,6 @@ public class MenuController {
 			@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=Menu.class),
 			@ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result getParentId(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
 							  @ApiParam(value = "主键",required = true)@RequestParam(value = "parentId")@NotNull Long parentId) {
 		return menuService.getParentId(accessToken,parentId);
@@ -115,7 +109,6 @@ public class MenuController {
 			@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=Menu.class),
 			@ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result findByOnlyAndChildren(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
 										@ApiParam(value = "主键",required = true)@RequestParam(value = "id")@NotNull Long id) {
 		return menuService.findByOnlyAndChildren(accessToken,id);

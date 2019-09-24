@@ -45,7 +45,7 @@ public class LoginController {
 		return ok(beanConfig.getAccessToken(accessToken));
 	}
 
-	@PostMapping("v1/refreshToken")
+	@PostMapping("v1/auth/refreshToken")
 	@ApiOperation(value = "刷新token时效")
 	public Result refreshToken(@ApiParam(value = "刷新token")@RequestParam String refreshToken,
 							   @ApiParam(value = "head 应用账号密码Basic64位加密")@RequestParam String head) {

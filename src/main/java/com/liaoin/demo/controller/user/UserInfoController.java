@@ -37,7 +37,6 @@ public class UserInfoController {
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
             @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    @ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
     public Result insert(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
 						 @Validated(InsertView.class)@RequestBody UserInfo userInfo, BindingResult errors) {
         if (errors.hasErrors()){
@@ -52,7 +51,6 @@ public class UserInfoController {
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
             @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    @ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
     public Result update(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
 						 @Validated(UpdateView.class)@RequestBody UserInfo userInfo, BindingResult errors) {
         if (errors.hasErrors()){
@@ -67,7 +65,6 @@ public class UserInfoController {
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
             @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    @ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
     public Result deleteGetById(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
                                 @ApiParam(value = "主键",required = true)@RequestParam(value = "id") Long id) {
         return userInfoService.deleteGetById(accessToken,id);
@@ -79,7 +76,6 @@ public class UserInfoController {
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=UserInfo.class),
             @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    @ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
     public Result findById(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
                            @ApiParam(value = "主键",required = true)@RequestParam(value = "id") Long id) {
         return userInfoService.findById(accessToken,id);
@@ -89,7 +85,6 @@ public class UserInfoController {
     @ApiOperation(value = "条件分页查询")
     @ApiResponses({@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=UserInfo.class),
                    @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG)})
-    @ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
     public Result pageQuery(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
                             @ApiParam(value = "第几页", required = true) @RequestParam(value = "page") Integer page,
                             @ApiParam(value = "多少条",required = true)@RequestParam(value = "size") Integer size,
@@ -103,7 +98,6 @@ public class UserInfoController {
 	@ApiResponses({@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=UserInfo.class),
 			@ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result findRolesAndMenus(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
 									@ApiParam(value = "用户系统标识",required = true)@RequestParam(value = "id")@NotNull Long id) {
 		return userInfoService.findRolesAndMenus(accessToken,id);
@@ -114,7 +108,6 @@ public class UserInfoController {
 	@ApiResponses({@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
 			@ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result setUserByGroup(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
 										 @ApiParam(value = "用户系统标识",required = true)@RequestParam(value = "id")@NotNull Long id,
 										 @ApiParam(value = "组系统标识 多个组请使用 ，分割",required = true)@RequestParam(value = "groupId")@NotEmpty String groupIds) {
@@ -126,7 +119,6 @@ public class UserInfoController {
 	@ApiResponses({@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
 			@ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result setUserByMenu(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
 								@ApiParam(value = "用户系统标识",required = true)@RequestParam(value = "id")@NotNull Long id,
 								@ApiParam(value = "权限系统标识 多个权限请使用 ，分割",required = true)@RequestParam(value = "menuIds")@NotEmpty String menuIds) {
@@ -137,7 +129,7 @@ public class UserInfoController {
 	@ApiResponses({@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
 			@ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
+//	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result setUserByRoles(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
 								 @ApiParam(value = "用户系统标识",required = true)@RequestParam(value = "id")@NotNull Long id,
 								 @ApiParam(value = "角色系统标识 多个权限请使用 ，分割",required = true)@RequestParam(value = "roleIds")@NotEmpty String roleIds) {

@@ -84,13 +84,12 @@ surpassm:
     no-verify[5]: /swagger-resources/configuration/security**
     no-verify[6]: /websocket/socketServer.ws**
     no-verify[7]: /sockjs/socketServer.ws**
-    no-verify[8]: /login/v1/refreshToken**
-    no-verify[9]: /mobile/v1/getPhone**
-    no-verify[10]: /menu/v1/resourcesUpdate**
-    no-verify[11]: /fileManage/v1/getFileNameUrl**
-    no-verify[12]: /fileManage/v1/listUploadedFiles**
-    no-verify[13]: /fileManage/v1/getPath**
-    no-verify[14]: /upload/**
+    no-verify[8]: /login/v1/auth/refreshToken**
+    no-verify[9]: /mobile/v1/auth/getPhone**
+    no-verify[10]: /fileManage/v1/auth/getFileNameUrl**
+    no-verify[11]: /fileManage/v1/auth/listUploadedFiles**
+    no-verify[12]: /fileManage/v1/auth/getPath**
+    no-verify[13]: /upload/**
 #    用户名密码登录请求处理url
     default-login-processing-url-from: /authentication/form
     #默认的登陆属性名称
@@ -102,6 +101,10 @@ surpassm:
 swagger:
   enabled: true
   title: "权限框架 API"
+  authorization:
+    key-name: Authorization #head对应的key
+    auth-regex: ^(?!auth).*$ #url地址中携带auth将不加入swagger token验证
+
   docket:
     user:
       title: "用户"
