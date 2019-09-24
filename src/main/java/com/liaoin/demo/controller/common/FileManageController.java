@@ -79,14 +79,20 @@ public class FileManageController {
 
 
 	@PostMapping("v1/insert/upload")
-	@ApiOperation("文件上传{文件不会重名,存入数据库}")
+	@ApiOperation("单文件上传{存入数据库}")
 	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result insert(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam MultipartFile file) {
 		return fileManageService.insert(request,file);
 	}
+	@PostMapping("v1/insert/batchUpload")
+	@ApiOperation(value = "批量文件上传{存入数据库,无法使用，存在消耗冲突}",hidden = true)
+	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
+	public Result insertBatch(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam(required = false) MultipartFile[] files) {
+		return fileManageService.insertBatch(accessToken,request,files);
+	}
 
 	@PostMapping("v1/upload")
-	@ApiOperation(value = "文件上传{文件会重名,不存入数据库}")
+	@ApiOperation(value = "单文件上传{不存入数据库}")
 	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result store(@ApiParam(hidden = true) @AuthorizationToken String accessToken,
 						@RequestParam("file") MultipartFile file) {

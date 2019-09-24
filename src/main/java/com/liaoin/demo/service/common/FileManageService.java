@@ -38,6 +38,7 @@ public interface FileManageService {
     Result deleteGetById(String accessToken, Integer id);
     /**
 	 * 根据主键查询
+	 * @param accessToken accessToken
 	 * @param id 标识
 	 * @return 前端返回格式
 	 */
@@ -66,4 +67,13 @@ public interface FileManageService {
 	Resource serveFile(String fileUrl);
 
 	Result insert(HttpServletRequest request,MultipartFile file);
+
+	/**
+	 * 批量文件上传
+	 * @param accessToken accessToken
+	 * @param request request
+	 * @param file file
+	 * @return return
+	 */
+	Result insertBatch(String accessToken, HttpServletRequest request, MultipartFile[] file);
 }

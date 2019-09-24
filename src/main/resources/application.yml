@@ -35,19 +35,17 @@ spring:
       hibernate:
         format_sql: false
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-
   servlet:
     multipart:
       enabled: true
       max-file-size: 50MB
       max-request-size: 50MB
-
   session:
     store-type: none
-
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+
 # 参考配置https://www.cnblogs.com/liaojie970/p/8857710.html
 #  activiti:
 #    # 自动建表
@@ -120,7 +118,7 @@ mybatis:
 
 logging:
   level:
-    com.liaoin.demo.mapper.user: trace
+    com.liaoin.demo.mapper.user: info
 
 wx:
   miniapp:

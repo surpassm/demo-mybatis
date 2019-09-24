@@ -134,18 +134,18 @@ public class FileManageServiceImpl implements FileManageService {
 	public SurpassmFile store(MultipartFile file) {
 		try {
 			if (file.isEmpty()) {
-				throw new CustomException("Failed to store empty file " + file.getOriginalFilename());
+				throw new CustomException("无法存储空文件：" + file.getOriginalFilename());
 			}
-			String coustem = FileUtils.nowDate() + "/" + file.getOriginalFilename();
+			String coustem = FileUtils.nowDate() + "/" + System.currentTimeMillis() + "." + FileUtils.getFileType(file);
 			Path resolve = this.rootLocation.resolve(coustem);
 			java.io.File dest = new java.io.File(resolve.toFile().getPath());
 			//判断文件父目录是否存在
 			if (!dest.getParentFile().exists()) {
-				boolean mkdirs = dest.getParentFile().mkdirs();
+				dest.getParentFile().mkdirs();
 			}
 			Files.copy(file.getInputStream(), resolve);
 			String path = resolve.toFile().getPath().replace("\\", "/");
-			return SurpassmFile.builder().url(path).build();
+			return SurpassmFile.builder().url(path).fileOldName(file.getOriginalFilename()).fileNewName(coustem).build();
 		} catch (IOException e) {
 			throw new CustomException("Failed to store file " + file.getOriginalFilename(), e);
 		}
@@ -226,6 +226,34 @@ public class FileManageServiceImpl implements FileManageService {
 			return fail();
 		}
 
+	}
+
+	@Override
+	public Result insertBatch(String accessToken, HttpServletRequest request, MultipartFile[] files) {
+		if (files == null) {
+			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
+		}
+		List<FileManage> fileManageList = new ArrayList<>();
+		for (MultipartFile file : files) {
+			try {
+				SurpassmFile upload = FileUtils.upload(file, request, "upload");
+				if (upload != null) {
+					fileManageList.add(FileManage.builder()
+							.url(upload.getUrl())
+							.fileSuffix(upload.getFileSuffix())
+							.fileNewName(upload.getFileNewName())
+							.fileOldName(upload.getFileOldName())
+							.build());
+				}
+			} catch (Exception e) {
+				log.info("文件上传失败", e);
+				return fail("文件上传失败:"+file.getOriginalFilename());
+			}
+		}
+		if (fileManageList.size() > 0){
+			fileManageMapper.insertList(fileManageList);
+		}
+		return ok();
 	}
 }
 

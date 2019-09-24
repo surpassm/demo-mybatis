@@ -2,6 +2,7 @@ package com.liaoin.demo.mapper.common;
 
 import com.liaoin.demo.entity.common.FileManage;
 import org.apache.ibatis.annotations.Mapper;
+import tk.mybatis.mapper.common.MySqlMapper;
 
 /**
   * @author mc
@@ -10,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
   * Description 文件管理持久层
   */
 @Mapper
-public interface FileManageMapper extends tk.mybatis.mapper.common.Mapper<FileManage> {
+public interface FileManageMapper extends tk.mybatis.mapper.common.Mapper<FileManage>, MySqlMapper<FileManage> {
 
 
 }
