@@ -41,7 +41,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		currentUrl = servletRequest.getRequestURI();
 	}
 
-	/**覆盖getParameter方法，将参数名和参数值都做xss过滤。
+	/**覆盖getParameter方法，将参数名和参数值都做xss过滤。顶顶顶顶顶顶顶烦烦烦对当代顶顶顶顶
 	 * 如果需要获得原始的值，则通过super.getParameterValues(name)来获取
 	 * getParameterNames,getParameterValues和getParameterMap也可能需要覆盖
 	 */
