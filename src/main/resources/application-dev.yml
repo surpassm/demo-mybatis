@@ -90,6 +90,9 @@ surpassm:
     no-verify[11]: /fileManage/v1/auth/listUploadedFiles**
     no-verify[12]: /fileManage/v1/auth/getPath**
     no-verify[13]: /upload/**
+    no-verify[14]: /swagger-resources**
+    no-verify[15]: /csrf**
+    no-verify[16]: /error**
 #    用户名密码登录请求处理url
     default-login-processing-url-from: /authentication/form
     #默认的登陆属性名称
