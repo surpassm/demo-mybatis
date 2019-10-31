@@ -129,7 +129,6 @@ public class UserInfoController {
 	@ApiResponses({@ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
 			@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
 			@ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-//	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result setUserByRoles(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
 								 @ApiParam(value = "用户系统标识",required = true)@RequestParam(value = "id")@NotNull Long id,
 								 @ApiParam(value = "角色系统标识 多个权限请使用 ，分割",required = true)@RequestParam(value = "roleIds")@NotEmpty String roleIds) {

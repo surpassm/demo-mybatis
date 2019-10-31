@@ -40,7 +40,6 @@ public class LoginController {
 
 	@PostMapping("v1/hello")
 	@ApiOperation(value = "使用token获取用户基本信息")
-	@ApiImplicitParam(name = "Authorization", value = "授权码请以(Bearer )开头", required = true, dataType = "string", paramType = "header")
 	public Result save(@ApiParam(hidden = true)@AuthorizationToken String accessToken) {
 		return ok(beanConfig.getAccessToken(accessToken));
 	}

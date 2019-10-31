@@ -76,18 +76,18 @@ public class FileManageController {
 
 
 	@PostMapping("v1/insert/upload")
-	@ApiOperation("单文件上传{存入数据库}")
+	@ApiOperation("单文件上传（存入数据库）")
 	public Result insert(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam MultipartFile file) {
 		return fileManageService.insert(request,file);
 	}
 	@PostMapping("v1/insert/batchUpload")
-	@ApiOperation(value = "批量文件上传{存入数据库,无法使用，存在消耗冲突}",hidden = true)
+	@ApiOperation(value = "批量文件上传（存入数据库,无法使用，存在消耗冲突）",hidden = true)
 	public Result insertBatch(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam(required = false) MultipartFile[] files) {
 		return fileManageService.insertBatch(accessToken,request,files);
 	}
 
 	@PostMapping("v1/upload")
-	@ApiOperation(value = "单文件上传{不存入数据库}")
+	@ApiOperation(value = "单文件上传（不存入数据库）")
 	public Result store(@ApiParam(hidden = true) @AuthorizationToken String accessToken,
 						@RequestParam("file") MultipartFile file) {
 		SurpassmFile store = fileManageService.store(file);

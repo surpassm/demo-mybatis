@@ -74,20 +74,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 		if (!ValidateUtil.isPassword(userInfo.getPassword())){
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
-
-		Department queryDepartment = Department.builder().id(userInfo.getDepartmentId()).build();
-		queryDepartment.setIsDelete(0);
-
-		Department department = departmentMapper.selectOne(queryDepartment);
+		Department department = departmentMapper.selectByPrimaryKey(userInfo.getDepartmentId());
 		if (department == null) {
 			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
 		}
 
-		
-		UserInfo user = new UserInfo();
-		user.setUsername(userInfo.getUsername().trim());
-		user.setIsDelete(0);
-		int count = userInfoMapper.selectCount(user);
+		int count = userInfoMapper.selectCount(UserInfo.builder().username(userInfo.getUsername().trim()).isDelete(0).build());
 		if (count != 0){
 			return fail("账号已存在");
 		}
@@ -245,7 +237,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	 */
 	@Override
 	public Result setUserByGroup(String accessToken, Long id, String groupIds) {
-		UserInfo loginUser = beanConfig.getAccessToken(accessToken);
+		beanConfig.getAccessToken(accessToken);
 		String[] splits = StringUtils.split(groupIds,",");
 		if (splits == null || splits.length == 0){
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
@@ -277,7 +269,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	 */
 	@Override
 	public Result setUserByMenu(String accessToken, Long id, String menuIds) {
-		UserInfo loginUser = beanConfig.getAccessToken(accessToken);
+		beanConfig.getAccessToken(accessToken);
 		String[] splits = StringUtils.split(menuIds,",");
 		if (splits == null || splits.length == 0){
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());

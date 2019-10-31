@@ -140,7 +140,7 @@ public class GroupController {
 
 	@PostMapping("v1/findGroupToMenu")
 	@ApiOperation(value = "查询组的权限")
-	public Result findGroupToMenu(@ApiParam(value = "授权码", required = true) @RequestParam(value = "accessToken") @NotEmpty String accessToken,
+	public Result findGroupToMenu(@ApiParam(hidden = true) @AuthorizationToken String accessToken,
 								  @ApiParam(value = "主键", required = true) @RequestParam(value = "groupId") @NotNull Long groupId,
 								  @ApiParam(value = "第几页", required = true) @RequestParam(value = "page") Integer page,
 								  @ApiParam(value = "多少条", required = true) @RequestParam(value = "size") Integer size,
@@ -150,7 +150,7 @@ public class GroupController {
 
 	@PostMapping("v1/findGroupToRole")
 	@ApiOperation(value = "查询组的角色")
-	public Result findGroupToRole(@ApiParam(value = "授权码", required = true) @RequestParam(value = "accessToken") @NotEmpty String accessToken,
+	public Result findGroupToRole(@ApiParam(hidden = true) @AuthorizationToken String accessToken,
 								  @ApiParam(value = "主键", required = true) @RequestParam(value = "groupId") @NotNull Long groupId,
 								  @ApiParam(value = "第几页", required = true) @RequestParam(value = "page") Integer page,
 								  @ApiParam(value = "多少条", required = true) @RequestParam(value = "size") Integer size,
