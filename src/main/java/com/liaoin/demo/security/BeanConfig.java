@@ -30,7 +30,7 @@ public class BeanConfig {
 		try {
 			OAuth2Authentication oAuth2Authentication = tokenStore.readAuthentication(accessToken);
 			if (oAuth2Authentication == null){
-				log.info("token已失效");
+				log.error("token已失效");
 				throw new SurpassmAuthenticationException("token已失效");
 			}
 			Object principal = oAuth2Authentication.getPrincipal();
@@ -43,10 +43,10 @@ public class BeanConfig {
 				}
 			}
 		}catch (Exception e){
-			log.info("tokens必须是JWT类型");
+			log.error("tokens必须是JWT类型");
 			throw new SurpassmAuthenticationException("tokens必须是JWT类型");
 		}
-		log.info("请登陆");
+		log.error("请登陆");
 		throw new SurpassmAuthenticationException("请登陆");
 	}
 }
