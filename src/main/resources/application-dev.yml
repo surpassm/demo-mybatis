@@ -58,7 +58,7 @@ spring:
 surpassm:
   security:
     enabled: true
-    o-auth2:
+    oauth2:
       store-type: redis
       clients[0]:
         clientId: user_1
