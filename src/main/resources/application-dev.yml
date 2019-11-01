@@ -59,7 +59,6 @@ surpassm:
   security:
     enabled: true
     oauth2:
-      store-type: redis
       clients[0]:
         clientId: user_1
         clientIdSecret: 123456
