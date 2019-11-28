@@ -24,10 +24,4 @@ public class CommonImpl {
 			userGroupMapper.updateByPrimaryKeySelective(userGroup);
 		}
 	}
-	static void userInfoDeleteUpdata(UserInfo loginUserInfo, UserInfo userinfo, int userCount, UserInfoMapper userInfoMapper) {
-		if (userCount != 0){
-			userinfo.setIsDelete(1);
-			userInfoMapper.updateByPrimaryKeySelective(userinfo);
-		}
-	}
 }
