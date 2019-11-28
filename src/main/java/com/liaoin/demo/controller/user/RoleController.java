@@ -66,9 +66,9 @@ public class RoleController {
             @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
             @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    public Result deleteGetById(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
+    public Result deleteGetById(@ApiParam(hidden = true)@AuthorizationToken String token,
                                 @ApiParam(value = "主键",required = true)@RequestParam(value = "id") Long id) {
-        return roleService.deleteGetById(accessToken,id);
+        return roleService.deleteGetById(token,id);
     }
 
     @PostMapping("v1/findById")
@@ -90,7 +90,7 @@ public class RoleController {
                             @ApiParam(value = "第几页", required = true) @RequestParam(value = "page") Integer page,
                             @ApiParam(value = "多少条",required = true)@RequestParam(value = "size") Integer size,
                             @ApiParam(value = "排序字段")@RequestParam(value = "sort",required = false) String sort,
-							@RequestBody Role role) {
+							Role role) {
         return roleService.pageQuery(accessToken,page, size, sort, role);
     }
 

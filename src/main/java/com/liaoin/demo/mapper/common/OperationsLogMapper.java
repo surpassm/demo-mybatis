@@ -8,5 +8,5 @@ import tk.mybatis.mapper.common.Mapper;
  *
  * @author zhangquanli
  */
-public interface LogMapper extends Mapper<OperationsLog> {
+public interface OperationsLogMapper extends Mapper<OperationsLog> {
 }

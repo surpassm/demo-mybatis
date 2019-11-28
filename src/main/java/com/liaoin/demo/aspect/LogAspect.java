@@ -6,7 +6,7 @@ import com.github.surpassm.common.jackson.Result;
 import com.github.surpassm.security.properties.SecurityProperties;
 import com.liaoin.demo.entity.common.OperationsLog;
 import com.liaoin.demo.entity.user.UserInfo;
-import com.liaoin.demo.mapper.common.LogMapper;
+import com.liaoin.demo.mapper.common.OperationsLogMapper;
 import com.liaoin.demo.security.BeanConfig;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,7 +35,7 @@ public class LogAspect {
 	@Resource
 	private ObjectMapper objectMapper;
 	@Resource
-	private LogMapper logMapper;
+	private OperationsLogMapper operationsLogMapper;
 	@Resource
 	private BeanConfig beanConfig;
 	@Resource
@@ -118,7 +118,7 @@ public class LogAspect {
 			// 操作结束时间
 			operationsLog.setOperateEndTime(LocalDateTime.now());
 			// 新增日志
-			logMapper.insert(operationsLog);
+			operationsLogMapper.insert(operationsLog);
 		}
 	}
 
