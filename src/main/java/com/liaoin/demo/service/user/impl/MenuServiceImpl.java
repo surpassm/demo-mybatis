@@ -5,7 +5,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.surpassm.common.jackson.Result;
 import com.github.surpassm.common.jackson.ResultCode;
 import com.liaoin.demo.entity.user.*;
-import com.liaoin.demo.mapper.user.GroupMenuMapper;
 import com.liaoin.demo.mapper.user.MenuMapper;
 import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.user.MenuService;
@@ -20,7 +19,6 @@ import java.util.*;
 
 import static com.github.surpassm.common.jackson.Result.fail;
 import static com.github.surpassm.common.jackson.Result.ok;
-import static com.liaoin.demo.service.user.impl.CommonImpl.groupMenuDeleteUpdata;
 
 
 /**
@@ -37,8 +35,6 @@ public class MenuServiceImpl implements MenuService {
 	private MenuMapper menuMapper;
 	@Resource
 	private BeanConfig beanConfig;
-	@Resource
-	private GroupMenuMapper groupMenuMapper;
 
 
 	@Override
@@ -119,12 +115,6 @@ public class MenuServiceImpl implements MenuService {
 		if (menuCount != 0){
 			return fail("存在下级关联数据无法删除");
 		}
-		
-		//组权限查询
-		GroupMenu groupMenu = GroupMenu.builder().menuId(id).build();
-		groupMenu.setIsDelete(0);
-		int groupMenuCount = groupMenuMapper.selectCount(groupMenu);
-		groupMenuDeleteUpdata(loginUserInfo,groupMenu,groupMenuCount,groupMenuMapper);
 		//角色权限查询
 		menu.setIsDelete(1);
 		menuMapper.updateByPrimaryKeySelective(menu);

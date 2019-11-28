@@ -61,15 +61,6 @@ public interface GroupService {
 	Result findByOnlyAndChildren(String accessToken, Long id);
 
 	/**
-	 * 设置组的权限
-	 * @param accessToken
-	 * @param id
-	 * @param menuId
-	 * @return
-	 */
-	Result setGroupByMenu(String accessToken, Long id, String menuId);
-
-	/**
 	 * 设置组的角色
 	 * @param accessToken
 	 * @param id
@@ -78,16 +69,6 @@ public interface GroupService {
 	 */
 	Result setGroupByRole(String accessToken, Long id, String roleIds);
 
-	/**
-	 * 查询组的权限
-	 * @param accessToken
-	 * @param groupId
-	 * @param page
-	 * @param size
-	 * @param sort
-	 * @return
-	 */
-	Result findGroupToMenu(String accessToken, Long groupId, Integer page, Integer size, String sort);
 
 	/**
 	 * 查询组的角色

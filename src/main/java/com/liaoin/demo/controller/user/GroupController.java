@@ -116,17 +116,6 @@ public class GroupController {
 		return groupService.findByOnlyAndChildren(accessToken, id);
 	}
 
-	@PostMapping("v1/setGroupByMenu")
-	@ApiOperation(value = "设置组的权限", notes = "每次均需传全部权限ID，会把组原有的所有权限做物理删除")
-	@ApiResponses({@ApiResponse(code = Constant.FAIL_SESSION_CODE, message = Constant.FAIL_SESSION_MSG),
-			@ApiResponse(code = Constant.SUCCESS_CODE, message = Constant.SUCCESS_MSG),
-			@ApiResponse(code = Constant.FAIL_CODE, message = Constant.FAIL_MSG, response = Result.class)})
-	public Result setGroupByMenu(@ApiParam(hidden = true) @AuthorizationToken String accessToken,
-								 @ApiParam(value = "角色系统标识", required = true) @RequestParam(value = "id") @NotNull Long id,
-								 @ApiParam(value = "权限系统标识 多个权限请使用 ，分割", required = true) @RequestParam(value = "menuId") @NotEmpty String menuId) {
-		return groupService.setGroupByMenu(accessToken, id, menuId);
-	}
-
 	@PostMapping("v1/setGroupByRole")
 	@ApiOperation(value = "设置组的角色", notes = "每次均需传全部角色ID，会把组原有的所有角色做物理删除")
 	@ApiResponses({@ApiResponse(code = Constant.FAIL_SESSION_CODE, message = Constant.FAIL_SESSION_MSG),
@@ -136,16 +125,6 @@ public class GroupController {
 								 @ApiParam(value = "角色系统标识", required = true) @RequestParam(value = "id") @NotNull Long id,
 								 @ApiParam(value = "角色系统标识 多个角色请使用 ，分割", required = true) @RequestParam(value = "roleIds") @NotEmpty String roleIds) {
 		return groupService.setGroupByRole(accessToken, id, roleIds);
-	}
-
-	@PostMapping("v1/findGroupToMenu")
-	@ApiOperation(value = "查询组的权限")
-	public Result findGroupToMenu(@ApiParam(hidden = true) @AuthorizationToken String accessToken,
-								  @ApiParam(value = "主键", required = true) @RequestParam(value = "groupId") @NotNull Long groupId,
-								  @ApiParam(value = "第几页", required = true) @RequestParam(value = "page") Integer page,
-								  @ApiParam(value = "多少条", required = true) @RequestParam(value = "size") Integer size,
-								  @ApiParam(value = "排序字段") @RequestParam(value = "sort", required = false) String sort) {
-		return groupService.findGroupToMenu(accessToken, groupId, page, size, sort);
 	}
 
 	@PostMapping("v1/findGroupToRole")

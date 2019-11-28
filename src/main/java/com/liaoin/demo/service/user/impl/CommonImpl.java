@@ -12,13 +12,6 @@ import com.liaoin.demo.mapper.user.*;
  */
 public class CommonImpl {
 
-	static void groupMenuDeleteUpdata(UserInfo loginUserInfo, GroupMenu groupMenu, int groupMenuCount, GroupMenuMapper groupMenuMapper) {
-		if (groupMenuCount != 0){
-			groupMenu.setIsDelete(1);
-			groupMenuMapper.updateByPrimaryKeySelective(groupMenu);
-		}
-	}
-
 	static void groupRoleDeleteUpdata(UserInfo loginUserInfo, GroupRole groupRole, int groupRoleCount, GroupRoleMapper groupRoleMapper) {
 		if (groupRoleCount != 0){
 			groupRole.setIsDelete(1);

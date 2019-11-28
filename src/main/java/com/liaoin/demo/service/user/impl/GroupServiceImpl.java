@@ -37,8 +37,6 @@ public class GroupServiceImpl implements GroupService {
 	@Resource
 	private BeanConfig beanConfig;
 	@Resource
-	private GroupMenuMapper groupMenuMapper;
-	@Resource
 	private GroupRoleMapper groupRoleMapper;
 	@Resource
 	private UserGroupMapper userGroupMapper;
@@ -123,11 +121,6 @@ public class GroupServiceImpl implements GroupService {
 		if (groupCount != 0){
 			return fail("存在下级关联数据无法删除");
 		}
-		//组权限查询
-		GroupMenu groupMenu = GroupMenu.builder().groupId(id).build();
-		groupMenu.setIsDelete(0);
-		int groupMenuCount = groupMenuMapper.selectCount(groupMenu);
-		CommonImpl.groupMenuDeleteUpdata(loginUserInfo, groupMenu, groupMenuCount, groupMenuMapper);
 		//组角色查询
 		GroupRole groupRole = GroupRole.builder().groupId(id).build();
 		groupRole.setIsDelete(0);
@@ -198,37 +191,10 @@ public class GroupServiceImpl implements GroupService {
 		return ok(groups);
 	}
 
-	@Override
-	public Result setGroupByMenu(String accessToken, Long id, String menuId) {
-		UserInfo loginUser = beanConfig.getAccessToken(accessToken);
-		String[] splits = StringUtils.split(menuId,",");
-		if (splits == null || splits.length == 0){
-			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-		}
-		Group group = Group.builder().id(id).build();
-		group.setIsDelete(0);
-		int groupCount = groupMapper.selectCount(group);
-		if (groupCount == 0){
-			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
-		}
-		//删除原有组对应的权限
-		Example.Builder builder = new Example.Builder(GroupMenu.class);
-		builder.where(WeekendSqls.<GroupMenu>custom().andEqualTo(GroupMenu::getIsDelete, 0));
-		builder.where(WeekendSqls.<GroupMenu>custom().andEqualTo(GroupMenu::getGroupId, id));
-		groupMenuMapper.deleteByExample(builder.build());
-		//新增现有的角色权限
-		for(String split : splits){
-			GroupMenu build = GroupMenu.builder().groupId(id).menuId(Long.valueOf(split)).build();
-			build.setIsDelete(0);
-			build.setMenuType(1);
-			groupMenuMapper.insert(build);
-		}
-		return ok();
-	}
 
 	@Override
 	public Result setGroupByRole(String accessToken, Long id, String roleIds) {
-		UserInfo loginUser = beanConfig.getAccessToken(accessToken);
+		beanConfig.getAccessToken(accessToken);
 		String[] splits = StringUtils.split(roleIds,",");
 		if (splits == null || splits.length == 0){
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
@@ -253,22 +219,6 @@ public class GroupServiceImpl implements GroupService {
 		return ok();
 	}
 
-	@Override
-	public Result findGroupToMenu(String accessToken, Long groupId, Integer page, Integer size, String sort) {
-		//根据组查询有所权限列表ID
-		List<GroupMenu> select = groupMenuMapper.select(GroupMenu.builder().groupId(groupId).isDelete(0).build());
-		if (select.size() == 0){
-			return Result.ok(new Page<>());
-		}
-		page = null == page ? 1 : page;
-		size = null == size ? 10 : size;
-		PageHelper.startPage(page, size);
-		Example.Builder builder = new Example.Builder(Menu.class);
-		builder.where(WeekendSqls.<Menu>custom().andEqualTo(Menu::getIsDelete, 0));
-		builder.where(WeekendSqls.<Menu>custom().andIn(Menu::getId, select));
-		Page<Menu> all = (Page<Menu>) menuMapper.selectByExample(builder.build());
-		return ok(all.toPageInfo());
-	}
 
 	@Override
 	public Result findGroupToRole(String accessToken, Long groupId, Integer page, Integer size, String sort) {
