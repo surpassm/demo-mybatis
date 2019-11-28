@@ -3,6 +3,7 @@ import com.github.surpassm.EnableSecurity;
 import com.spring4all.swagger.EnableSwagger2Doc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -12,6 +13,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * Description 启动类
  */
 
+@EnableCaching
 @EnableSecurity
 @EnableSwagger2Doc
 @SpringBootApplication

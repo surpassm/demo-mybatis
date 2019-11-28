@@ -24,8 +24,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ApiModel(value = "文件管理")
 @NameStyle(Style.camelhump)
-@Table(name = "f_file_manage")
-@org.hibernate.annotations.Table(appliesTo = "f_file_manage", comment = "文件管理")
+@Table(name = "t_file_manage")
+@org.hibernate.annotations.Table(appliesTo = "t_file_manage", comment = "文件管理")
 public class FileManage implements Serializable {
 
 	@Id

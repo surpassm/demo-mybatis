@@ -40,7 +40,6 @@ import java.util.*;
 @Setter
 @Builder
 @AllArgsConstructor
-@SuppressWarnings("serial")
 @ApiModel(value = "用户")
 @NameStyle(Style.camelhump)
 @org.hibernate.annotations.Table(appliesTo = "t_user_info", comment = "用户")

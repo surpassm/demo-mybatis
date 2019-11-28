@@ -10,18 +10,15 @@ import tk.mybatis.mapper.annotation.NameStyle;
 import tk.mybatis.mapper.code.Style;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author mc
- * version 1.0v
- * date 2019/1/1 11:16
- * description TODO
+ * Create date 2019/8/24 13:47
+ * Version 1.0
+ * Description
  */
 @Entity
 @Getter
@@ -29,13 +26,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SuppressWarnings("serial")
-@ApiModel(description = "区域")
+@ApiModel(description = "城市信息表")
 @NameStyle(Style.camelhump)
-@Table(name = "t_region")
-@org.hibernate.annotations.Table(appliesTo = "t_region", comment = "区域")
-public class Region  implements Serializable {
-
+@Table(name = "t_region_cities")
+@org.hibernate.annotations.Table(appliesTo = "t_region_cities", comment = "城市信息表")
+public class RegionCities {
 
 	@Id
 	@Min(0)
@@ -46,30 +41,18 @@ public class Region  implements Serializable {
 	@NotNull(groups = UpdateView.class,message = "参数不能为空")
 	private Long id;
 
+	@ApiModelProperty("市编码")
+	@Column(columnDefinition="varchar(255) COMMENT '市编码'")
+	@NotBlank(groups = {InsertView.class,UpdateView.class},message = "参数不能为为空或空串")
+	private String code ;
 
-    @ApiModelProperty("名称")
+	@ApiModelProperty("名称")
 	@Column(columnDefinition="varchar(255) COMMENT '名称'")
 	@NotBlank(groups = {InsertView.class,UpdateView.class},message = "参数不能为为空或空串")
-    private String name ;
-
-	@ApiModelProperty("父级Id")
-	@OneToOne(targetEntity = Region.class)
-	@JoinColumn(name = "region_id", referencedColumnName = "id")
-	private Long parentId ;
-
-	@ApiModelProperty("排序字段")
-	@Column(columnDefinition="int(11) COMMENT '排序字段'")
-	private Integer departmentIndex ;
-
-	@Min(0)
-	@Max(1)
-	@ApiModelProperty(value = "是否删除",hidden = true)
-	private Integer isDelete;
-
-	@Transient
-	@ApiModelProperty(value = "下级列表",hidden = true)
-	private List<Region> children;
-
-
+	private String name ;
+	@ApiModelProperty("所属省份编码")
+	@Column(columnDefinition="varchar(255) COMMENT '所属省份编码'")
+	@NotBlank(groups = {InsertView.class,UpdateView.class},message = "参数不能为为空或空串")
+	private String provincesCode ;
 
 }

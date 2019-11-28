@@ -29,7 +29,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SuppressWarnings("serial")
 @ApiModel(value = "角色")
 @NameStyle(Style.camelhump)
 @Table(name = "t_role")

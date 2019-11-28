@@ -7,18 +7,11 @@ import com.github.surpassm.common.jackson.ResultCode;
 import com.liaoin.demo.entity.user.*;
 import com.liaoin.demo.mapper.user.GroupMenuMapper;
 import com.liaoin.demo.mapper.user.MenuMapper;
-import com.liaoin.demo.mapper.user.RoleMenuMapper;
-import com.liaoin.demo.mapper.user.UserMenuMapper;
 import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.user.MenuService;
-import io.swagger.models.Path;
-import io.swagger.models.Swagger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springfox.documentation.service.Documentation;
-import springfox.documentation.spring.web.DocumentationCache;
-import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2Mapper;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.weekend.WeekendSqls;
 
@@ -46,14 +39,6 @@ public class MenuServiceImpl implements MenuService {
 	private BeanConfig beanConfig;
 	@Resource
 	private GroupMenuMapper groupMenuMapper;
-	@Resource
-	private RoleMenuMapper roleMenuMapper;
-	@Resource
-	private UserMenuMapper userMenuMapper;
-	@Resource
-	private ServiceModelToSwagger2Mapper mapper;
-	@Resource
-	private DocumentationCache documentationCache;
 
 
 	@Override
@@ -141,16 +126,6 @@ public class MenuServiceImpl implements MenuService {
 		int groupMenuCount = groupMenuMapper.selectCount(groupMenu);
 		groupMenuDeleteUpdata(loginUserInfo,groupMenu,groupMenuCount,groupMenuMapper);
 		//角色权限查询
-		RoleMenu roleMenu = RoleMenu.builder().menuId(id).build();
-		roleMenu.setIsDelete(0);
-		int roleMenuCount = roleMenuMapper.selectCount(roleMenu);
-		CommonImpl.roleMenuDeleteUpdata(loginUserInfo, roleMenu, roleMenuCount, roleMenuMapper);
-		//用户权限查询
-		UserMenu userMenu = UserMenu.builder().menuId(id).build();
-		userMenu.setIsDelete(0);
-		int userMenuCount = userMenuMapper.selectCount(userMenu);
-		CommonImpl.userMenuDeleteUpdata(loginUserInfo, userMenu, userMenuCount, userMenuMapper);
-
 		menu.setIsDelete(1);
 		menuMapper.updateByPrimaryKeySelective(menu);
 		return ok();

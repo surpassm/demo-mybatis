@@ -1,6 +1,6 @@
 package com.liaoin.demo.mapper.common;
 
-import com.liaoin.demo.entity.common.Log;
+import com.liaoin.demo.entity.common.OperationsLog;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
@@ -8,5 +8,5 @@ import tk.mybatis.mapper.common.Mapper;
  *
  * @author zhangquanli
  */
-public interface LogMapper extends Mapper<Log> {
+public interface LogMapper extends Mapper<OperationsLog> {
 }

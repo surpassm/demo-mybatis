@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.surpassm.common.jackson.Result;
 import com.github.surpassm.security.properties.SecurityProperties;
-import com.liaoin.demo.entity.common.Log;
+import com.liaoin.demo.entity.common.OperationsLog;
 import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.mapper.common.LogMapper;
 import com.liaoin.demo.security.BeanConfig;
@@ -46,19 +46,19 @@ public class LogAspect {
 			"execution(* com.liaoin.*.controller..*.delete*(..))")
 	public void setLog(JoinPoint joinPoint) {
 		// 日志
-		Log log = new Log();
+		OperationsLog operationsLog = new OperationsLog();
 		// 模块
 		Class clazz = joinPoint.getSignature().getDeclaringType();
 		if (clazz.isAnnotationPresent(Api.class)) {
 			Api api = (Api) clazz.getAnnotation(Api.class);
-			log.setModule(api.tags()[0]);
+			operationsLog.setModule(api.tags()[0]);
 		}
 		// 功能
 		for (Method method : clazz.getMethods()) {
 			if (joinPoint.getSignature().getName().equals(method.getName())) {
 				if (method.isAnnotationPresent(ApiOperation.class)) {
 					ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
-					log.setFunction(apiOperation.value());
+					operationsLog.setFunction(apiOperation.value());
 				}
 			}
 		}
@@ -67,21 +67,21 @@ public class LogAspect {
 		if (requestAttributes != null) {
 			HttpServletRequest request = requestAttributes.getRequest();
 			String url = request.getRequestURI();
-			log.setUri(url);
-			log.setClientIp(request.getRemoteHost());
+			operationsLog.setUri(url);
+			operationsLog.setClientIp(request.getRemoteHost());
 			if (!checkAuthorization(url)) {
 				String header = request.getHeader("Authorization");
 				if (header != null && header.startsWith("Bearer ")) {
 					String token = header.substring(7);
 					UserInfo loginUser = beanConfig.getAccessToken(token);
 					// 用户主键
-					log.setUserId(loginUser.getId());
+					operationsLog.setUserId(loginUser.getId());
 				}
 			}
 			// 操作开始时间
-			log.setOperateStartTime(LocalDateTime.now());
+			operationsLog.setOperateStartTime(LocalDateTime.now());
 			// 保存日志到本地线程
-			LogHolder.set(log);
+			LogHolder.set(operationsLog);
 		}
 	}
 
@@ -109,16 +109,16 @@ public class LogAspect {
 	public void setLogData(Result result) throws JsonProcessingException {
 		if (200 == result.getCode()) {
 			// 获取日志
-			Log log = LogHolder.get();
+			OperationsLog operationsLog = LogHolder.get();
 			// 数据
 			if (result.getData() != null) {
 				String data = objectMapper.writeValueAsString(result.getData());
-				log.setData(data);
+				operationsLog.setData(data);
 			}
 			// 操作结束时间
-			log.setOperateEndTime(LocalDateTime.now());
+			operationsLog.setOperateEndTime(LocalDateTime.now());
 			// 新增日志
-			logMapper.insert(log);
+			logMapper.insert(operationsLog);
 		}
 	}
 

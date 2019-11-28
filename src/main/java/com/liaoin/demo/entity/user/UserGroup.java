@@ -27,7 +27,6 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SuppressWarnings("serial")
 @ApiModel(value = "用户组")
 @NameStyle(Style.camelhump)
 @Table(name = "m_user_group")

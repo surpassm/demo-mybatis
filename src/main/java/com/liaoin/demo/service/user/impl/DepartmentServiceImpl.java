@@ -7,7 +7,6 @@ import com.github.surpassm.common.jackson.ResultCode;
 import com.liaoin.demo.entity.user.Department;
 import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.mapper.user.DepartmentMapper;
-import com.liaoin.demo.mapper.user.RegionMapper;
 import com.liaoin.demo.mapper.user.UserInfoMapper;
 import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.user.DepartmentService;
@@ -40,8 +39,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 	private BeanConfig beanConfig;
 	@Resource
 	private UserInfoMapper userInfoMapper;
-	@Resource
-	private RegionMapper regionMapper;
 	@Override
 	public Result insert(String accessToken, Department department) {
 		if (department == null) {

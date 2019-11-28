@@ -19,18 +19,6 @@ public class CommonImpl {
 		}
 	}
 
-	static void roleMenuDeleteUpdata(UserInfo loginUserInfo, RoleMenu roleMenu, int roleMenuCount, RoleMenuMapper roleMenuMapper) {
-		if (roleMenuCount != 0){
-			roleMenu.setIsDelete(1);
-			roleMenuMapper.updateByPrimaryKeySelective(roleMenu);
-		}
-	}
-	static void userMenuDeleteUpdata(UserInfo loginUserInfo, UserMenu userMenu, int userMenuCount, UserMenuMapper userMenuMapper) {
-		if (userMenuCount!=0){
-			userMenu.setIsDelete(1);
-			userMenuMapper.updateByPrimaryKeySelective(userMenu);
-		}
-	}
 	static void groupRoleDeleteUpdata(UserInfo loginUserInfo, GroupRole groupRole, int groupRoleCount, GroupRoleMapper groupRoleMapper) {
 		if (groupRoleCount != 0){
 			groupRole.setIsDelete(1);

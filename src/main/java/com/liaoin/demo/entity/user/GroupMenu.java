@@ -27,7 +27,6 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SuppressWarnings("serial")
 @ApiModel(value = "组权限")
 @NameStyle(Style.camelhump)
 @Table(name = "m_group_menu")

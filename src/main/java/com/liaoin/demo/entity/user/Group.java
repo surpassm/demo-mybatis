@@ -29,7 +29,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@SuppressWarnings("serial")
 @ApiModel(value = "权限")
 @NameStyle(Style.camelhump)
 @Table(name = "t_group")

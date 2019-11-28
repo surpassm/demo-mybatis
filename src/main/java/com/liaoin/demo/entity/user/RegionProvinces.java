@@ -10,16 +10,13 @@ import tk.mybatis.mapper.annotation.NameStyle;
 import tk.mybatis.mapper.code.Style;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author mc
- * Create date 2019/1/21 13:39
+ * Create date 2019/8/24 13:45
  * Version 1.0
  * Description
  */
@@ -29,11 +26,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "部门")
+@ApiModel(description = "省")
 @NameStyle(Style.camelhump)
-@Table(name = "t_department")
-@org.hibernate.annotations.Table(appliesTo = "t_department", comment = "部门")
-public class Department implements Serializable {
+@Table(name = "t_region_provinces")
+@org.hibernate.annotations.Table(appliesTo = "t_region_provinces", comment = "省")
+public class RegionProvinces {
 
 	@Id
 	@Min(0)
@@ -44,27 +41,14 @@ public class Department implements Serializable {
 	@NotNull(groups = UpdateView.class,message = "参数不能为空")
 	private Long id;
 
+	@ApiModelProperty("省份编码")
+	@Column(columnDefinition="varchar(255) COMMENT '省份编码'")
 	@NotBlank(groups = {InsertView.class,UpdateView.class},message = "参数不能为为空或空串")
-	@ApiModelProperty(value = "名称",example = "研发部")
+	private String code ;
+
+	@ApiModelProperty("名称")
 	@Column(columnDefinition="varchar(255) COMMENT '名称'")
+	@NotBlank(groups = {InsertView.class,UpdateView.class},message = "参数不能为为空或空串")
 	private String name ;
-
-	@ApiModelProperty("父级Id")
-	@OneToOne(targetEntity = Department.class)
-	@JoinColumn(name = "parent_id", referencedColumnName = "id")
-	private Long parentId ;
-
-	@ApiModelProperty("排序字段")
-	@Column(columnDefinition="int(11) COMMENT '排序字段'")
-	private Integer departmentIndex ;
-
-	@Transient
-	@ApiModelProperty(value = "下级列表",hidden = true)
-	private List<Department> children;
-
-	@Min(0)
-	@Max(1)
-	@ApiModelProperty(value = "是否删除",hidden = true)
-	private Integer isDelete;
 
 }

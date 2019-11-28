@@ -212,7 +212,7 @@ public class GroupServiceImpl implements GroupService {
 			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
 		}
 		//删除原有组对应的权限
-		Example.Builder builder = new Example.Builder(RoleMenu.class);
+		Example.Builder builder = new Example.Builder(GroupMenu.class);
 		builder.where(WeekendSqls.<GroupMenu>custom().andEqualTo(GroupMenu::getIsDelete, 0));
 		builder.where(WeekendSqls.<GroupMenu>custom().andEqualTo(GroupMenu::getGroupId, id));
 		groupMenuMapper.deleteByExample(builder.build());

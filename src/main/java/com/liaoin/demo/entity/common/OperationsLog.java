@@ -26,11 +26,11 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "f_log")
+@Table(name = "t_operations_log")
 @ApiModel(value = "日志管理")
 @NameStyle(Style.camelhump)
-@org.hibernate.annotations.Table(appliesTo = "f_log", comment = "日志管理")
-public class Log implements Serializable {
+@org.hibernate.annotations.Table(appliesTo = "t_operations_log", comment = "日志管理")
+public class OperationsLog implements Serializable {
 	@Id
 	@KeySql(useGeneratedKeys = true)
 	@Column(columnDefinition="bigint COMMENT '系统标识'")
