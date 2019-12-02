@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Min;
 
 import static com.github.surpassm.common.jackson.Result.fail;
 
@@ -95,5 +96,14 @@ public class PowerController {
                             @ApiParam(value = "排序字段",example = "create_time desc")@RequestParam(value = "sort",required = false) String sort,
                             Power power) {
         return powerService.pageQuery(token,page, size, sort, power);
+    }
+
+    @PostMapping("v1/getPower/menu")
+    @ApiOperation(value = "根据权限Id查询菜单列表")
+    @ApiResponses({@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=Power.class),
+            @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG)})
+    public Result getPowerMenu(@ApiParam(hidden = true)@AuthorizationToken String token,
+                               @ApiParam(value = "主键",required = true)@RequestParam(value = "id")@Min(1) Long id) {
+        return powerService.getPowerMenu(token,id);
     }
 }

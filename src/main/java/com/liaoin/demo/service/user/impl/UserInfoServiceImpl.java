@@ -72,10 +72,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 		if (!ValidateUtil.isPassword(userInfo.getPassword())){
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
-		Department department = departmentMapper.selectByPrimaryKey(userInfo.getDepartmentId());
-		if (department == null) {
-			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
-		}
 
 		int count = userInfoMapper.selectCount(UserInfo.builder().username(userInfo.getUsername().trim()).isDelete(0).build());
 		if (count != 0){
@@ -115,12 +111,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
 
-		Department queryDepartment = Department.builder().id(userInfo.getDepartmentId()).build();
-		queryDepartment.setIsDelete(0);
-		Department department = departmentMapper.selectOne(queryDepartment);
-		if (department == null) {
-			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
-		}
 
 
 		UserInfo user = userInfoMapper.selectByPrimaryKey(userInfo.getId());
@@ -179,9 +169,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 		if (userInfo != null) {
 			if (userInfo.getId() != null) {
 				builder.where(WeekendSqls.<UserInfo>custom().andEqualTo(UserInfo::getId, userInfo.getId()));
-			}
-			if (userInfo.getDepartmentId() != null) {
-				builder.where(WeekendSqls.<UserInfo>custom().andEqualTo(UserInfo::getDepartmentId, userInfo.getDepartmentId()));
 			}
 			if (userInfo.getHeadUrl() != null && !"".equals(userInfo.getHeadUrl().trim())) {
 				builder.where(WeekendSqls.<UserInfo>custom().andLike(UserInfo::getHeadUrl, "%" + userInfo.getHeadUrl() + "%"));

@@ -53,4 +53,13 @@ public interface PowerService {
 	 * @return 前端返回格式
 	 */
     Result pageQuery(String token, Integer page, Integer size, String sort, Power power);
+
+	/**
+	 * 根据权限Id查询菜单列表
+	 *
+	 * @param token token
+	 * @param id id
+	 * @return 前端返回格式
+	 */
+	Result getPowerMenu(String token, Long id);
 }

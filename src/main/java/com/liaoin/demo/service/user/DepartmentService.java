@@ -48,15 +48,24 @@ public interface DepartmentService {
 	 * 根据父级Id查询
 	 * @param accessToken
 	 * @param parentId
-	 * @return
+	 * @return 前端返回格式
 	 */
 	Result getParentId(String accessToken, Integer parentId);
 
 	/**
 	 * 根据主键查询自己和所有子级
-	 * @param accessToken
-	 * @param id
+	 * @param accessToken accessToken
+	 * @param id id
 	 * @return
 	 */
 	Result findByOnlyAndChildren(String accessToken, Integer id);
+
+	/**
+	 * 根据部门查询所有员工
+	 *
+	 * @param accessToken accessToken
+	 * @param id id
+	 * @return 前端返回格式
+	 */
+    Result getDepartmentId(String accessToken, Long id);
 }

@@ -152,12 +152,6 @@ public class UserInfo implements UserDetails,CredentialsContainer {
 	@NotNull(groups = UpdateView.class,message = "参数不能为空")
 	private Long id;
 
-	@ApiModelProperty("所属组织Id")
-	@ManyToOne(targetEntity = Department.class)
-	@JoinColumn(name = "department_id", referencedColumnName = "id")
-	@NotNull(groups = {UpdateView.class,InsertView.class},message = "参数不能为为空")
-	private Long departmentId ;
-
 	@ApiModelProperty(value="姓名")
 	@Column(columnDefinition="varchar(255) COMMENT '姓名'")
 	@NotBlank(groups = {UpdateView.class,InsertView.class},message = "参数不能为为空或空串")

@@ -48,20 +48,24 @@ public class Power {
     @Column(columnDefinition = "varchar(255) COMMENT '名称'")
     @NotBlank(groups = {InsertView.class, UpdateView.class}, message = "参数不能为为空或空串")
     private String name;
-
-    @Min(0)
-    @Max(1)
-    @ApiModelProperty(value = "是否删除", hidden = true)
-    private Integer isDelete;
-
     @ApiModelProperty(value = "创建时间", hidden = true)
     @Column(columnDefinition = "datetime COMMENT '创建时间'")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime createTime;
+    @ApiModelProperty(value = "修改时间", hidden = true)
+    @Column(columnDefinition = "datetime COMMENT '修改时间'")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime updateTime;
     @ApiModelProperty(value = "用户系统标识")
     @ManyToOne(targetEntity = UserInfo.class)
     @JoinColumn(name = "create_user_id", referencedColumnName = "id")
     @NotNull(groups = {InsertView.class, UpdateView.class}, message = "参数不能为为空")
     private Long createUserId;
+    @ApiModelProperty(value = "修改用户系统标识")
+    @ManyToOne(targetEntity = UserInfo.class)
+    @JoinColumn(name = "create_user_id", referencedColumnName = "id")
+    @NotNull(groups = {InsertView.class, UpdateView.class}, message = "参数不能为为空")
+    private Long updateUserId;
 }

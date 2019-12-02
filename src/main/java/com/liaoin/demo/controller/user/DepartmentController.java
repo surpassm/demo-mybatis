@@ -5,6 +5,7 @@ import com.github.surpassm.common.jackson.Result;
 import com.github.surpassm.common.service.InsertView;
 import com.github.surpassm.config.annotation.AuthorizationToken;
 import com.liaoin.demo.entity.user.Department;
+import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.service.user.DepartmentService;
 import io.swagger.annotations.*;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -111,5 +113,14 @@ public class DepartmentController {
                             @ApiParam(value = "排序字段")@RequestParam(value = "sort",required = false) String sort,
 							Department department) {
         return departmentService.pageQuery(accessToken,page, size, sort, department);
+    }
+
+    @PostMapping("v1/getDepartmentId")
+    @ApiOperation(value = "根据部门查询所有员工")
+    @ApiResponses({@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response= UserInfo.class),
+            @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG)})
+    public Result getDepartmentId(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
+                                  @ApiParam(value = "主键",required = true)@RequestParam(value = "id")@Min(1) Long id){
+        return departmentService.getDepartmentId(accessToken,id);
     }
 }

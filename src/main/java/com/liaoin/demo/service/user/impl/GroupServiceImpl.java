@@ -5,10 +5,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.surpassm.common.jackson.Result;
 import com.github.surpassm.common.jackson.ResultCode;
 import com.liaoin.demo.entity.user.*;
+import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.mapper.user.*;
 import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.user.GroupService;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.github.surpassm.common.jackson.Result.fail;
 import static com.github.surpassm.common.jackson.Result.ok;
@@ -194,14 +197,11 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	public Result setGroupByRole(String accessToken, Long id, String roleIds) {
-		beanConfig.getAccessToken(accessToken);
 		String[] splits = StringUtils.split(roleIds,",");
 		if (splits == null || splits.length == 0){
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
-		Group group = Group.builder().id(id).build();
-		group.setIsDelete(0);
-		int groupCount = groupMapper.selectCount(group);
+		int groupCount = groupMapper.selectCount(Group.builder().id(id).isDelete(0).build());
 		if (groupCount == 0){
 			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
 		}
@@ -211,10 +211,14 @@ public class GroupServiceImpl implements GroupService {
 		builder.where(WeekendSqls.<GroupRole>custom().andEqualTo(GroupRole::getGroupId, id));
 		groupRoleMapper.deleteByExample(builder.build());
 		//新增现有的角色
+		List<GroupRole> groupRoleList = new ArrayList<>();
 		for(String split : splits){
-			GroupRole build = GroupRole.builder().groupId(id).roleId(Long.valueOf(split)).build();
-			build.setIsDelete(0);
-			groupRoleMapper.insert(build);
+			groupRoleList.add(GroupRole.builder().groupId(id).roleId(Long.valueOf(split)).build());
+		}
+		if (groupRoleList.size() > 0) {
+			groupRoleMapper.insertList(groupRoleList);
+		}else {
+			throw new CustomException("没有数据可以新增") ;
 		}
 		return ok();
 	}
@@ -222,7 +226,7 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	public Result findGroupToRole(String accessToken, Long groupId, Integer page, Integer size, String sort) {
-		List<GroupRole> select = groupRoleMapper.select(GroupRole.builder().groupId(groupId).isDelete(0).build());
+		List<Long> select = groupRoleMapper.select(GroupRole.builder().groupId(groupId).isDelete(0).build()).stream().map(GroupRole::getRoleId).collect(Collectors.toList());
 		if (select.size() == 0){
 			return Result.ok(new Page<>());
 		}
