@@ -47,7 +47,7 @@ public class FileManageController {
             @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
     public Result deleteGetById(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
                                 @ApiParam(value = "主键",required = true)@RequestParam(value = "id") Integer id) {
-        return fileManageService.deleteGetById(accessToken,id);
+        return Result.ok(fileManageService.deleteGetById(accessToken,id));
     }
 
     @PostMapping("v1/findById")

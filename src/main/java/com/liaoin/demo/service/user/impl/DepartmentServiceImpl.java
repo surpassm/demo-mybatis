@@ -125,10 +125,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (selectCount != 0) {
             return fail("存在下级关联数据无法删除");
         }
-        int userCount = userInfoMapper.selectCount(UserInfo.builder().id(id).isDelete(0).build());
-        if (userCount != 0) {
-            return fail("存在关联用户，无法删除");
-        }
+//        int userCount = userInfoMapper.selectCount(UserInfo.builder().departmentId(id).isDelete(0).build());
+//        if (userCount != 0) {
+//            return fail("存在关联用户，无法删除");
+//        }
         department.setIsDelete(1);
         departmentMapper.updateByPrimaryKeySelective(department);
         return ok();
