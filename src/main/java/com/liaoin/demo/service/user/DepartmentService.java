@@ -15,7 +15,7 @@ public interface DepartmentService {
 	 * @param department 对象
 	 * @return 前端返回格式
 	 */
-    Result insert(String accessToken, Department department);
+	Department insert( Department department);
     /**
 	 * 修改
 	 * @param department 对象
@@ -68,4 +68,12 @@ public interface DepartmentService {
 	 * @return 前端返回格式
 	 */
     Result getDepartmentId(String accessToken, Long id);
+
+	/**
+	 * 根据名称查询数量
+	 *
+	 * @param departmentName
+	 * @return
+	 */
+	int getDepartmentName(String departmentName);
 }

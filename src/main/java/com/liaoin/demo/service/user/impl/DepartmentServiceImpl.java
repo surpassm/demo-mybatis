@@ -49,24 +49,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentUserInfoMapper departmentUserInfoMapper;
 
     @Override
-    public Result insert(String accessToken, Department department) {
-        if (department == null) {
-            return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-        }
-
-        UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
-        Department build = Department.builder().name(department.getName()).build();
-        build.setIsDelete(0);
-        int selectCount = departmentMapper.selectCount(build);
-        if (selectCount != 0) {
-            return fail(ResultCode.RESULE_DATA_NONE.getMsg());
-        }
-        if (isEnableParent(department)) {
-            return fail(ResultCode.RESULE_DATA_NONE.getMsg());
-        }
+    public Department insert( Department department) {
         department.setIsDelete(0);
         departmentMapper.insert(department);
-        return ok();
+        return department;
     }
 
     @Override
@@ -208,6 +194,12 @@ public class DepartmentServiceImpl implements DepartmentService {
         builder.where(WeekendSqls.<UserInfo>custom().andIn(UserInfo::getId, userIds));
         List<UserInfo> select = userInfoMapper.selectByExample(builder.build());
         return ok(select);
+    }
+
+    @Override
+    public int getDepartmentName(String departmentName) {
+        Department build = Department.builder().name(departmentName).isDelete(0).build();
+        return departmentMapper.selectCount(build);
     }
 }
 

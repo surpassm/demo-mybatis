@@ -1,5 +1,6 @@
 package com.liaoin.demo.service.common;
 
+import com.github.pagehelper.PageInfo;
 import com.github.surpassm.common.jackson.Result;
 import com.github.surpassm.common.pojo.SurpassmFile;
 import com.liaoin.demo.entity.common.FileManage;
@@ -23,26 +24,24 @@ public interface FileManageService {
 	 * @param fileManage 对象
 	 * @return 前端返回格式
 	 */
-    Result insert(String accessToken, FileManage fileManage);
+	FileManage insert(FileManage fileManage);
     /**
 	 * 修改
 	 * @param fileManage 对象
 	 * @return 前端返回格式
 	 */
-    Result update(String accessToken, FileManage fileManage);
+	void update(FileManage fileManage);
     /**
 	 * 根据主键删除
-	 * @param id 标识
 	 * @return 前端返回格式
 	 */
-    Result deleteGetById(String accessToken, Integer id);
+	void deleteGetById(FileManage fileManage);
     /**
 	 * 根据主键查询
-	 * @param accessToken accessToken
 	 * @param id 标识
 	 * @return 前端返回格式
 	 */
-    Result findById(String accessToken, Integer id);
+	FileManage findById(Integer id);
     /**
 	 * 条件分页查询
 	 * @param page 当前页
@@ -51,7 +50,7 @@ public interface FileManageService {
 	 * @param fileManage 查询条件
 	 * @return 前端返回格式
 	 */
-    Result pageQuery(String accessToken, Integer page, Integer size, String sort, FileManage fileManage);
+	PageInfo<FileManage> pageQuery(Integer page, Integer size, String sort, FileManage fileManage);
 
 
 	SurpassmFile store(MultipartFile file);
@@ -66,14 +65,13 @@ public interface FileManageService {
 
 	Resource serveFile(String fileUrl);
 
-	Result insert(HttpServletRequest request,MultipartFile file);
+	SurpassmFile insert(HttpServletRequest request,MultipartFile file);
 
 	/**
 	 * 批量文件上传
-	 * @param accessToken accessToken
 	 * @param request request
 	 * @param file file
 	 * @return return
 	 */
-	Result insertBatch(String accessToken, HttpServletRequest request, MultipartFile[] file);
+	void insertBatch(HttpServletRequest request, MultipartFile[] file) throws Exception;
 }

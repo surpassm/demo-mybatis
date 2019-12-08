@@ -2,10 +2,12 @@ package com.liaoin.demo.controller.user;
 
 import com.github.surpassm.common.constant.Constant;
 import com.github.surpassm.common.jackson.Result;
+import com.github.surpassm.common.jackson.ResultCode;
 import com.github.surpassm.common.service.InsertView;
 import com.github.surpassm.config.annotation.AuthorizationToken;
 import com.liaoin.demo.entity.user.Department;
 import com.liaoin.demo.entity.user.UserInfo;
+import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.user.DepartmentService;
 import io.swagger.annotations.*;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import static com.github.surpassm.common.jackson.Result.fail;
+import static com.github.surpassm.common.jackson.Result.ok;
 
 /**
   * @author mc
@@ -30,6 +35,8 @@ public class DepartmentController {
 
     @Resource
     private DepartmentService departmentService;
+    @Resource
+    private BeanConfig beanConfig;
 
     @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
@@ -42,7 +49,13 @@ public class DepartmentController {
         if (errors.hasErrors()){
 			return Result.fail(errors.getAllErrors());
 		}
-        return departmentService.insert(accessToken,department);
+        beanConfig.getAccessToken(accessToken);
+        int selectCount = departmentService.getDepartmentName(department.getName());
+        if (selectCount != 0) {
+            return fail(ResultCode.RESULE_DATA_NONE.getMsg());
+        }
+        Department insert = departmentService.insert(department);
+        return ok(insert);
     }
 
     @PostMapping("v1/update")

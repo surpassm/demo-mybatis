@@ -1,11 +1,13 @@
 package com.liaoin.demo.controller.common;
 
+import com.github.pagehelper.PageInfo;
 import com.github.surpassm.common.constant.Constant;
 import com.github.surpassm.common.jackson.Result;
 import com.github.surpassm.common.pojo.SurpassmFile;
 import com.github.surpassm.config.annotation.AuthorizationToken;
 import com.liaoin.demo.entity.common.FileManage;
 import com.liaoin.demo.exception.CustomException;
+import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.common.FileManageService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +21,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.github.surpassm.common.jackson.Result.fail;
+import static com.github.surpassm.common.jackson.Result.ok;
 
 /**
   * @author mc
@@ -38,6 +44,9 @@ public class FileManageController {
 
     @Resource
     private FileManageService fileManageService;
+	@Resource
+	private BeanConfig beanConfig;
+
 
     @PostMapping("v1/getById")
     @ApiOperation(value = "根据主键删除")
@@ -46,8 +55,14 @@ public class FileManageController {
             @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
             @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
     public Result deleteGetById(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
-                                @ApiParam(value = "主键",required = true)@RequestParam(value = "id") Integer id) {
-        return Result.ok(fileManageService.deleteGetById(accessToken,id));
+                                @ApiParam(value = "主键",required = true)@RequestParam(value = "id") @NotNull Integer id) {
+		beanConfig.getAccessToken(accessToken);
+		FileManage byId = fileManageService.findById(id);
+		if (byId == null){
+			return fail();
+		}
+		fileManageService.deleteGetById(byId);
+		return ok();
     }
 
     @PostMapping("v1/findById")
@@ -58,7 +73,9 @@ public class FileManageController {
             @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
     public Result findById(@ApiParam(hidden = true)  @AuthorizationToken String accessToken,
                            @ApiParam(value = "主键",required = true)@RequestParam(value = "id") Integer id) {
-        return fileManageService.findById(accessToken,id);
+		beanConfig.getAccessToken(accessToken);
+		FileManage byId = fileManageService.findById(id);
+		return ok(byId);
     }
 
     @PostMapping("v1/pageQuery")
@@ -70,7 +87,9 @@ public class FileManageController {
                             @ApiParam(value = "多少条",required = true)@RequestParam(value = "size") Integer size,
                             @ApiParam(value = "排序字段")@RequestParam(value = "sort",required = false) String sort,
                             FileManage fileManage) {
-        return fileManageService.pageQuery(accessToken,page, size, sort, fileManage);
+		beanConfig.getAccessToken(accessToken);
+		PageInfo<FileManage> fileManagePageInfo = fileManageService.pageQuery(page, size, sort, fileManage);
+		return ok(fileManagePageInfo);
     }
 
 
@@ -78,12 +97,20 @@ public class FileManageController {
 	@PostMapping("v1/insert/upload")
 	@ApiOperation("单文件上传（存入数据库）")
 	public Result insert(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam MultipartFile file) {
-		return fileManageService.insert(request,file);
+		beanConfig.getAccessToken(accessToken);
+		SurpassmFile surpassmFile = fileManageService.insert(request, file);
+		return ok(surpassmFile);
 	}
 	@PostMapping("v1/insert/batchUpload")
 	@ApiOperation(value = "批量文件上传（存入数据库,无法使用，存在消耗冲突）",hidden = true)
-	public Result insertBatch(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam(required = false) MultipartFile[] files) {
-		return fileManageService.insertBatch(accessToken,request,files);
+	public Result insertBatch(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam(required = false)@NotNull MultipartFile[] files) {
+		beanConfig.getAccessToken(accessToken);
+		try {
+			fileManageService.insertBatch(request,files);
+		} catch (Exception e) {
+			throw new  CustomException(201,e.getMessage());
+		}
+		return ok();
 	}
 
 	@PostMapping("v1/upload")
@@ -91,7 +118,7 @@ public class FileManageController {
 	public Result store(@ApiParam(hidden = true) @AuthorizationToken String accessToken,
 						@RequestParam("file") MultipartFile file) {
 		SurpassmFile store = fileManageService.store(file);
-		return Result.ok(store);
+		return ok(store);
 	}
 
 	@GetMapping("v1/auth/getFileNameUrl")
@@ -108,7 +135,7 @@ public class FileManageController {
 
 	@ExceptionHandler(CustomException.class)
 	public Result handleStorageFileNotFound(CustomException exc) {
-		return Result.fail("文件有重名,请重命名文件");
+		return fail("文件有重名,请重命名文件");
 	}
 
 
@@ -123,7 +150,7 @@ public class FileManageController {
 								.fromMethodName(FileManageController.class, "serveFile", path.toFile().getPath().replace("\\","/"))
 								.build().toString())
 				.collect(Collectors.toList());
-		return Result.ok(serveFile);
+		return ok(serveFile);
 	}
 
 	@GetMapping("v1/auth/getPath")
