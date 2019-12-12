@@ -19,6 +19,7 @@ import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -44,10 +45,24 @@ public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentUserInfoMapper departmentUserInfoMapper;
 
     @Override
-    public Department insert( Department department) {
+    public Result insertParent(Long userId, DepartmentDto dto) {
+        //查询名称是否存在
+        int i = departmentMapper.selectCount(Department.builder().isDelete(0).name(dto.getName()).build());
+        if (i > 0){
+            return fail("名称重复");
+        }
+        Department department = dto.convertTo();
         department.setIsDelete(0);
+        department.setParentId(null);
+        department.setCreateTime(LocalDateTime.now());
         departmentMapper.insert(department);
-        return department;
+        return ok(department);
+    }
+
+    @Override
+    public Result insertChild(Long userId, DepartmentDto dto) {
+        //查询父级是否存在
+        return null;
     }
 
     @Override
@@ -159,5 +174,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         Department build = Department.builder().name(departmentName).isDelete(0).build();
         return departmentMapper.selectCount(build);
     }
+
+
 }
 

@@ -7,6 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 /**
  * @author mc
  * Create date 2019/12/12 12:31
@@ -18,9 +21,12 @@ import org.springframework.beans.BeanUtils;
 @ApiModel(value = "部门")
 public class DepartmentDto {
 
-    @ApiModelProperty(value = "名称",example = "研发部")
+    @NotEmpty(message = "字段name错误")
+    @ApiModelProperty(value = "名称")
     private String name ;
-
+    @ApiModelProperty(value = "排序字段")
+    private Integer departmentIndex ;
+    private Long parentId ;
 
     public Department convertTo(){
         ConvertImpl impl = new ConvertImpl();

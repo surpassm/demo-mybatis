@@ -1,6 +1,7 @@
 package com.liaoin.demo.service.user;
 
 import com.liaoin.demo.common.Result;
+import com.liaoin.demo.domain.user.DepartmentDto;
 import com.liaoin.demo.entity.user.Department;
 
 /**
@@ -13,11 +14,17 @@ public interface DepartmentService {
     /**
      * 新增
      *
-     * @param department 对象
      * @return 前端返回格式
      */
-    Department insert(Department department);
-
+    Result insertParent(Long userId, DepartmentDto dto);
+    /**
+     * 新增子集
+     *
+     * @param userId
+     * @param dto
+     * @return
+     */
+    Result insertChild(Long userId, DepartmentDto dto);
     /**
      * 修改
      *
@@ -84,4 +91,6 @@ public interface DepartmentService {
      * @return
      */
     int getDepartmentName(String departmentName);
+
+
 }
