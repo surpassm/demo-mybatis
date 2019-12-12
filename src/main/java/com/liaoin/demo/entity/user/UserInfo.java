@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.Assert;
 import tk.mybatis.mapper.annotation.KeySql;
@@ -34,6 +31,7 @@ import java.util.*;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @NameStyle(Style.camelhump)
 @org.hibernate.annotations.Table(appliesTo = "t_user_info", comment = "用户")
 @Table(name = "t_user_info", uniqueConstraints = {@UniqueConstraint(name = "username_unique", columnNames = {"username"})})

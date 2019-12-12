@@ -1,4 +1,4 @@
-package com.liaoin.demo.entity.common;
+package com.liaoin.demo.annotation;
 
 
 /**

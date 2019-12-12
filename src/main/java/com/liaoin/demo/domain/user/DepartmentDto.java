@@ -1,6 +1,6 @@
 package com.liaoin.demo.domain.user;
 
-import com.liaoin.demo.entity.common.Convert;
+import com.liaoin.demo.annotation.Convert;
 import com.liaoin.demo.entity.user.Department;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

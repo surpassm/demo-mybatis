@@ -4,7 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.liaoin.demo.entity.common.FileManage;
-import com.liaoin.demo.entity.common.SurpassmFile;
+import com.liaoin.demo.common.SurpassmFile;
 import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.mapper.common.FileManageMapper;
 import com.liaoin.demo.service.common.FileManageService;

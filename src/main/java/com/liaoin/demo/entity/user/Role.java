@@ -41,7 +41,6 @@ public class Role implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-
 	@Column(columnDefinition="varchar(255) COMMENT 'security标识'")
 	private String securityRoles;
 

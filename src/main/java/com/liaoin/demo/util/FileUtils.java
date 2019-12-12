@@ -1,6 +1,6 @@
 package com.liaoin.demo.util;
 
-import com.liaoin.demo.entity.common.SurpassmFile;
+import com.liaoin.demo.common.SurpassmFile;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 

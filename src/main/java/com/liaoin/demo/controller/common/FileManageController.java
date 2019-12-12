@@ -4,7 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.liaoin.demo.annotation.Login;
 import com.liaoin.demo.common.Result;
 import com.liaoin.demo.entity.common.FileManage;
-import com.liaoin.demo.entity.common.SurpassmFile;
+import com.liaoin.demo.common.SurpassmFile;
 import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.service.common.FileManageService;
 import io.swagger.annotations.*;
