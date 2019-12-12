@@ -2,12 +2,11 @@ package com.liaoin.demo.service.user.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.common.jackson.ResultCode;
+import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.entity.user.PageElement;
 import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.mapper.user.PageElementMapper;
-import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.user.PageElementService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,8 @@ import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
 
-import static com.github.surpassm.common.jackson.Result.fail;
-import static com.github.surpassm.common.jackson.Result.ok;
+import static com.liaoin.demo.common.Result.fail;
+import static com.liaoin.demo.common.Result.ok;
 
 
 /**
@@ -33,31 +32,27 @@ import static com.github.surpassm.common.jackson.Result.ok;
 public class PageElementServiceImpl implements PageElementService {
     @Resource
     private PageElementMapper pageElementMapper;
-    @Resource
-	private BeanConfig beanConfig;
 
     @Override
-    public Result insert(String token,PageElement pageElement) {
+    public Result insert(Long userId, PageElement pageElement) {
         if (pageElement == null){
             return fail(ResultCode.PARAM_IS_BLANK.getMsg());
         }
-        UserInfo loginUser = beanConfig.getAccessToken(token);
         pageElementMapper.insert(pageElement);
         return ok();
     }
 
     @Override
-    public Result update(String token,PageElement pageElement) {
+    public Result update(Long userId,PageElement pageElement) {
         if (pageElement == null){
             return fail(ResultCode.PARAM_IS_BLANK.getMsg());
         }
-        UserInfo loginUser = beanConfig.getAccessToken(token);
         pageElementMapper.updateByPrimaryKeySelective(pageElement);
         return ok();
     }
 
     @Override
-    public Result deleteGetById(String token,Long id){
+    public Result deleteGetById(Long userId,Long id){
         if (id == null){
             return fail(ResultCode.PARAM_IS_BLANK.getMsg());
         }
@@ -65,14 +60,13 @@ public class PageElementServiceImpl implements PageElementService {
         if(pageElement == null){
             return fail(ResultCode.RESULE_DATA_NONE.getMsg());
         }
-        UserInfo loginUser = beanConfig.getAccessToken(token);
         pageElementMapper.updateByPrimaryKeySelective(pageElement);
         return ok();
     }
 
 
     @Override
-    public Result findById(String token,Long id) {
+    public Result findById(Long userId,Long id) {
         if (id == null){
             return fail(ResultCode.PARAM_IS_BLANK.getMsg());
         }
@@ -85,7 +79,7 @@ public class PageElementServiceImpl implements PageElementService {
     }
 
     @Override
-    public Result pageQuery(String token,Integer page, Integer size, String sort, PageElement pageElement) {
+    public Result pageQuery(Long userId,Integer page, Integer size, String sort, PageElement pageElement) {
         page = null  == page ? 1 : page;
         size = null  == size ? 10 : size;
         if (size > 101){

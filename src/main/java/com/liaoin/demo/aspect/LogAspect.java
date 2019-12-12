@@ -2,12 +2,10 @@ package com.liaoin.demo.aspect;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.security.properties.SecurityProperties;
+import com.liaoin.demo.common.Result;
 import com.liaoin.demo.entity.common.OperationsLog;
-import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.mapper.common.OperationsLogMapper;
-import com.liaoin.demo.security.BeanConfig;
+import com.liaoin.demo.util.JwtUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -37,9 +35,8 @@ public class LogAspect {
 	@Resource
 	private OperationsLogMapper operationsLogMapper;
 	@Resource
-	private BeanConfig beanConfig;
-	@Resource
-	private SecurityProperties securityProperties;
+	private  String[] noVerify;
+
 
 	@Before("execution(* com.liaoin.*.controller..*.insert*(..)) || " +
 			"execution(* com.liaoin.*.controller..*.update*(..)) || " +
@@ -70,13 +67,10 @@ public class LogAspect {
 			operationsLog.setUri(url);
 			operationsLog.setClientIp(request.getRemoteHost());
 			if (!checkAuthorization(url)) {
-				String header = request.getHeader("Authorization");
-				if (header != null && header.startsWith("Bearer ")) {
-					String token = header.substring(7);
-					UserInfo loginUser = beanConfig.getAccessToken(token);
-					// 用户主键
-					operationsLog.setUserId(loginUser.getId());
-				}
+				String token = request.getHeader("Authorization");
+				long userId = Long.parseLong(JwtUtils.getSubFromToken(token));
+				// 用户主键
+				operationsLog.setUserId(userId);
 			}
 			// 操作开始时间
 			operationsLog.setOperateStartTime(LocalDateTime.now());
@@ -93,7 +87,6 @@ public class LogAspect {
 	private boolean checkAuthorization(String url){
 		boolean flag =false;
 		url = url + "**";
-		String[] noVerify = securityProperties.getNoVerify();
 		for (String s : noVerify) {
 			 if (url.equals(s)){
 				 flag = true;

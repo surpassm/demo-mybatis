@@ -46,58 +46,6 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
 
-# 参考配置https://www.cnblogs.com/liaojie970/p/8857710.html
-#  activiti:
-#    # 自动建表
-#    database-schema: TEST
-#    database-schema-update: true
-#    history-level: full
-#    db-history-used: true
-
-
-surpassm:
-  security:
-    enabled: true
-    oauth2:
-      clients[0]:
-        clientId: user_1
-        clientIdSecret: 123456
-        #成功token时长 过期时间默认24小时
-        access-token-validity-seconds: 86400
-        #刷新token时长 过期时间默认30天
-        refresh-token-validity-seconds: 2592000
-      clients[1]:
-        clientId: user_2
-        clientIdSecret: 123456
-        #成功token时长 过期时间默认24小时
-        access-token-validity-seconds: 86400
-        #刷新token时长 过期时间默认30天
-        refresh-token-validity-seconds: 2592000
-    login-type: JSON
-#      登陆页面设置
-    no-verify[0]: /swagger-**
-    no-verify[1]: /images/**
-    no-verify[2]: /webjars/**
-    no-verify[3]: /v2/api-docs**
-    no-verify[4]: /swagger-resources/**
-    no-verify[5]: /error**
-    no-verify[6]: /websocket/socketServer.ws**
-    no-verify[7]: /sockjs/socketServer.ws**
-    no-verify[8]: /login/v1/auth/refreshToken**
-    no-verify[9]: /mobile/v1/auth/getPhone**
-    no-verify[10]: /fileManage/v1/auth/getFileNameUrl**
-    no-verify[11]: /fileManage/v1/auth/listUploadedFiles**
-    no-verify[12]: /fileManage/v1/auth/getPath**
-    no-verify[13]: /upload/**
-    no-verify[14]: /csrf**
-#    用户名密码登录请求处理url
-    default-login-processing-url-from: /authentication/form
-    #默认的登陆属性名称
-#    username-parameter: username
-    #登陆的密码属性名称
-#    password-parameter: password
-
-
 swagger:
   enabled: true
   title: "权限框架 API"

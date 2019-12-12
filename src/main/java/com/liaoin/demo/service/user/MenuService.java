@@ -1,6 +1,7 @@
 package com.liaoin.demo.service.user;
 
-import com.github.surpassm.common.jackson.Result;
+
+import com.liaoin.demo.common.Result;
 import com.liaoin.demo.entity.user.Menu;
 
 /**
@@ -15,25 +16,25 @@ public interface MenuService {
 	 * @param menu 对象
 	 * @return 前端返回格式
 	 */
-    Result insert(String accessToken, Menu menu);
+    Result insert(Long userId, Menu menu);
     /**
 	 * 修改
 	 * @param menu 对象
 	 * @return 前端返回格式
 	 */
-    Result update(String accessToken, Menu menu);
+    Result update(Long userId, Menu menu);
     /**
 	 * 根据主键删除
 	 * @param id 标识
 	 * @return 前端返回格式
 	 */
-    Result deleteGetById(String accessToken, Long id);
+    Result deleteGetById(Long userId, Long id);
     /**
 	 * 根据主键查询
 	 * @param id 标识
 	 * @return 前端返回格式
 	 */
-    Result findById(String accessToken, Long id);
+    Result findById(Long userId, Long id);
     /**
 	 * 条件分页查询
 	 * @param page 当前页
@@ -42,7 +43,7 @@ public interface MenuService {
 	 * @param menu 查询条件
 	 * @return 前端返回格式
 	 */
-    Result pageQuery(String accessToken, Integer page, Integer size, String sort, Menu menu);
+    Result pageQuery(Long userId, Integer page, Integer size, String sort, Menu menu);
 
 	/**
 	 * 根据父级Id查询
@@ -50,7 +51,7 @@ public interface MenuService {
 	 * @param parentId
 	 * @return
 	 */
-	Result getParentId(String accessToken, Long parentId);
+	Result getParentId(Long userId, Long parentId);
 
 	/**
 	 * 根据主键查询自己和所有子级
@@ -58,6 +59,6 @@ public interface MenuService {
 	 * @param id
 	 * @return
 	 */
-	Result findByOnlyAndChildren(String accessToken, Long id);
+	Result findByOnlyAndChildren(Long userId, Long id);
 
 }

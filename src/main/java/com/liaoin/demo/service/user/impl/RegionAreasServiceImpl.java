@@ -2,12 +2,11 @@ package com.liaoin.demo.service.user.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.common.jackson.ResultCode;
+import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.entity.user.RegionAreas;
 import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.mapper.user.RegionAreasMapper;
-import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.user.RegionAreasService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,8 @@ import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
 
-import static com.github.surpassm.common.jackson.Result.fail;
-import static com.github.surpassm.common.jackson.Result.ok;
+import static com.liaoin.demo.common.Result.fail;
+import static com.liaoin.demo.common.Result.ok;
 
 
 /**
@@ -33,31 +32,27 @@ import static com.github.surpassm.common.jackson.Result.ok;
 public class RegionAreasServiceImpl implements RegionAreasService {
     @Resource
     private RegionAreasMapper regionAreasMapper;
-    @Resource
-	private BeanConfig beanConfig;
 
     @Override
-    public Result insert(String token,RegionAreas regionAreas) {
+    public Result insert(Long userId, RegionAreas regionAreas) {
         if (regionAreas == null){
             return fail(ResultCode.PARAM_IS_BLANK.getMsg());
         }
-        UserInfo loginUser = beanConfig.getAccessToken(token);
         regionAreasMapper.insert(regionAreas);
         return ok();
     }
 
     @Override
-    public Result update(String token,RegionAreas regionAreas) {
+    public Result update(Long userId,RegionAreas regionAreas) {
         if (regionAreas == null){
             return fail(ResultCode.PARAM_IS_BLANK.getMsg());
         }
-        UserInfo loginUser = beanConfig.getAccessToken(token);
         regionAreasMapper.updateByPrimaryKeySelective(regionAreas);
         return ok();
     }
 
     @Override
-    public Result deleteGetById(String token,Long id){
+    public Result deleteGetById(Long userId,Long id){
         if (id == null){
             return fail(ResultCode.PARAM_IS_BLANK.getMsg());
         }
@@ -65,14 +60,13 @@ public class RegionAreasServiceImpl implements RegionAreasService {
         if(regionAreas == null){
             return fail(ResultCode.RESULE_DATA_NONE.getMsg());
         }
-        UserInfo loginUser = beanConfig.getAccessToken(token);
         regionAreasMapper.updateByPrimaryKeySelective(regionAreas);
         return ok();
     }
 
 
     @Override
-    public Result findById(String token,Long id) {
+    public Result findById(Long userId,Long id) {
         if (id == null){
             return fail(ResultCode.PARAM_IS_BLANK.getMsg());
         }
@@ -85,7 +79,7 @@ public class RegionAreasServiceImpl implements RegionAreasService {
     }
 
     @Override
-    public Result pageQuery(String token,Integer page, Integer size, String sort, RegionAreas regionAreas) {
+    public Result pageQuery(Long userId,Integer page, Integer size, String sort, RegionAreas regionAreas) {
         page = null  == page ? 1 : page;
         size = null  == size ? 10 : size;
         if (size > 101){

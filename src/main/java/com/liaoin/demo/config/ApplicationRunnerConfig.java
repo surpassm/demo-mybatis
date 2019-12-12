@@ -1,6 +1,5 @@
 package com.liaoin.demo.config;
 
-import com.github.surpassm.security.properties.SecurityProperties;
 import com.liaoin.demo.entity.user.Operations;
 import com.liaoin.demo.mapper.user.OperationsMapper;
 import com.spring4all.swagger.SwaggerProperties;
@@ -37,8 +36,6 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 	@Resource
 	private OperationsMapper operationsMapper;
 	@Resource
-	private SecurityProperties securityProperties;
-	@Resource
 	private SwaggerProperties swaggerProperties;
 
 	@Override
@@ -52,7 +49,6 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 		Map<String, SwaggerProperties.DocketInfo> docket = swaggerProperties.getDocket();
 		if (docket != null && docket.size() > 0) {
 			Iterator<Map.Entry<String, SwaggerProperties.DocketInfo>> iterator = docket.entrySet().iterator();
-			List<String> noVerify = Arrays.asList(securityProperties.getNoVerify());
 			while (iterator.hasNext()){
 				Map.Entry<String, SwaggerProperties.DocketInfo> next = iterator.next();
 				String group = next.getKey();
@@ -64,7 +60,6 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 						// 链接
 						String url = key + "**";
 						// 排除不验证的url
-						if (!noVerify.contains(url)) {
 							// 名称
 							if (value.getPost() != null) {
 								String name = value.getPost().getSummary();
@@ -86,7 +81,6 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 								Operations operations = operationsMapper.selectOne(build);
 								menuInsertAndUpdata(url, name, description, operations);
 							}
-						}
 					});
 				}
 			}

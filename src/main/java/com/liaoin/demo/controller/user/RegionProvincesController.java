@@ -1,10 +1,7 @@
 package com.liaoin.demo.controller.user;
 
-import com.github.surpassm.common.constant.Constant;
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.common.service.InsertView;
-import com.github.surpassm.common.service.UpdateView;
-import com.github.surpassm.config.annotation.AuthorizationToken;
+import com.liaoin.demo.annotation.Login;
+import com.liaoin.demo.common.Result;
 import com.liaoin.demo.entity.user.RegionProvinces;
 import com.liaoin.demo.service.user.RegionProvincesService;
 import io.swagger.annotations.*;
@@ -14,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
-import static com.github.surpassm.common.jackson.Result.fail;
+import static com.liaoin.demo.common.Result.fail;
+
 
 /**
   * @author mc
@@ -33,67 +31,49 @@ public class RegionProvincesController {
 
     @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
-    @ApiResponses({
-            @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
-            @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
-            @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    public Result insert(@ApiParam(hidden = true)@AuthorizationToken String token,
-                         @Validated(InsertView.class) RegionProvinces regionProvinces, BindingResult errors) {
+    public Result insert(@ApiParam(hidden = true)@Login Long userId,
+                         RegionProvinces regionProvinces, BindingResult errors) {
         if (errors.hasErrors()){
 			StringBuilder builder = new StringBuilder();
 			errors.getAllErrors().forEach(i -> builder.append(i.getDefaultMessage()).append(","));
 			return fail(builder.toString());
 		}
-        return regionProvincesService.insert(token,regionProvinces);
+        return regionProvincesService.insert(userId,regionProvinces);
     }
 
     @PostMapping("v1/update")
     @ApiOperation(value = "修改")
-    @ApiResponses({
-            @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
-            @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
-            @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    public Result update(@ApiParam(hidden = true)@AuthorizationToken String token,
-                         @Validated(UpdateView.class) RegionProvinces regionProvinces, BindingResult errors) {
+    public Result update(@ApiParam(hidden = true)@Login Long userId,
+                         RegionProvinces regionProvinces, BindingResult errors) {
         if (errors.hasErrors()){
 			StringBuilder builder = new StringBuilder();
 			errors.getAllErrors().forEach(i -> builder.append(i.getDefaultMessage()).append(","));
 			return fail(builder.toString());
 		}
-        return regionProvincesService.update(token,regionProvinces);
+        return regionProvincesService.update(userId,regionProvinces);
     }
 
     @PostMapping("v1/getById")
     @ApiOperation(value = "根据主键删除")
-    @ApiResponses({
-            @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
-            @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
-            @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    public Result deleteGetById(@ApiParam(hidden = true)@AuthorizationToken String token,
+    public Result deleteGetById(@ApiParam(hidden = true)@Login Long userId,
                                 @ApiParam(value = "主键",required = true)@RequestParam(value = "id") Long id) {
-        return regionProvincesService.deleteGetById(token,id);
+        return regionProvincesService.deleteGetById(userId,id);
     }
 
     @PostMapping("v1/findById")
     @ApiOperation(value = "根据主键查询")
-    @ApiResponses({
-            @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
-            @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=RegionProvinces.class),
-            @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    public Result findById(@ApiParam(hidden = true)@AuthorizationToken String token,
+    public Result findById(@ApiParam(hidden = true)@Login Long userId,
                            @ApiParam(value = "主键",required = true)@RequestParam(value = "id") Long id) {
-        return regionProvincesService.findById(token,id);
+        return regionProvincesService.findById(userId,id);
     }
 
     @PostMapping("v1/pageQuery")
     @ApiOperation(value = "条件分页查询")
-    @ApiResponses({@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=RegionProvinces.class),
-                   @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG)})
-    public Result pageQuery(@ApiParam(hidden = true)@AuthorizationToken String token,
+    public Result pageQuery(@ApiParam(hidden = true)@Login Long userId,
                             @ApiParam(value = "第几页", required = true,example = "1") @RequestParam(value = "page") Integer page,
                             @ApiParam(value = "多少条",required = true,example = "10")@RequestParam(value = "size") Integer size,
                             @ApiParam(value = "排序字段",example = "create_time desc")@RequestParam(value = "sort",required = false) String sort,
                             RegionProvinces regionProvinces) {
-        return regionProvincesService.pageQuery(token,page, size, sort, regionProvinces);
+        return regionProvincesService.pageQuery(userId,page, size, sort, regionProvinces);
     }
 }

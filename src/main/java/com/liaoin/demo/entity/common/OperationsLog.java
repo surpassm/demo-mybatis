@@ -26,7 +26,6 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "t_operations_log")
 @ApiModel(value = "日志管理")
 @NameStyle(Style.camelhump)
 @org.hibernate.annotations.Table(appliesTo = "t_operations_log", comment = "日志管理")
@@ -35,29 +34,44 @@ public class OperationsLog implements Serializable {
 	@KeySql(useGeneratedKeys = true)
 	@Column(columnDefinition="bigint COMMENT '系统标识'")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty(value = "系统标识", position = 1, example = "1")
     private Long id;
 
-    @ApiModelProperty(value = "模块", position = 2, example = "用户管理")
+    /**
+     * 模块
+     */
     private String module;
-    @ApiModelProperty(value = "功能", position = 3, example = "新增")
+    /**
+     * 功能
+     */
     private String function;
-    @ApiModelProperty(value = "接口", position = 4, example = "/user/insert")
+    /**
+     * 接口
+     */
     private String uri;
+    /**
+     * 数据
+     */
     @Lob
-    @ApiModelProperty(value = "数据", position = 5)
     private String data;
-    @ApiModelProperty(value = "客户端IP", position = 6)
+    /**
+     * 客户端IP
+     */
     private String clientIp;
+    /**
+     * 操作开始时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @ApiModelProperty(value = "操作开始时间", position = 7)
     private LocalDateTime operateStartTime;
+    /**
+     * 操作结束时间
+     */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @ApiModelProperty(value = "操作结束时间", position = 8)
     private LocalDateTime operateEndTime;
 
+    /**
+     * 用户主键
+     */
     @ManyToOne(targetEntity = UserInfo.class)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ApiModelProperty(value = "用户主键")
     private Long userId;
 }

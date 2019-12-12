@@ -1,23 +1,14 @@
 package com.liaoin.demo.controller.user;
 
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.config.annotation.AuthorizationToken;
-import com.github.surpassm.security.handler.SurpassmAuthenticationSuccessHandler;
-import com.liaoin.demo.security.BeanConfig;
+import com.liaoin.demo.annotation.Login;
+import com.liaoin.demo.common.Result;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-
-import java.io.IOException;
-
-import static com.github.surpassm.common.jackson.Result.fail;
-import static com.github.surpassm.common.jackson.Result.ok;
+import static com.liaoin.demo.common.Result.ok;
 
 
 /**
@@ -33,28 +24,18 @@ import static com.github.surpassm.common.jackson.Result.ok;
 @Api(tags  =  "TokenAPI")
 public class LoginController {
 
-	@Resource
-	private BeanConfig beanConfig;
-	@Resource
-	private SurpassmAuthenticationSuccessHandler surpassmAuthenticationSuccessHandler;
 
 	@PostMapping("v1/hello")
 	@ApiOperation(value = "使用token获取用户基本信息")
-	public Result save(@ApiParam(hidden = true)@AuthorizationToken String accessToken) {
-		return ok(beanConfig.getAccessToken(accessToken));
+	public Result save(@ApiParam(hidden = true)@Login Long userId) {
+		return ok(userId);
 	}
 
 	@PostMapping("v1/auth/refreshToken")
 	@ApiOperation(value = "刷新token时效")
 	public Result refreshToken(@ApiParam(value = "刷新token")@RequestParam String refreshToken,
 							   @ApiParam(value = "head 应用账号密码Basic64位加密")@RequestParam String head) {
-		try {
-			OAuth2AccessToken refresh = surpassmAuthenticationSuccessHandler.refresh(refreshToken, head);
-			return ok(refresh);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return fail();
-		}
+			return ok();
 
 	}
 }

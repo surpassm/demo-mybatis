@@ -2,13 +2,11 @@ package com.liaoin.demo.service.user.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.common.jackson.ResultCode;
-import com.github.surpassm.common.service.UpdateView;
+import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.entity.user.Power;
 import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.mapper.user.PowerMapper;
-import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.user.PowerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,17 +15,12 @@ import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
-import static com.github.surpassm.common.jackson.Result.fail;
-import static com.github.surpassm.common.jackson.Result.ok;
+import static com.liaoin.demo.common.Result.fail;
+import static com.liaoin.demo.common.Result.ok;
 
 
 /**
@@ -42,32 +35,28 @@ import static com.github.surpassm.common.jackson.Result.ok;
 public class PowerServiceImpl implements PowerService {
     @Resource
     private PowerMapper powerMapper;
-    @Resource
-    private BeanConfig beanConfig;
 
     @Override
-    public Result insert(String token, Power power) {
+    public Result insert(Long userId, Power power) {
         if (power == null) {
             return fail(ResultCode.PARAM_IS_BLANK.getMsg());
         }
-        UserInfo loginUser = beanConfig.getAccessToken(token);
         //效验当前权限名称是否重复
         int i = powerMapper.selectCount(Power.builder().name(power.getName()).build());
         if (i > 0) {
             return fail(ResultCode.DATA_ALREADY_EXISTED.getMsg());
         }
         power.setCreateTime(LocalDateTime.now());
-        power.setCreateUserId(loginUser.getId());
+        power.setCreateUserId(userId);
         powerMapper.insert(power);
         return ok();
     }
 
     @Override
-    public Result update(String token, Power power) {
+    public Result update(Long userId, Power power) {
         if (power == null) {
             return fail(ResultCode.PARAM_IS_BLANK.getMsg());
         }
-        UserInfo loginUser = beanConfig.getAccessToken(token);
         //效验当前权限名称是否重复
         Example.Builder builder = new Example.Builder(Power.class);
         builder.where(WeekendSqls.<Power>custom().andEqualTo(Power::getName, power.getName()));
@@ -77,13 +66,13 @@ public class PowerServiceImpl implements PowerService {
             return fail(ResultCode.DATA_ALREADY_EXISTED.getMsg());
         }
         power.setUpdateTime(LocalDateTime.now());
-        power.setCreateUserId(loginUser.getId());
+        power.setCreateUserId(userId);
         powerMapper.updateByPrimaryKeySelective(power);
         return ok();
     }
 
     @Override
-    public Result deleteGetById(String token, Long id) {
+    public Result deleteGetById(Long userId, Long id) {
         if (id == null) {
             return fail(ResultCode.PARAM_IS_BLANK.getMsg());
         }
@@ -97,7 +86,7 @@ public class PowerServiceImpl implements PowerService {
 
 
     @Override
-    public Result findById(String token, Long id) {
+    public Result findById(Long userId, Long id) {
         if (id == null) {
             return fail(ResultCode.PARAM_IS_BLANK.getMsg());
         }
@@ -110,7 +99,7 @@ public class PowerServiceImpl implements PowerService {
     }
 
     @Override
-    public Result pageQuery(String token, Integer page, Integer size, String sort, Power power) {
+    public Result pageQuery(Long userId, Integer page, Integer size, String sort, Power power) {
         page = null == page ? 1 : page;
         size = null == size ? 10 : size;
         if (size > 101) {
@@ -141,10 +130,7 @@ public class PowerServiceImpl implements PowerService {
     }
 
     @Override
-    public Result getPowerMenu(String token, Long id) {
-        beanConfig.getAccessToken(token);
-
-
+    public Result getPowerMenu(Long userId, Long id) {
         return null;
     }
 }

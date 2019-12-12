@@ -3,16 +3,12 @@ package com.liaoin.demo.service.common.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.common.jackson.ResultCode;
-import com.github.surpassm.common.pojo.SurpassmFile;
-import com.github.surpassm.common.tool.util.FileUtils;
 import com.liaoin.demo.entity.common.FileManage;
-import com.liaoin.demo.entity.user.UserInfo;
+import com.liaoin.demo.entity.common.SurpassmFile;
 import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.mapper.common.FileManageMapper;
-import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.common.FileManageService;
+import com.liaoin.demo.util.FileUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
@@ -34,8 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.surpassm.common.jackson.Result.fail;
-import static com.github.surpassm.common.jackson.Result.ok;
 
 
 /**
@@ -50,8 +44,6 @@ import static com.github.surpassm.common.jackson.Result.ok;
 public class FileManageServiceImpl implements FileManageService {
     @Resource
     private FileManageMapper fileManageMapper;
-    @Resource
-    private BeanConfig beanConfig;
 
     private final Path rootLocation = Paths.get("upload");
 

@@ -2,15 +2,13 @@ package com.liaoin.demo.service.user.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.common.jackson.ResultCode;
+import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.entity.user.*;
 import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.mapper.user.*;
-import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.user.GroupService;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +19,8 @@ import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.github.surpassm.common.jackson.Result.fail;
-import static com.github.surpassm.common.jackson.Result.ok;
+import static com.liaoin.demo.common.Result.fail;
+import static com.liaoin.demo.common.Result.ok;
 
 
 /**
@@ -38,8 +36,6 @@ public class GroupServiceImpl implements GroupService {
 	@Resource
 	private GroupMapper groupMapper;
 	@Resource
-	private BeanConfig beanConfig;
-	@Resource
 	private GroupRoleMapper groupRoleMapper;
 	@Resource
 	private UserGroupMapper userGroupMapper;
@@ -49,11 +45,10 @@ public class GroupServiceImpl implements GroupService {
 	private RoleMapper roleMapper;
 
 	@Override
-	public Result insert(String accessToken, Group group) {
+	public Result insert(Long userId, Group group) {
 		if (group == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
-		UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
 		//效验名称是否重复
 		Group build = Group.builder().name(group.getName()).build();
 		build.setIsDelete(0);
@@ -71,14 +66,13 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public Result update(String accessToken, Group group) {
+	public Result update(Long userId, Group group) {
 		if (group == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
 		if (group.getIsDelete() == 1){
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
-		UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
 
 		Example.Builder builder = new Example.Builder(Group.class);
 		builder.where(WeekendSqls.<Group>custom().andEqualTo(Group::getIsDelete, 0));
@@ -109,7 +103,7 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public Result deleteGetById(String accessToken, Long id) {
+	public Result deleteGetById(Long userId, Long id) {
 		if (id == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
@@ -117,7 +111,6 @@ public class GroupServiceImpl implements GroupService {
 		if (group == null) {
 			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
 		}
-		UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
 		Group groupBuild = Group.builder().parentId(id).build();
 		groupBuild.setIsDelete(0);
 		int groupCount = groupMapper.selectCount(groupBuild);
@@ -128,12 +121,10 @@ public class GroupServiceImpl implements GroupService {
 		GroupRole groupRole = GroupRole.builder().groupId(id).build();
 		groupRole.setIsDelete(0);
 		int groupRoleCount = groupRoleMapper.selectCount(groupRole);
-		CommonImpl.groupRoleDeleteUpdata(loginUserInfo,groupRole,groupRoleCount,groupRoleMapper);
 		//用户组查询
 		UserGroup userGroup = UserGroup.builder().groupId(id).build();
 		userGroup.setIsDelete(0);
 		int userGroupCount = userGroupMapper.selectCount(userGroup);
-		CommonImpl.userGroupDeleteUpdata(loginUserInfo,userGroup,userGroupCount,userGroupMapper);
 		group.setIsDelete(1);
 		groupMapper.updateByPrimaryKeySelective(group);
 		return ok();
@@ -141,7 +132,7 @@ public class GroupServiceImpl implements GroupService {
 
 
 	@Override
-	public Result findById(String accessToken, Long id) {
+	public Result findById(Long userId, Long id) {
 		if (id == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
@@ -154,7 +145,7 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public Result pageQuery(String accessToken, Integer page, Integer size, String sort, Group group) {
+	public Result pageQuery(Long userId, Integer page, Integer size, String sort, Group group) {
 		page = null == page ? 1 : page;
 		size = null == size ? 10 : size;
 		PageHelper.startPage(page, size);
@@ -183,20 +174,20 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public Result getParentId(String accessToken, Long parentId) {
+	public Result getParentId(Long userId, Long parentId) {
 		List<Group> groups = groupMapper.selectChildByParentId(parentId);
 		return ok(groups);
 	}
 
 	@Override
-	public Result findByOnlyAndChildren(String accessToken, Long id) {
+	public Result findByOnlyAndChildren(Long userId, Long id) {
 		List<Group> groups = groupMapper.selectSelfAndChildByParentId(id);
 		return ok(groups);
 	}
 
 
 	@Override
-	public Result setGroupByRole(String accessToken, Long id, String roleIds) {
+	public Result setGroupByRole(Long userId, Long id, String roleIds) {
 		String[] splits = StringUtils.split(roleIds,",");
 		if (splits == null || splits.length == 0){
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
@@ -225,10 +216,10 @@ public class GroupServiceImpl implements GroupService {
 
 
 	@Override
-	public Result findGroupToRole(String accessToken, Long groupId, Integer page, Integer size, String sort) {
+	public Result findGroupToRole(Long userId, Long groupId, Integer page, Integer size, String sort) {
 		List<Long> select = groupRoleMapper.select(GroupRole.builder().groupId(groupId).isDelete(0).build()).stream().map(GroupRole::getRoleId).collect(Collectors.toList());
 		if (select.size() == 0){
-			return Result.ok(new Page<>());
+			return ok(new Page<>());
 		}
 		page = null == page ? 1 : page;
 		size = null == size ? 10 : size;

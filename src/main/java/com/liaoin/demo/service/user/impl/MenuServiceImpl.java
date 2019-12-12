@@ -2,11 +2,10 @@ package com.liaoin.demo.service.user.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.common.jackson.ResultCode;
+import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.entity.user.*;
 import com.liaoin.demo.mapper.user.MenuMapper;
-import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.user.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,8 @@ import tk.mybatis.mapper.weekend.WeekendSqls;
 import javax.annotation.Resource;
 import java.util.*;
 
-import static com.github.surpassm.common.jackson.Result.fail;
-import static com.github.surpassm.common.jackson.Result.ok;
+import static com.liaoin.demo.common.Result.fail;
+import static com.liaoin.demo.common.Result.ok;
 
 
 /**
@@ -33,17 +32,13 @@ import static com.github.surpassm.common.jackson.Result.ok;
 public class MenuServiceImpl implements MenuService {
 	@Resource
 	private MenuMapper menuMapper;
-	@Resource
-	private BeanConfig beanConfig;
 
 
 	@Override
-	public Result insert(String accessToken, Menu menu) {
+	public Result insert(Long userId, Menu menu) {
 		if (menu == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
-		UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
-
 		//效验名称是否重复
 		Menu build = Menu.builder().name(menu.getName()).build();
 		build.setIsDelete(0);
@@ -62,14 +57,13 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public Result update(String accessToken, Menu menu) {
+	public Result update(Long userId, Menu menu) {
 		if (menu == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
 		if (menu.getIsDelete() == 1){
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
-		UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
 
 		Example.Builder builder = new Example.Builder(Menu.class);
 		builder.where(WeekendSqls.<Menu>custom().andEqualTo(Menu::getIsDelete, 0));
@@ -100,11 +94,10 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public Result deleteGetById(String accessToken, Long id) {
+	public Result deleteGetById(Long userId, Long id) {
 		if (id == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
-		UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
 		Menu menu = menuMapper.selectByPrimaryKey(id);
 		if (menu == null) {
 			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
@@ -123,7 +116,7 @@ public class MenuServiceImpl implements MenuService {
 
 
 	@Override
-	public Result findById(String accessToken, Long id) {
+	public Result findById(Long userId, Long id) {
 		if (id == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
@@ -136,7 +129,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public Result pageQuery(String accessToken, Integer page, Integer size, String sort, Menu menu) {
+	public Result pageQuery(Long userId, Integer page, Integer size, String sort, Menu menu) {
 		page = null == page ? 1 : page;
 		size = null == size ? 10 : size;
 		PageHelper.startPage(page, size);
@@ -180,13 +173,13 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public Result getParentId(String accessToken, Long parentId) {
+	public Result getParentId(Long userId, Long parentId) {
 		List<Menu> menus = menuMapper.selectChildByParentId(parentId);
 		return ok(menus);
 	}
 
 	@Override
-	public Result findByOnlyAndChildren(String accessToken, Long id) {
+	public Result findByOnlyAndChildren(Long userId, Long id) {
 		List<Menu> menus = menuMapper.selectSelfAndChildByParentId(id);
 		return ok(menus);
 	}

@@ -1,9 +1,8 @@
 package com.liaoin.demo.service.common;
 
 import com.github.pagehelper.PageInfo;
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.common.pojo.SurpassmFile;
 import com.liaoin.demo.entity.common.FileManage;
+import com.liaoin.demo.entity.common.SurpassmFile;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;

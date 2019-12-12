@@ -2,12 +2,11 @@ package com.liaoin.demo.service.user.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.common.jackson.ResultCode;
+import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.entity.user.Role;
 import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.mapper.user.RoleMapper;
-import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.user.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -19,8 +18,8 @@ import tk.mybatis.mapper.weekend.WeekendSqls;
 import javax.annotation.Resource;
 import java.util.*;
 
-import static com.github.surpassm.common.jackson.Result.fail;
-import static com.github.surpassm.common.jackson.Result.ok;
+import static com.liaoin.demo.common.Result.fail;
+import static com.liaoin.demo.common.Result.ok;
 
 
 /**
@@ -35,15 +34,12 @@ import static com.github.surpassm.common.jackson.Result.ok;
 public class RoleServiceImpl implements RoleService {
 	@Resource
 	private RoleMapper roleMapper;
-	@Resource
-	private BeanConfig beanConfig;
 
 	@Override
-	public Result insert(String accessToken, Role role) {
+	public Result insert(Long userId, Role role) {
 		if (role == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
-		UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
 
 		Role build = Role.builder().name(role.getName()).build();
 		build.setIsDelete(0);
@@ -57,14 +53,13 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public Result update(String accessToken, Role role) {
+	public Result update(Long userId, Role role) {
 		if (role == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
 		if (role.getIsDelete() == 1) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
-		UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
 
 		Example.Builder builder = new Example.Builder(Role.class);
 		builder.where(WeekendSqls.<Role>custom().andEqualTo(Role::getIsDelete, 0));
@@ -81,7 +76,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public Result deleteGetById(String accessToken, Long id) {
+	public Result deleteGetById(Long userId, Long id) {
 		if (id == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
@@ -89,7 +84,6 @@ public class RoleServiceImpl implements RoleService {
 		if (role == null) {
 			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
 		}
-		UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
 
 
 		role.setIsDelete(1);
@@ -99,7 +93,7 @@ public class RoleServiceImpl implements RoleService {
 
 
 	@Override
-	public Result findById(String accessToken, Long id) {
+	public Result findById(Long userId, Long id) {
 		if (id == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
@@ -112,7 +106,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public Result pageQuery(String accessToken, Integer page, Integer size, String sort, Role role) {
+	public Result pageQuery(Long userId, Integer page, Integer size, String sort, Role role) {
 		page = null == page ? 1 : page;
 		size = null == size ? 10 : size;
 		PageHelper.startPage(page, size);
@@ -140,7 +134,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public Result findMenus(String accessToken, Long id) {
+	public Result findMenus(Long userId, Long id) {
 		if (id == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
@@ -152,8 +146,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public Result setRoleByMenu(String accessToken, Long id, String menuId) {
-		UserInfo loginUser = beanConfig.getAccessToken(accessToken);
+	public Result setRoleByMenu(Long userId, Long id, String menuId) {
 		String[] splits = StringUtils.split(menuId,",");
 		if (splits == null || splits.length == 0){
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());

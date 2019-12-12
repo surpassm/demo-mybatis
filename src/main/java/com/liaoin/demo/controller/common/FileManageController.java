@@ -1,13 +1,11 @@
 package com.liaoin.demo.controller.common;
 
 import com.github.pagehelper.PageInfo;
-import com.github.surpassm.common.constant.Constant;
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.common.pojo.SurpassmFile;
-import com.github.surpassm.config.annotation.AuthorizationToken;
+import com.liaoin.demo.annotation.Login;
+import com.liaoin.demo.common.Result;
 import com.liaoin.demo.entity.common.FileManage;
+import com.liaoin.demo.entity.common.SurpassmFile;
 import com.liaoin.demo.exception.CustomException;
-import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.common.FileManageService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +24,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.github.surpassm.common.jackson.Result.fail;
-import static com.github.surpassm.common.jackson.Result.ok;
+import static com.liaoin.demo.common.Result.fail;
+import static com.liaoin.demo.common.Result.ok;
+
 
 /**
   * @author mc
@@ -44,19 +43,12 @@ public class FileManageController {
 
     @Resource
     private FileManageService fileManageService;
-	@Resource
-	private BeanConfig beanConfig;
 
 
     @PostMapping("v1/getById")
     @ApiOperation(value = "根据主键删除")
-    @ApiResponses({
-            @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG),
-            @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
-            @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    public Result deleteGetById(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
-                                @ApiParam(value = "主键",required = true)@RequestParam(value = "id") @NotNull Integer id) {
-		beanConfig.getAccessToken(accessToken);
+    public Result deleteGetById(@ApiParam(hidden = true)@Login Long userId,
+								@ApiParam(value = "主键",required = true)@RequestParam(value = "id") @NotNull Integer id) {
 		FileManage byId = fileManageService.findById(id);
 		if (byId == null){
 			return fail();
@@ -67,27 +59,19 @@ public class FileManageController {
 
     @PostMapping("v1/findById")
     @ApiOperation(value = "根据主键查询")
-    @ApiResponses({
-            @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG),
-            @ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=FileManage.class),
-            @ApiResponse(code=Constant.FAIL_CODE,message=Constant.FAIL_MSG,response=Result.class)})
-    public Result findById(@ApiParam(hidden = true)  @AuthorizationToken String accessToken,
+    public Result findById(@ApiParam(hidden = true)@Login Long userId,
                            @ApiParam(value = "主键",required = true)@RequestParam(value = "id") Integer id) {
-		beanConfig.getAccessToken(accessToken);
 		FileManage byId = fileManageService.findById(id);
 		return ok(byId);
     }
 
     @PostMapping("v1/pageQuery")
     @ApiOperation(value = "条件分页查询")
-    @ApiResponses({@ApiResponse(code=Constant.SUCCESS_CODE,message=Constant.SUCCESS_MSG,response=FileManage.class),
-                   @ApiResponse(code=Constant.FAIL_SESSION_CODE,message=Constant.FAIL_SESSION_MSG)})
-    public Result pageQuery(@ApiParam(hidden = true)@AuthorizationToken String accessToken,
+    public Result pageQuery(@ApiParam(hidden = true)@Login Long userId,
                             @ApiParam(value = "第几页", required = true) @RequestParam(value = "page") Integer page,
                             @ApiParam(value = "多少条",required = true)@RequestParam(value = "size") Integer size,
                             @ApiParam(value = "排序字段")@RequestParam(value = "sort",required = false) String sort,
                             FileManage fileManage) {
-		beanConfig.getAccessToken(accessToken);
 		PageInfo<FileManage> fileManagePageInfo = fileManageService.pageQuery(page, size, sort, fileManage);
 		return ok(fileManagePageInfo);
     }
@@ -96,15 +80,13 @@ public class FileManageController {
 
 	@PostMapping("v1/insert/upload")
 	@ApiOperation("单文件上传（存入数据库）")
-	public Result insert(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam MultipartFile file) {
-		beanConfig.getAccessToken(accessToken);
+	public Result insert(@ApiParam(hidden = true)@Login Long userId, HttpServletRequest request, @RequestParam MultipartFile file) {
 		SurpassmFile surpassmFile = fileManageService.insert(request, file);
 		return ok(surpassmFile);
 	}
 	@PostMapping("v1/insert/batchUpload")
 	@ApiOperation(value = "批量文件上传（存入数据库,无法使用，存在消耗冲突）",hidden = true)
-	public Result insertBatch(@ApiParam(hidden = true) @AuthorizationToken String accessToken, HttpServletRequest request, @RequestParam(required = false)@NotNull MultipartFile[] files) {
-		beanConfig.getAccessToken(accessToken);
+	public Result insertBatch(@ApiParam(hidden = true) @Login Long userId, HttpServletRequest request, @RequestParam(required = false)@NotNull MultipartFile[] files) {
 		try {
 			fileManageService.insertBatch(request,files);
 		} catch (Exception e) {
@@ -115,7 +97,7 @@ public class FileManageController {
 
 	@PostMapping("v1/upload")
 	@ApiOperation(value = "单文件上传（不存入数据库）")
-	public Result store(@ApiParam(hidden = true) @AuthorizationToken String accessToken,
+	public Result store(@ApiParam(hidden = true) @Login Long userId,
 						@RequestParam("file") MultipartFile file) {
 		SurpassmFile store = fileManageService.store(file);
 		return ok(store);

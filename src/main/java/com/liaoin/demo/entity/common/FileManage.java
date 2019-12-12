@@ -22,7 +22,6 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "文件管理")
 @NameStyle(Style.camelhump)
 @Table(name = "t_file_manage")
 @org.hibernate.annotations.Table(appliesTo = "t_file_manage", comment = "文件管理")
@@ -30,7 +29,6 @@ public class FileManage implements Serializable {
 
 	@Id
 	@KeySql(useGeneratedKeys = true)
-	@ApiModelProperty(value = "系统标识")
 	@Column(columnDefinition="int(11) COMMENT '系统标识'")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -38,25 +36,21 @@ public class FileManage implements Serializable {
 	/**
 	 * 文件名称
 	 */
-	@ApiModelProperty(value = "文件旧名称",hidden = true)
 	@Column(columnDefinition="varchar(255) COMMENT '文件名称'")
 	private String fileOldName;
 	/**
 	 * 文件名称
 	 */
-	@ApiModelProperty(value = "文件新名称",hidden = true)
 	@Column(columnDefinition="varchar(255) COMMENT '文件名称'")
 	private String fileNewName;
 	/**
 	 * 文件后缀
 	 */
-	@ApiModelProperty(value = "文件后缀",hidden = true)
 	@Column(columnDefinition="varchar(255) COMMENT '文件后缀'")
 	private String fileSuffix;
 	/**
 	 * 文件路径
 	 */
-	@ApiModelProperty(value = "文件路径",hidden = true)
 	@Column(columnDefinition="varchar(255) COMMENT '文件路径'")
 	private String url;
 }

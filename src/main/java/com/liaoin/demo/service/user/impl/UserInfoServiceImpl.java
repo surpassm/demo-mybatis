@@ -2,27 +2,23 @@ package com.liaoin.demo.service.user.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.surpassm.common.jackson.Result;
-import com.github.surpassm.common.jackson.ResultCode;
-import com.github.surpassm.common.tool.util.ValidateUtil;
+import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.entity.user.*;
 import com.liaoin.demo.mapper.user.*;
-import com.liaoin.demo.security.BeanConfig;
 import com.liaoin.demo.service.user.UserInfoService;
+import com.liaoin.demo.util.ValidateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 
-import static com.github.surpassm.common.jackson.Result.fail;
-import static com.github.surpassm.common.jackson.Result.ok;
+import static com.liaoin.demo.common.Result.fail;
+import static com.liaoin.demo.common.Result.ok;
 
 
 /**
@@ -38,19 +34,15 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Resource
 	private UserInfoMapper userInfoMapper;
 	@Resource
-	private BeanConfig beanConfig;
-	@Resource
 	private UserGroupMapper userGroupMapper;
 	@Resource
 	private UserRoleMapper userRoleMapper;
-	@Resource
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Resource
 	private DepartmentMapper departmentMapper;
 
 
 	@Override
-	public Result insert(String accessToken, UserInfo userInfo) {
+	public Result insert(Long userId, UserInfo userInfo) {
 		if (userInfo == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
@@ -77,8 +69,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 		if (count != 0){
 			return fail("账号已存在");
 		}
-		userInfo.setPassword(bCryptPasswordEncoder.encode(userInfo.getPassword().trim()));
-		UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
 		userInfo.setUsername(userInfo.getUsername().trim());
 		userInfo.setIsDelete(0);
 		userInfoMapper.insert(userInfo);
@@ -86,12 +76,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
-	public Result update(String accessToken, UserInfo userInfo) {
+	public Result update(Long userId, UserInfo userInfo) {
 		if (userInfo == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
-		UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
-
 		if (userInfo.getMobile() != null){
 			if (!ValidateUtil.isMobilePhone(userInfo.getMobile())){
 				return fail(ResultCode.PARAM_IS_INVALID.getMsg());
@@ -120,10 +108,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 			if (!ValidateUtil.isPassword(userInfo.getPassword())) {
 				return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 			}
-			if (!bCryptPasswordEncoder.matches(password,user.getPassword())){
-				String passwordNew = bCryptPasswordEncoder.encode(password);
-				userInfo.setPassword(passwordNew);
-			}
 		}
 
 		userInfoMapper.updateByPrimaryKeySelective(userInfo);
@@ -131,7 +115,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
-	public Result deleteGetById(String accessToken, Long id) {
+	public Result deleteGetById(Long userId, Long id) {
 		if (id == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
@@ -139,7 +123,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 		if (userInfo == null) {
 			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
 		}
-		UserInfo loginUserInfo = beanConfig.getAccessToken(accessToken);
 		userInfo.setIsDelete(1);
 		userInfoMapper.updateByPrimaryKeySelective(userInfo);
 		return ok();
@@ -147,7 +130,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 
 	@Override
-	public Result findById(String accessToken, Long id) {
+	public Result findById(Long userId, Long id) {
 		if (id == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
@@ -160,7 +143,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
-	public Result pageQuery(String accessToken, Integer page, Integer size, String sort, UserInfo userInfo) {
+	public Result pageQuery(Long userId, Integer page, Integer size, String sort, UserInfo userInfo) {
 		page = null == page ? 1 : page;
 		size = null == size ? 10 : size;
 		PageHelper.startPage(page, size);
@@ -199,13 +182,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 	/**
 	 * 根据主键查询用户及角色、权限列表
 	 *
-	 * @param accessToken token
 	 * @param id 系统标识
 	 * @return 返回数据
 	 */
 	@Override
-	public Result findRolesAndMenus(String accessToken, Long id) {
-		beanConfig.getAccessToken(accessToken);
+	public Result findRolesAndMenus(Long userId, Long id) {
 		UserInfo userInfo = userInfoMapper.selectByUserInfoAndRolesAndMenus(id);
 		if (userInfo == null){
 			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
@@ -215,14 +196,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	/**
 	 * 设置用户、组
-	 * @param accessToken token
 	 * @param id 用户系统标识
 	 * @param groupIds 组系统标识
 	 * @return 返回数据
 	 */
 	@Override
-	public Result setUserByGroup(String accessToken, Long id, String groupIds) {
-		beanConfig.getAccessToken(accessToken);
+	public Result setUserByGroup(Long userId, Long id, String groupIds) {
 		String[] splits = StringUtils.split(groupIds,",");
 		if (splits == null || splits.length == 0){
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
@@ -247,14 +226,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	/**
 	 * 设置用户权限
-	 * @param accessToken token
 	 * @param id 用户系统标识
 	 * @param menuIds 组系统标识
 	 * @return 返回数据
 	 */
 	@Override
-	public Result setUserByMenu(String accessToken, Long id, String menuIds) {
-		beanConfig.getAccessToken(accessToken);
+	public Result setUserByMenu(Long userId, Long id, String menuIds) {
 		String[] splits = StringUtils.split(menuIds,",");
 		if (splits == null || splits.length == 0){
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
@@ -268,14 +245,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	/**
 	 * 设置用户、角色
-	 * @param accessToken token
 	 * @param id 用户系统标识
 	 * @param roleIds 组系统标识
 	 * @return 返回数据
 	 */
 	@Override
-	public Result setUserByRoles(String accessToken, Long id, String roleIds) {
-		UserInfo loginUser = beanConfig.getAccessToken(accessToken);
+	public Result setUserByRoles(Long userId, Long id, String roleIds) {
 		String[] splits = StringUtils.split(roleIds,",");
 		if (splits == null || splits.length == 0){
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());

@@ -52,4 +52,30 @@ public class InjectionBeanConfig {
 		template.setConnectionFactory(redisConnectionFactory);
 		return template;
 	}
+
+	/**
+	 * 不需要验证的URL
+	 * @return
+	 */
+	@Bean
+	public String[] noVerify(){
+		String[] strings = {
+				"/swagger-ui**",
+				"/images/**",
+				"/webjars/**",
+				"/v2/api-docs**",
+				"/swagger-resources/**",
+				"/error**",
+				"/websocket/socketServer.ws**",
+				"/sockjs/socketServer.ws**",
+				"/login/v1/auth/refreshToken**",
+				"/mobile/v1/auth/getPhone**",
+				"/fileManage/v1/auth/getFileNameUrl**",
+				"/fileManage/v1/auth/listUploadedFiles**",
+				"/fileManage/v1/auth/getPath**",
+				"/upload/**",
+				"/csrf**"
+		};
+		return strings;
+	}
 }
