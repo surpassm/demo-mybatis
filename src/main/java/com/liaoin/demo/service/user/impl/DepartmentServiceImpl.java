@@ -47,9 +47,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Result insertParent(Long userId, DepartmentDto dto) {
         //查询名称是否存在
-        int i = departmentMapper.selectCount(Department.builder().isDelete(0).name(dto.getName()).build());
-        if (i > 0){
-            return fail("名称重复");
+        if (isGetName(dto.getName())){
+            return fail(ResultCode.DATA_ALREADY_EXISTED.getMsg());
         }
         Department department = dto.convertTo();
         department.setIsDelete(0);
@@ -61,8 +60,24 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Result insertChild(Long userId, DepartmentDto dto) {
+        //查询名称是否存在
+        if (isGetName(dto.getName())){
+            return fail(ResultCode.DATA_ALREADY_EXISTED.getMsg());
+        }
         //查询父级是否存在
+        if (dto.getParentId() == null){
+            return fail(ResultCode.PARAM_IS_BLANK.getMsg());
+        }
+        Department department = departmentMapper.selectByPrimaryKey(dto.getParentId());
+        if (department == null){
+            return fail(ResultCode.DATA_ALREADY_EXISTED.getMsg());
+        }
+
         return null;
+    }
+    private Boolean isGetName(String name){
+        int i = departmentMapper.selectCount(Department.builder().isDelete(0).name(name).build());
+        return i > 0;
     }
 
     @Override
