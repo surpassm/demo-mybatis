@@ -27,18 +27,18 @@ public class InterfaceAuthImpl implements InterfaceAuth {
         String token = (String) request.getAttribute(JwtConstants.AUTHORIZATION_HEADER_KEY);
         if (token != null) {
             String userId = JwtUtils.getSubFromToken(token);
-        }
 //        boolean flag = false;
-//			String requestURI = request.getRequestURI();
-//			if (!requestURI.equals("/favicon.ico")){
-//				log.info("请求验证的URL"+requestURI);
-//				for (UserMenu menu : menuList){
-//					if (menu.getMenuUrl() != null && antPathMatcher.match(menu.getMenuUrl(),requestURI)){
-//						flag = true;
-//						break;
-//					}
-//				}
-//			}
-        return false;
+//        String requestURI = request.getRequestURI();
+//        if (!requestURI.equals("/favicon.ico")) {
+//            log.info("请求验证的URL" + requestURI);
+//            for (UserMenu menu : menuList) {
+//                if (menu.getMenuUrl() != null && antPathMatcher.match(menu.getMenuUrl(), requestURI)) {
+//                    flag = true;
+//                    break;
+//                }
+//            }
+//        }
+        }
+        return true;
     }
 }
