@@ -35,6 +35,7 @@ public class DepartmentController {
     @Resource
     private DepartmentService departmentService;
 
+    @Login
     @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
     public Result insert(@ApiParam(hidden = true) @Login(required = true) Long userId,

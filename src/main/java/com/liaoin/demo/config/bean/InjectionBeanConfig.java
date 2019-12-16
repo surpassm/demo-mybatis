@@ -74,7 +74,8 @@ public class InjectionBeanConfig {
 				"/fileManage/v1/auth/listUploadedFiles**",
 				"/fileManage/v1/auth/getPath**",
 				"/upload/**",
-				"/csrf**"
+				"/csrf**",
+				"/login/**"
 		};
 		return strings;
 	}
