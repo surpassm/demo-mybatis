@@ -3,14 +3,13 @@ package com.liaoin.demo.config.security;
 import com.liaoin.demo.annotation.Login;
 import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.exception.CustomException;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -43,10 +42,14 @@ public class AuthorizationAop {
         Method method = ms.getMethod();
         Login annotation = method.getAnnotation(Login.class);
         if (annotation.required()){
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            if (!interfaceAuth.hasPermission(request)){
-                throw new CustomException(ResultCode.PERMISSION_NO_ACCESS.getCode(), ResultCode.PERMISSION_NO_ACCESS.getMsg());
+            ServletRequestAttributes attributes = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
+            if (attributes != null) {
+                HttpServletRequest request = attributes.getRequest();
+                if (!interfaceAuth.hasPermission(request)) {
+                    throw new CustomException(ResultCode.PERMISSION_NO_ACCESS.getCode(), ResultCode.PERMISSION_NO_ACCESS.getMsg());
+                }
             }
+            throw new RuntimeException("接口设置错误");
         }
         return joinPoint.proceed();
     }
