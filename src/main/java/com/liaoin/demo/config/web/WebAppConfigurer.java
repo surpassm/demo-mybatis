@@ -1,15 +1,26 @@
-package com.liaoin.demo.config.common;
+package com.liaoin.demo.config.web;
 
+import com.liaoin.demo.annotation.Login;
 import com.liaoin.demo.config.security.TokenInterceptor;
 import com.liaoin.demo.config.security.TokenMethodArgumentResolver;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Min;
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author mc
@@ -17,6 +28,7 @@ import java.util.List;
  * Version 1.0
  * Description
  */
+
 @Configuration
 public class WebAppConfigurer implements WebMvcConfigurer {
     @Resource
@@ -24,7 +36,8 @@ public class WebAppConfigurer implements WebMvcConfigurer {
     @Resource
 	private TokenInterceptor tokenInterceptor;
 	@Resource
-	private  String[] noVerify;
+	private List<String> noVerify;
+
 
 
     @Override
@@ -35,9 +48,8 @@ public class WebAppConfigurer implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		InterceptorRegistration interceptorRegistration = registry.addInterceptor(tokenInterceptor);
-		if (noVerify != null && noVerify.length != 0){
-			interceptorRegistration.excludePathPatterns(Arrays.asList(noVerify));
-		}
+
+		interceptorRegistration.excludePathPatterns(noVerify);
 	}
 
 	@Override

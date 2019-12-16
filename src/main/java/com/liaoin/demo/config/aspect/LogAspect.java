@@ -23,6 +23,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Administrator
@@ -36,7 +37,7 @@ public class LogAspect {
 	@Resource
 	private OperationsLogMapper operationsLogMapper;
 	@Resource
-	private  String[] noVerify;
+	private List<String> noVerify;
 
 
 	@Before("execution(* com.liaoin.*.controller..*.insert*(..)) || " +
