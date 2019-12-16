@@ -80,6 +80,7 @@ public class InjectionBeanConfig {
         result.add("/websocket/socketServer.ws**");
         result.add("/sockjs/socketServer.ws**");
         result.add("/login/v1/auth/refreshToken**");
+        result.add("/login/v1/in**");
         result.add("/mobile/v1/auth/getPhone**");
         result.add("/fileManage/v1/auth/getFileNameUrl**");
         result.add("/fileManage/v1/auth/listUploadedFiles**");
