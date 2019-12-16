@@ -1,7 +1,8 @@
-package com.liaoin.demo.aspect;
+package com.liaoin.demo.config.aspect;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.liaoin.demo.annotation.JwtConstants;
 import com.liaoin.demo.common.Result;
 import com.liaoin.demo.entity.common.OperationsLog;
 import com.liaoin.demo.mapper.common.OperationsLogMapper;
@@ -67,7 +68,7 @@ public class LogAspect {
 			operationsLog.setUri(url);
 			operationsLog.setClientIp(request.getRemoteHost());
 			if (!checkAuthorization(url)) {
-				String token = request.getHeader("Authorization");
+				String token = request.getHeader(JwtConstants.AUTHORIZATION_HEADER_KEY);
 				long userId = Long.parseLong(JwtUtils.getSubFromToken(token));
 				// 用户主键
 				operationsLog.setUserId(userId);

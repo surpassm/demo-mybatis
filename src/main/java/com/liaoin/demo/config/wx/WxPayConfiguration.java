@@ -1,4 +1,4 @@
-package com.liaoin.demo.config;
+package com.liaoin.demo.config.wx;
 
 import com.github.binarywang.wxpay.config.WxPayConfig;
 import com.github.binarywang.wxpay.service.WxPayService;

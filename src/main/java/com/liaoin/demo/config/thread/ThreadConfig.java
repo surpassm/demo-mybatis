@@ -1,4 +1,4 @@
-package com.liaoin.demo.config;
+package com.liaoin.demo.config.thread;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;

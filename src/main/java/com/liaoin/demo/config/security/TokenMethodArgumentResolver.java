@@ -1,5 +1,6 @@
-package com.liaoin.demo.config;
+package com.liaoin.demo.config.security;
 
+import com.liaoin.demo.annotation.JwtConstants;
 import com.liaoin.demo.annotation.Login;
 import com.liaoin.demo.util.JwtUtils;
 import org.springframework.core.MethodParameter;
@@ -21,7 +22,6 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 public class TokenMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
 
-
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
         return methodParameter.getParameterType().isAssignableFrom(Long.class) && methodParameter.hasParameterAnnotation(Login.class);
@@ -29,10 +29,11 @@ public class TokenMethodArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
-		String token = (String) nativeWebRequest.getAttribute("Authorization", RequestAttributes.SCOPE_REQUEST);
+        String token = (String) nativeWebRequest.getAttribute(JwtConstants.AUTHORIZATION_HEADER_KEY, RequestAttributes.SCOPE_REQUEST);
         if (token != null) {
             return Long.parseLong(JwtUtils.getSubFromToken(token));
         }
         throw new MissingServletRequestPartException("请携带header:Authorization");
+
     }
 }

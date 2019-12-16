@@ -37,7 +37,7 @@ public class DepartmentController {
 
     @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
-    public Result insert(@ApiParam(hidden = true) @Login Long userId,
+    public Result insert(@ApiParam(hidden = true) @Login(required = true) Long userId,
                                @Valid @RequestBody DepartmentDto dto, BindingResult errors) {
         if (errors.hasErrors()) {
             return fail(errors.getAllErrors());

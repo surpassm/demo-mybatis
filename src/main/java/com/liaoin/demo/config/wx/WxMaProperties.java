@@ -1,4 +1,4 @@
-package com.liaoin.demo.config;
+package com.liaoin.demo.config.wx;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,6 +1,7 @@
-package com.liaoin.demo.config;
+package com.liaoin.demo.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.liaoin.demo.annotation.JwtConstants;
 import com.liaoin.demo.common.Result;
 import com.liaoin.demo.common.ResultCode;
 import lombok.extern.slf4j.Slf4j;
@@ -28,10 +29,9 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		String headerKey = "Authorization";
-		String token = request.getHeader(headerKey);
+		String token = request.getHeader(JwtConstants.AUTHORIZATION_HEADER_KEY);
 		if (token != null) {
-			request.setAttribute(headerKey, token);
+			request.setAttribute(JwtConstants.AUTHORIZATION_HEADER_KEY, token);
 			return true;
 		}
 		response(request,response);

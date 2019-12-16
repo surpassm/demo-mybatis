@@ -1,4 +1,4 @@
-package com.liaoin.demo.config;
+package com.liaoin.demo.config.bean;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

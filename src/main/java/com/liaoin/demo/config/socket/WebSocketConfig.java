@@ -1,4 +1,4 @@
-package com.liaoin.demo.config;
+package com.liaoin.demo.config.socket;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

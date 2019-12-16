@@ -1,5 +1,7 @@
-package com.liaoin.demo.config;
+package com.liaoin.demo.config.common;
 
+import com.liaoin.demo.config.security.TokenInterceptor;
+import com.liaoin.demo.config.security.TokenMethodArgumentResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -23,6 +25,8 @@ public class WebAppConfigurer implements WebMvcConfigurer {
 	private TokenInterceptor tokenInterceptor;
 	@Resource
 	private  String[] noVerify;
+
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(tokenMethodArgumentResolver);

@@ -1,4 +1,4 @@
-package com.liaoin.demo.config;
+package com.liaoin.demo.config.runner;
 
 import com.liaoin.demo.entity.user.Operations;
 import com.liaoin.demo.mapper.user.OperationsMapper;
