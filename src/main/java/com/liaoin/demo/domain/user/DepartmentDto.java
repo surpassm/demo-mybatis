@@ -21,13 +21,14 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "部门")
 public class DepartmentDto {
 
-    @ApiModelProperty(value = "系统标识",hidden = true)
+    @ApiModelProperty(value = "系统标识",position = 0)
     private Long id;
     @NotEmpty(message = "字段name错误")
-    @ApiModelProperty(value = "名称")
+    @ApiModelProperty(value = "名称",position = 1)
     private String name ;
-    @ApiModelProperty(value = "排序字段")
+    @ApiModelProperty(value = "排序字段",position = 2)
     private Integer departmentIndex ;
+    @ApiModelProperty(value = "所属父级{如果自己为父，不传}",position = 3)
     private Long parentId ;
 
     public Department convertTo(){

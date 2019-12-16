@@ -2,6 +2,7 @@ package com.liaoin.demo.controller.user;
 
 import com.liaoin.demo.annotation.Login;
 import com.liaoin.demo.common.Result;
+import com.liaoin.demo.domain.user.UserInfoDto;
 import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.service.user.UserInfoService;
 import io.swagger.annotations.*;
@@ -9,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -29,22 +31,12 @@ public class UserInfoController {
 
     @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
-    public Result insert(@ApiParam(hidden = true) @Login Long userId,
-                         @RequestBody UserInfo userInfo, BindingResult errors) {
+    public Result insertOrUpdate(@ApiParam(hidden = true) @Login Long userId,
+                         @Valid @RequestBody UserInfoDto dto, BindingResult errors) {
         if (errors.hasErrors()) {
             return Result.fail(errors.getAllErrors());
         }
-        return userInfoService.insert(userId, userInfo);
-    }
-
-    @PostMapping("v1/update")
-    @ApiOperation(value = "修改")
-    public Result update(@ApiParam(hidden = true) @Login Long userId,
-                         @RequestBody UserInfo userInfo, BindingResult errors) {
-        if (errors.hasErrors()) {
-            return Result.fail(errors.getAllErrors());
-        }
-        return userInfoService.update(userId, userInfo);
+        return userInfoService.insertOrUpdate(userId, dto);
     }
 
     @PostMapping("v1/getById")

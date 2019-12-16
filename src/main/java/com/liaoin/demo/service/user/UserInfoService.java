@@ -1,6 +1,7 @@
 package com.liaoin.demo.service.user;
 
 import com.liaoin.demo.common.Result;
+import com.liaoin.demo.domain.user.UserInfoDto;
 import com.liaoin.demo.entity.user.UserInfo;
 
 /**
@@ -12,16 +13,10 @@ import com.liaoin.demo.entity.user.UserInfo;
 public interface UserInfoService {
     /**
 	 * 新增
-	 * @param userInfo 对象
+	 * @param dto 对象
 	 * @return 前端返回格式
 	 */
-    Result insert(Long userId, UserInfo userInfo);
-    /**
-	 * 修改
-	 * @param userInfo 对象
-	 * @return 前端返回格式
-	 */
-    Result update(Long userId, UserInfo userInfo);
+    Result insertOrUpdate(Long userId, UserInfoDto dto);
     /**
 	 * 根据主键删除
 	 * @param id 标识
@@ -46,7 +41,7 @@ public interface UserInfoService {
 
 	/**
 	 * 根据主键查询用户及角色、权限列表
-	 * @param accessToken
+	 * @param userId
 	 * @param id
 	 * @return
 	 */
@@ -54,7 +49,7 @@ public interface UserInfoService {
 
 	/**
 	 * 设置用户、组
-	 * @param accessToken
+	 * @param userId
 	 * @param id
 	 * @param groupIds
 	 * @return
@@ -63,7 +58,7 @@ public interface UserInfoService {
 
 	/**
 	 * 设置用户权限
-	 * @param accessToken
+	 * @param userId
 	 * @param id
 	 * @param menuIds
 	 * @return
@@ -72,10 +67,24 @@ public interface UserInfoService {
 
 	/**
 	 * 设置用户、角色
-	 * @param accessToken
+	 * @param userId
 	 * @param id
 	 * @param roleIds
 	 * @return
 	 */
 	Result setUserByRoles(Long userId, Long id, String roleIds);
+
+    /**
+     * 创建超级管理员
+     * @return
+     */
+    Result createAdmin();
+
+	/**
+	 * 登录
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	Result loginIn(String username, String password);
 }

@@ -4,18 +4,24 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.liaoin.demo.common.Result;
 import com.liaoin.demo.common.ResultCode;
+import com.liaoin.demo.domain.user.UserInfoDto;
 import com.liaoin.demo.entity.user.*;
 import com.liaoin.demo.mapper.user.*;
 import com.liaoin.demo.service.user.UserInfoService;
+import com.liaoin.demo.util.JwtUtils;
 import com.liaoin.demo.util.ValidateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.liaoin.demo.common.Result.fail;
 import static com.liaoin.demo.common.Result.ok;
@@ -39,80 +45,48 @@ public class UserInfoServiceImpl implements UserInfoService {
 	private UserRoleMapper userRoleMapper;
 	@Resource
 	private DepartmentMapper departmentMapper;
+	@Resource
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
 	@Override
-	public Result insert(Long userId, UserInfo userInfo) {
-		if (userInfo == null) {
+	public Result insertOrUpdate(Long userId, UserInfoDto dto) {
+	    //数据效验
+		if (dto == null) {
 			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
 		}
-		if (userInfo.getMobile() != null){
-			if (!ValidateUtil.isMobilePhone(userInfo.getMobile())){
-				return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-			}
-		}
-		//效验手姓名
-		if (!ValidateUtil.isRealName(userInfo.getName())){
-			return fail("姓名格式错误");
-		}
-		if (userInfo.getUsername() == null || "".equals(userInfo.getUsername().trim())){
-			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-		}
-		if (userInfo.getPassword() == null || "".equals(userInfo.getPassword().trim())){
-			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-		}
-		if (!ValidateUtil.isPassword(userInfo.getPassword())){
-			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-		}
+        if (!ValidateUtil.isPassword(dto.getPassword())){
+            return fail("匹配小写字母、大写字母、数字、特殊符号的两种及两种以上【非中文】");
+        }
+        if (!ValidateUtil.isRealName(dto.getUsername())){
+            return fail("字母、中文、点组成2-20位");
+        }
+        if (dto.getName() != null){
+            //效验手姓名
+            if (!ValidateUtil.isRealName(dto.getName())){
+                return fail("姓名格式错误");
+            }
+        }
+        if (dto.getMobile() != null){
+            if (!ValidateUtil.isMobilePhone(dto.getMobile())){
+                return fail(ResultCode.PARAM_IS_INVALID.getMsg());
+            }
+        }
+		//新增
+        if (dto.getId() == null){
+            //新增查询账号是否存在
+            int count = userInfoMapper.selectCount(UserInfo.builder().username(dto.getUsername().trim()).isDelete(0).build());
+            if (count != 0){
+                return fail("账号已存在");
+            }
 
-		int count = userInfoMapper.selectCount(UserInfo.builder().username(userInfo.getUsername().trim()).isDelete(0).build());
-		if (count != 0){
-			return fail("账号已存在");
-		}
-		userInfo.setUsername(userInfo.getUsername().trim());
-		userInfo.setIsDelete(0);
-		userInfoMapper.insert(userInfo);
+        }else {//修改
+
+        }
+
 		return ok();
 	}
 
-	@Override
-	public Result update(Long userId, UserInfo userInfo) {
-		if (userInfo == null) {
-			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-		}
-		if (userInfo.getMobile() != null){
-			if (!ValidateUtil.isMobilePhone(userInfo.getMobile())){
-				return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-			}
-		}
-		//效验手姓名
-		if (!ValidateUtil.isRealName(userInfo.getName())){
-			return fail("姓名格式错误");
-		}
-		if (userInfo.getUsername() == null || "".equals(userInfo.getUsername().trim())){
-			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-		}
-		if (userInfo.getPassword() == null || "".equals(userInfo.getPassword().trim())){
-			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-		}
-		if (!ValidateUtil.isPassword(userInfo.getPassword())){
-			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-		}
-
-
-
-		UserInfo user = userInfoMapper.selectByPrimaryKey(userInfo.getId());
-		String password = userInfo.getPassword();
-		//密码效验
-		if (userInfo.getPassword() != null && !"".equals(userInfo.getPassword())) {
-			if (!ValidateUtil.isPassword(userInfo.getPassword())) {
-				return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-			}
-		}
-
-		userInfoMapper.updateByPrimaryKeySelective(userInfo);
-		return ok();
-	}
 
 	@Override
 	public Result deleteGetById(Long userId, Long id) {
@@ -271,6 +245,38 @@ public class UserInfoServiceImpl implements UserInfoService {
 			userRoleMapper.insert(build);
 		}
 		return ok();
+	}
+
+    @Override
+    public Result createAdmin() {
+	    String username = "admin";
+	    String password = "123456";
+        UserInfo admin = userInfoMapper.selectOne(UserInfo.builder().isDelete(0).username(username).build());
+        if (admin != null){
+            admin.setPassword(password);
+            return ok(admin);
+        }
+        String encode = bCryptPasswordEncoder.encode(password);
+        UserInfo build = UserInfo.builder().username(username).isDelete(0).password(encode).build();
+        userInfoMapper.insert(build);
+        build.setPassword(password);
+        return ok(build);
+    }
+
+    @Override
+	public Result loginIn(String username, String password) {
+		//查询用户账号是否存在
+		UserInfo userInfo = userInfoMapper.selectOne(UserInfo.builder().isDelete(0).username(username).build());
+		if (userInfo == null){
+			return fail(ResultCode.USER_LOGIN_ERROR.getCode(),ResultCode.USER_LOGIN_ERROR.getMsg());
+		}
+		if (!bCryptPasswordEncoder.matches(password,userInfo.getPassword())){
+			return fail(ResultCode.USER_LOGIN_ERROR.getCode(),ResultCode.USER_LOGIN_ERROR.getMsg());
+		}
+        String token = JwtUtils.getSubFromToken(userInfo.getId().toString());
+        Map<String ,String > result = new HashMap<>(1);
+        result.put("token",token);
+		return ok(result);
 	}
 }
 
