@@ -14,6 +14,7 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
@@ -80,8 +81,7 @@ public class InjectionBeanConfig {
         result.add("/error**");
         result.add("/websocket/socketServer.ws**");
         result.add("/sockjs/socketServer.ws**");
-        result.add("/login/v1/auth/refreshToken**");
-        result.add("/login/v1/in**");
+        result.add("/login/**");
         result.add("/mobile/v1/auth/getPhone**");
         result.add("/fileManage/v1/auth/getFileNameUrl**");
         result.add("/fileManage/v1/auth/listUploadedFiles**");
@@ -94,7 +94,8 @@ public class InjectionBeanConfig {
 
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder(){
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder(){
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder;
     }
 }

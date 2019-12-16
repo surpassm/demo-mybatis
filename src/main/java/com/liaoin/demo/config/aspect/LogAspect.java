@@ -70,7 +70,7 @@ public class LogAspect {
 			operationsLog.setClientIp(request.getRemoteHost());
 			if (!checkAuthorization(url)) {
 				String token = request.getHeader(JwtConstants.AUTHORIZATION_HEADER_KEY);
-				long userId = Long.parseLong(JwtUtils.getSubFromToken(token));
+				long userId = Long.parseLong(JwtUtils.getToken(token));
 				// 用户主键
 				operationsLog.setUserId(userId);
 			}

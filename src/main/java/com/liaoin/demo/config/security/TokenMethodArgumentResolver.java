@@ -31,7 +31,7 @@ public class TokenMethodArgumentResolver implements HandlerMethodArgumentResolve
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
         String token = (String) nativeWebRequest.getAttribute(JwtConstants.AUTHORIZATION_HEADER_KEY, RequestAttributes.SCOPE_REQUEST);
         if (token != null) {
-            return Long.parseLong(JwtUtils.getSubFromToken(token));
+            return Long.parseLong(JwtUtils.getToken(token));
         }
         throw new MissingServletRequestPartException("请携带header:Authorization");
 

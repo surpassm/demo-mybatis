@@ -26,7 +26,7 @@ public class InterfaceAuthImpl implements InterfaceAuth {
     public boolean hasPermission(HttpServletRequest request) {
         String token = (String) request.getAttribute(JwtConstants.AUTHORIZATION_HEADER_KEY);
         if (token != null) {
-            String userId = JwtUtils.getSubFromToken(token);
+            String userId = JwtUtils.getToken(token);
 //        boolean flag = false;
 //        String requestURI = request.getRequestURI();
 //        if (!requestURI.equals("/favicon.ico")) {

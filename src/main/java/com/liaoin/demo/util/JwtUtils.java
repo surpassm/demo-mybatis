@@ -21,7 +21,7 @@ public class JwtUtils {
      */
     private static final int EXPIRES_TIME = 60000*60*2;
 
-    public static String generateWithSub(String sub) {
+    public static String getSub(String sub) {
         Date nowDate = new Date();
         //当前系统时间+过期时间
         Date expiresDate = new Date(System.currentTimeMillis()+ EXPIRES_TIME);
@@ -36,7 +36,7 @@ public class JwtUtils {
                 .compact();
     }
 
-    public static String getSubFromToken(String jws) throws CustomException{
+    public static String getToken(String jws) throws CustomException{
         try {
             return Jwts.parser()
                     .setSigningKey(KEY)

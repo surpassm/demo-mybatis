@@ -13,6 +13,7 @@ import com.liaoin.demo.util.ValidateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
@@ -46,7 +47,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Resource
 	private DepartmentMapper departmentMapper;
 	@Resource
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private PasswordEncoder passwordEncoder;
 
 
 	@Override
@@ -256,7 +257,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             admin.setPassword(password);
             return ok(admin);
         }
-        String encode = bCryptPasswordEncoder.encode(password);
+        String encode = passwordEncoder.encode(password);
         UserInfo build = UserInfo.builder().username(username).isDelete(0).password(encode).build();
         userInfoMapper.insert(build);
         build.setPassword(password);
@@ -270,10 +271,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 		if (userInfo == null){
 			return fail(ResultCode.USER_LOGIN_ERROR.getCode(),ResultCode.USER_LOGIN_ERROR.getMsg());
 		}
-		if (!bCryptPasswordEncoder.matches(password,userInfo.getPassword())){
+		if (!passwordEncoder.matches(password,userInfo.getPassword())){
 			return fail(ResultCode.USER_LOGIN_ERROR.getCode(),ResultCode.USER_LOGIN_ERROR.getMsg());
 		}
-        String token = JwtUtils.getSubFromToken(userInfo.getId().toString());
+        String token = JwtUtils.getSub(userInfo.getId().toString());
         Map<String ,String > result = new HashMap<>(1);
         result.put("token",token);
 		return ok(result);
