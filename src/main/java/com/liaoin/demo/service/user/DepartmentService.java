@@ -16,22 +16,14 @@ public interface DepartmentService {
      *
      * @return 前端返回格式
      */
-    Result insertParent(Long userId, DepartmentDto dto);
-    /**
-     * 新增子集
-     *
-     * @param userId
-     * @param dto
-     * @return
-     */
-    Result insertChild(Long userId, DepartmentDto dto);
+    Result insert(Long userId, DepartmentDto dto);
     /**
      * 修改
      *
-     * @param department 对象
+     * @param dto 对象
      * @return 前端返回格式
      */
-    Result update(Long userId,Department department);
+    Result update(Long userId,DepartmentDto dto);
 
     /**
      * 根据主键删除

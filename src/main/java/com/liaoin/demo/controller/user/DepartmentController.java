@@ -35,24 +35,14 @@ public class DepartmentController {
     @Resource
     private DepartmentService departmentService;
 
-    @PostMapping("v1/insertParent")
-    @ApiOperation(value = "新增父级")
-    public Result insertParent(@ApiParam(hidden = true) @Login Long userId,
+    @PostMapping("v1/insert")
+    @ApiOperation(value = "新增")
+    public Result insert(@ApiParam(hidden = true) @Login Long userId,
                                @Valid @RequestBody DepartmentDto dto, BindingResult errors) {
         if (errors.hasErrors()) {
             return fail(errors.getAllErrors());
         }
-        return departmentService.insertParent(userId, dto);
-    }
-
-    @PostMapping("v1/insertChild")
-    @ApiOperation(value = "新增子集")
-    public Result insertChild(@ApiParam(hidden = true) @Login Long userId,
-                              @Valid @RequestBody DepartmentDto dto, BindingResult errors) {
-        if (errors.hasErrors()) {
-            return fail(errors.getAllErrors());
-        }
-        return departmentService.insertChild(userId, dto);
+        return departmentService.insert(userId, dto);
     }
 
     @PostMapping("v1/update")
@@ -62,7 +52,7 @@ public class DepartmentController {
         if (errors.hasErrors()) {
             return fail(errors.getAllErrors());
         }
-        return ok();
+        return ok(departmentService.update(userId,dto));
     }
 
     @PostMapping("v1/getById")

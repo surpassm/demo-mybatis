@@ -21,6 +21,8 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "部门")
 public class DepartmentDto {
 
+    @ApiModelProperty(value = "系统标识",hidden = true)
+    private Long id;
     @NotEmpty(message = "字段name错误")
     @ApiModelProperty(value = "名称")
     private String name ;

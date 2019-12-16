@@ -7,6 +7,7 @@ import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.user.DepartmentDto;
 import com.liaoin.demo.entity.user.Department;
 import com.liaoin.demo.entity.user.DepartmentUserInfo;
+import com.liaoin.demo.entity.user.Group;
 import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.mapper.user.DepartmentMapper;
 import com.liaoin.demo.mapper.user.DepartmentUserInfoMapper;
@@ -43,48 +44,48 @@ public class DepartmentServiceImpl implements DepartmentService {
     private UserInfoMapper userInfoMapper;
     @Resource
     private DepartmentUserInfoMapper departmentUserInfoMapper;
+    @Resource
+    private CommonImpl commonImpl;
 
     @Override
-    public Result insertParent(Long userId, DepartmentDto dto) {
+    public Result insert(Long userId, DepartmentDto dto) {
         //查询名称是否存在
-        if (isGetName(dto.getName())){
+        if (commonImpl.isGetName(dto.getName())){
             return fail(ResultCode.DATA_ALREADY_EXISTED.getMsg());
         }
         Department department = dto.convertTo();
+        //查询父级是否存在
+        if (department.getParentId() != null){
+            Department dep = commonImpl.getDepartmentId(dto.getParentId());
+            if (dep == null){
+                return fail(ResultCode.DATA_ALREADY_EXISTED.getMsg());
+            }
+        }
         department.setIsDelete(0);
-        department.setParentId(null);
         department.setCreateTime(LocalDateTime.now());
         departmentMapper.insert(department);
         return ok(department);
     }
 
-    @Override
-    public Result insertChild(Long userId, DepartmentDto dto) {
-        //查询名称是否存在
-        if (isGetName(dto.getName())){
-            return fail(ResultCode.DATA_ALREADY_EXISTED.getMsg());
-        }
-        //查询父级是否存在
-        if (dto.getParentId() == null){
-            return fail(ResultCode.PARAM_IS_BLANK.getMsg());
-        }
-        Department department = departmentMapper.selectByPrimaryKey(dto.getParentId());
-        if (department == null){
-            return fail(ResultCode.DATA_ALREADY_EXISTED.getMsg());
-        }
-
-        return null;
-    }
-    private Boolean isGetName(String name){
-        int i = departmentMapper.selectCount(Department.builder().isDelete(0).name(name).build());
-        return i > 0;
-    }
 
     @Override
-    public Result update(Long userId, Department department) {
-        if (department == null) {
+    public Result update(Long userId, DepartmentDto dto) {
+        if (dto == null) {
             return fail(ResultCode.PARAM_IS_INVALID.getMsg());
         }
+        //效验当前名称是否重复
+        Example.Builder builder = new Example.Builder(Department.class);
+        builder.where(WeekendSqls.<Department>custom().andEqualTo(Department::getIsDelete, 0));
+        builder.where(WeekendSqls.<Department>custom().andEqualTo(Department::getName, dto.getName()));
+        builder.where(WeekendSqls.<Department>custom().andNotIn(Department::getId, Collections.singletonList(dto.getId())));
+        int i = departmentMapper.selectCountByExample(builder.build());
+        if ( i > 0){
+            return fail(ResultCode.DATA_ALREADY_EXISTED.getMsg());
+        }
+
+        Department department = dto.convertTo();
+
+
         return ok();
     }
     @Override
