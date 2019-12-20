@@ -14,6 +14,7 @@ import me.chanjar.weixin.common.bean.result.WxMediaUploadResult;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -148,4 +149,12 @@ public class WxMaConfiguration {
         return null;
     };
 
+    /**
+     * 取第一个小程序
+     */
+    @Bean
+    public WxMaService wxMaService(){
+        WxMaProperties.Config config = properties.getConfigs().get(0);
+        return WxMaConfiguration.getMaService(config.getAppid());
+    }
 }

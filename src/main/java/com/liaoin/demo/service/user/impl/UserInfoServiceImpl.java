@@ -2,6 +2,7 @@ package com.liaoin.demo.service.user.impl;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
+import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.liaoin.demo.common.Result;
@@ -55,7 +56,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Resource
 	private PasswordEncoder passwordEncoder;
 	@Resource
-	private WxMaProperties wxMaProperties;
+	private WxMaService wxMaService;
 
 
 	@Override
@@ -271,15 +272,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
 	public Result loginIn(String code) {
-		WxMaProperties.Config config = wxMaProperties.getConfigs().get(0);
-		final WxMaService wxService = WxMaConfiguration.getMaService(config.getAppid());
 		try {
-			WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(code);
+			WxMaJscode2SessionResult session = wxMaService.getUserService().getSessionInfo(code);
 			String sessionKey = session.getSessionKey();
 			String openId = session.getOpenid();
 			String unionId = session.getUnionid();
 			//TODO 可以增加自己的逻辑，关联业务相关数据
-			Map<String ,String > result = new HashMap<>(1);
+			Map<String ,String > result = new HashMap<>(4);
 			Optional<UserInfo> optional = Optional.ofNullable(userInfoMapper.selectOne(UserInfo.builder().isDelete(0).unionId(unionId).build()));
 			if (optional.isPresent()){
 				UserInfo userInfo = optional.get();
@@ -302,11 +301,28 @@ public class UserInfoServiceImpl implements UserInfoService {
 			log.error(e.getMessage(), e);
 			return fail("验证失败");
 		}
+	}
 
-
-
-
-
+	@Override
+	public Result setInfo(Long userId, String sessionKey, String signature, String rawData, String encryptedData, String iv) {
+		// 用户信息校验
+		boolean b = wxMaService.getUserService().checkUserInfo(sessionKey, rawData, signature);
+		if (!b) {
+			return fail("user check failed");
+		}
+		// 解密用户信息
+		WxMaUserInfo info = wxMaService.getUserService().getUserInfo(sessionKey, encryptedData, iv);
+		UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userId);
+		//更新用户信息
+		userInfo.setLanguage(info.getLanguage());
+		userInfo.setGender(info.getGender());
+		userInfo.setCity(info.getCity());
+		userInfo.setProvince(info.getProvince());
+		userInfo.setCountry(info.getCountry());
+		userInfo.setAvatarUrl(info.getAvatarUrl());
+		userInfo.setNickName(info.getNickName());
+		userInfoMapper.updateByPrimaryKeySelective(userInfo);
+		return ok();
 	}
 }
 

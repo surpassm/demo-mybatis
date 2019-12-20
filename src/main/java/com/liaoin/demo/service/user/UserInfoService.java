@@ -85,4 +85,16 @@ public interface UserInfoService {
 	 * @return
 	 */
 	Result loginIn(String code);
+
+	/**
+	 * 设置用户基本信息
+	 * @param userId 用户标识
+	 * @param sessionKey 微信会话key
+	 * @param signature 使用 sha1( rawData + sessionkey ) 得到字符串，用于校验用户信息
+	 * @param rawData 不包括敏感信息的原始数据字符串，用于计算签名
+	 * @param encryptedData 包括敏感数据在内的完整用户信息的加密数据
+	 * @param iv 加密算法的初始向量
+	 * @return
+	 */
+	Result setInfo(Long userId, String sessionKey, String signature, String rawData, String encryptedData, String iv);
 }
