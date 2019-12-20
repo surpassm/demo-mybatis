@@ -2,10 +2,8 @@ package com.liaoin.demo.controller.user;
 
 import com.liaoin.demo.annotation.Login;
 import com.liaoin.demo.common.Result;
-import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.user.DepartmentDto;
 import com.liaoin.demo.entity.user.Department;
-import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.service.user.DepartmentService;
 import io.swagger.annotations.*;
 import org.springframework.validation.BindingResult;
@@ -39,7 +37,7 @@ public class DepartmentController {
     @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
     public Result insert(@ApiParam(hidden = true) @Login Long userId,
-                               @Valid @RequestBody DepartmentDto dto, BindingResult errors) {
+                         @Valid @RequestBody DepartmentDto dto, BindingResult errors) {
         if (errors.hasErrors()) {
             return fail(errors.getAllErrors());
         }

@@ -16,6 +16,10 @@ import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import static com.liaoin.demo.common.Result.fail;
 import static com.liaoin.demo.common.Result.ok;
 
@@ -52,30 +56,14 @@ public class OperationsServiceImpl implements OperationsService {
     }
 
     @Override
-    public Result deleteGetById(Long userId,Long id){
-        if (id == null){
-            return fail(ResultCode.PARAM_IS_BLANK.getMsg());
-        }
-        Operations operations = operationsMapper.selectByPrimaryKey(id);
-        if(operations == null){
-            return fail(ResultCode.RESULE_DATA_NONE.getMsg());
-        }
-        operationsMapper.updateByPrimaryKeySelective(operations);
-        return ok();
+    public void deleteGetById(Long id){
+        operationsMapper.deleteByPrimaryKey(id);
     }
 
 
     @Override
-    public Result findById(Long userId,Long id) {
-        if (id == null){
-            return fail(ResultCode.PARAM_IS_BLANK.getMsg());
-        }
-		Operations operations = operationsMapper.selectByPrimaryKey(id);
-        if (operations == null){
-			return fail(ResultCode.RESULE_DATA_NONE.getMsg());
-		}
-        return ok(operations);
-
+    public Optional<Operations> findById(Long id) {
+        return Optional.ofNullable(operationsMapper.selectByPrimaryKey(id));
     }
 
     @Override
@@ -91,7 +79,6 @@ public class OperationsServiceImpl implements OperationsService {
 			PageHelper.startPage(page, size,"create_time desc");
 		}
         Example.Builder builder = new Example.Builder(Operations.class);
-        builder.where(WeekendSqls.<Operations>custom().andEqualTo(Operations::getIsDelete, 0));
         if(operations != null){
         if (operations.getId() != null){
             builder.where(WeekendSqls.<Operations>custom().andEqualTo(Operations::getId,operations.getId()));
@@ -104,9 +91,6 @@ public class OperationsServiceImpl implements OperationsService {
         }
         if (operations.getDescribes() != null && !"".equals(operations.getDescribes().trim())){
             builder.where(WeekendSqls.<Operations>custom().andLike(Operations::getDescribes,"%"+operations.getDescribes()+"%"));
-        }
-        if (operations.getIsDelete() != null){
-            builder.where(WeekendSqls.<Operations>custom().andEqualTo(Operations::getIsDelete,operations.getIsDelete()));
         }
         if (operations.getMenuIndex() != null){
             builder.where(WeekendSqls.<Operations>custom().andEqualTo(Operations::getMenuIndex,operations.getMenuIndex()));
@@ -122,7 +106,16 @@ public class OperationsServiceImpl implements OperationsService {
         }
         }
         Page<Operations> all = (Page<Operations>) operationsMapper.selectByExample(builder.build());
-        return ok(all.toPageInfo());
+        Map<String,Object> result = new HashMap<>(3);
+        result.put("total",all.getTotal());
+        result.put("rows",all.getResult());
+        return ok(result);
+    }
+
+    @Override
+    public Boolean selectCountParentId(Long parentId) {
+        int i = operationsMapper.selectCount(Operations.builder().parentId(parentId).build());
+        return i > 0;
     }
 }
 

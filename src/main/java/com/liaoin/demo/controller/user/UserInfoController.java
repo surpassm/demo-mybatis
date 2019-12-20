@@ -1,21 +1,13 @@
 package com.liaoin.demo.controller.user;
 
-import cn.binarywang.wx.miniapp.api.WxMaService;
-import cn.binarywang.wx.miniapp.bean.WxMaUserInfo;
 import com.liaoin.demo.annotation.Login;
 import com.liaoin.demo.common.Result;
-import com.liaoin.demo.config.wx.WxMaConfiguration;
-import com.liaoin.demo.domain.user.UserInfoDto;
 import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.service.user.UserInfoService;
-import com.liaoin.demo.util.JsonUtils;
 import io.swagger.annotations.*;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -58,17 +50,6 @@ public class UserInfoController {
     public Result findById(@ApiParam(hidden = true) @Login Long userId,
                            @ApiParam(value = "主键", required = true) @RequestParam(value = "id") Long id) {
         return userInfoService.findById(userId, id);
-    }
-
-    @Login
-    @PostMapping("v1/pageQuery")
-    @ApiOperation(value = "条件分页查询")
-    public Result pageQuery(@ApiParam(hidden = true) @Login Long userId,
-                            @ApiParam(value = "第几页", required = true) @RequestParam(value = "page") Integer page,
-                            @ApiParam(value = "多少条", required = true) @RequestParam(value = "size") Integer size,
-                            @ApiParam(value = "排序字段") @RequestParam(value = "sort", required = false) String sort,
-                            @RequestBody UserInfo userInfo) {
-        return userInfoService.pageQuery(userId, page, size, sort, userInfo);
     }
 
     @Login
@@ -116,5 +97,16 @@ public class UserInfoController {
                           @ApiParam(value = "包括敏感数据在内的完整用户信息的加密数据", required = true) @RequestParam(value = "encryptedData") @NotNull  String encryptedData,
                           @ApiParam(value = "加密算法的初始向量", required = true) @RequestParam(value = "iv") @NotNull  String iv) {
         return userInfoService.setInfo(userId,sessionKey,signature,rawData,encryptedData,iv);
+    }
+
+    @Login
+    @PostMapping("v1/pageQuery")
+    @ApiOperation(value = "条件分页查询")
+    public Result pageQuery(@ApiParam(hidden = true) @Login Long userId,
+                            @ApiParam(value = "第几页", required = true) @RequestParam(value = "page") Integer page,
+                            @ApiParam(value = "多少条", required = true) @RequestParam(value = "size") Integer size,
+                            @ApiParam(value = "排序字段") @RequestParam(value = "sort", required = false) String sort,
+                            @RequestBody UserInfo userInfo) {
+        return userInfoService.pageQuery(userId, page, size, sort, userInfo);
     }
 }

@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
@@ -22,23 +21,31 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ApiModel(value = "用户")
-public class UserInfoDto implements Serializable {
+public class UserInfoDTO implements Serializable {
 
 
     @ApiModelProperty(value = "系统标识",position = 0)
     private Long id;
-    @NotEmpty
-    @ApiModelProperty(value = "账号{用户名具有唯一约束，字母、中文、点组成2-20位}",position = 1)
-    private String username;
-    @NotEmpty
-    @ApiModelProperty(value = "密码{匹配小写字母、大写字母、数字、特殊符号的两种及两种以上【非中文】}",position = 2)
-    private String password;
-    @ApiModelProperty(value = "姓名",position = 3)
+    @ApiModelProperty(value = "昵称",position = 1)
+    private String nickName;
+
+    @ApiModelProperty(value = "性别",position = 2)
+    private String gender;
+
+    @ApiModelProperty(value = "公司名称",position = 3)
+    private String companyName;
+
+    @ApiModelProperty(value = "职位",position = 4)
+    private String position;
+
+    @ApiModelProperty(value = "姓名",position = 5)
     private String name;
-    @ApiModelProperty(value = "手机号码",position = 4)
+
+    @ApiModelProperty(value = "电话",position = 6)
     private String mobile;
-    @ApiModelProperty(value = "头像URL",position = 5)
-    private String headUrl;
+
+    @ApiModelProperty(value = "email",position = 7)
+    private String email;
 
 
 
@@ -48,21 +55,21 @@ public class UserInfoDto implements Serializable {
         return impl.doForward(this);
     }
 
-    public UserInfoDto convertFor(UserInfo userInfo){
+    public UserInfoDTO convertFor(UserInfo userInfo){
         ConvertImpl impl = new ConvertImpl();
         return impl.doBackward(userInfo);
     }
 
-    private static class ConvertImpl implements Convert<UserInfoDto, UserInfo> {
+    public static class ConvertImpl implements Convert<UserInfoDTO, UserInfo> {
         @Override
-        public UserInfo doForward(UserInfoDto dto) {
+        public UserInfo doForward(UserInfoDTO dto) {
             UserInfo userInfo = new UserInfo();
             BeanUtils.copyProperties(dto,userInfo);
             return userInfo;
         }
         @Override
-        public UserInfoDto doBackward(UserInfo userInfo) {
-            UserInfoDto dto = new UserInfoDto();
+        public UserInfoDTO doBackward(UserInfo userInfo) {
+            UserInfoDTO dto = new UserInfoDTO();
             BeanUtils.copyProperties(userInfo, dto);
             return dto;
         }

@@ -7,19 +7,15 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.liaoin.demo.common.Result;
 import com.liaoin.demo.common.ResultCode;
-import com.liaoin.demo.config.wx.WxMaConfiguration;
-import com.liaoin.demo.config.wx.WxMaProperties;
-import com.liaoin.demo.domain.user.UserInfoDto;
+import com.liaoin.demo.domain.user.UserInfoDTO;
 import com.liaoin.demo.entity.user.*;
 import com.liaoin.demo.mapper.user.*;
 import com.liaoin.demo.service.user.UserInfoService;
-import com.liaoin.demo.util.JsonUtils;
 import com.liaoin.demo.util.JwtUtils;
 import com.liaoin.demo.util.ValidateUtil;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,44 +54,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Resource
 	private WxMaService wxMaService;
 
-
-	@Override
-	public Result insertOrUpdate(Long userId, UserInfoDto dto) {
-	    //数据效验
-		if (dto == null) {
-			return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-		}
-        if (!ValidateUtil.isPassword(dto.getPassword())){
-            return fail("匹配小写字母、大写字母、数字、特殊符号的两种及两种以上【非中文】");
-        }
-        if (!ValidateUtil.isRealName(dto.getUsername())){
-            return fail("字母、中文、点组成2-20位");
-        }
-        if (dto.getName() != null){
-            //效验手姓名
-            if (!ValidateUtil.isRealName(dto.getName())){
-                return fail("姓名格式错误");
-            }
-        }
-        if (dto.getMobile() != null){
-            if (!ValidateUtil.isMobilePhone(dto.getMobile())){
-                return fail(ResultCode.PARAM_IS_INVALID.getMsg());
-            }
-        }
-		//新增
-        if (dto.getId() == null){
-            //新增查询账号是否存在
-            int count = userInfoMapper.selectCount(UserInfo.builder().username(dto.getUsername().trim()).isDelete(0).build());
-            if (count != 0){
-                return fail("账号已存在");
-            }
-
-        }else {//修改
-
-        }
-
-		return ok();
-	}
 
 
 	@Override
@@ -288,7 +246,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 				userInfo.setUserInfoIndex(userInfo.getId());
 				userInfoMapper.updateByPrimaryKeySelective(userInfo);
 			}else {
-				UserInfo build = UserInfo.builder().isDelete(0).unionId(unionId).landingTime(LocalDateTime.now()).openId(openId).build();
+				UserInfo build = UserInfo.builder()
+						.isDelete(0)
+						.unionId(unionId)
+						.landingTime(LocalDateTime.now())
+						.openId(openId)
+						.createTime(LocalDateTime.now())
+						.build();
 				userInfoMapper.insert(build);
 				String token = JwtUtils.getSub(build.getId().toString());
 				result.put("token",token);

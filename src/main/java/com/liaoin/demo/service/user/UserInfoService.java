@@ -1,7 +1,7 @@
 package com.liaoin.demo.service.user;
 
 import com.liaoin.demo.common.Result;
-import com.liaoin.demo.domain.user.UserInfoDto;
+import com.liaoin.demo.domain.user.UserInfoDTO;
 import com.liaoin.demo.entity.user.UserInfo;
 
 /**
@@ -11,12 +11,6 @@ import com.liaoin.demo.entity.user.UserInfo;
   * Description 接口
   */
 public interface UserInfoService {
-    /**
-	 * 新增
-	 * @param dto 对象
-	 * @return 前端返回格式
-	 */
-    Result insertOrUpdate(Long userId, UserInfoDto dto);
     /**
 	 * 根据主键删除
 	 * @param id 标识

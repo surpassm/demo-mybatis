@@ -67,7 +67,6 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 								String description = value.getPost().getTags().get(0);
 								// 权限
 								Operations build = Operations.builder().name(description).build();
-								build.setIsDelete(0);
 								Operations operations = operationsMapper.selectOne(build);
 								menuInsertAndUpdata(url, name, description, operations);
 							}
@@ -77,7 +76,6 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 								String description = value.getGet().getTags().get(0);
 								// 权限
 								Operations build = Operations.builder().name(description).build();
-								build.setIsDelete(0);
 								Operations operations = operationsMapper.selectOne(build);
 								menuInsertAndUpdata(url, name, description, operations);
 							}
@@ -93,7 +91,6 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 					.name(description)
 					.type(1)
 					.build();
-			parentOperations.setIsDelete(0);
 			operationsMapper.insert(parentOperations);
 			//在添加当前url为子级
 			Operations operationBuild = Operations.builder()
@@ -103,11 +100,9 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 					.type(1)
 					.createTime(LocalDateTime.now())
 					.build();
-			operationBuild.setIsDelete(0);
 			operationsMapper.insert(operationBuild);
 		}else {
 			Operations build = Operations.builder().apiUrl(url).build();
-			build.setIsDelete(0);
 			int selectCount = operationsMapper.selectCount(build);
 			if (selectCount == 0){
 				//去除重复数据
@@ -118,7 +113,6 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 						.describes(name)
 						.createTime(LocalDateTime.now())
 						.build();
-				operationBuild.setIsDelete(0);
 				operationsMapper.insert(operationBuild);
 			}
 		}

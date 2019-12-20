@@ -1,12 +1,8 @@
 package com.liaoin.demo.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.util.Assert;
 import tk.mybatis.mapper.annotation.KeySql;
 import tk.mybatis.mapper.annotation.NameStyle;
 import tk.mybatis.mapper.code.Style;
@@ -14,11 +10,7 @@ import tk.mybatis.mapper.code.Style;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
 
 /**
  * @author mc
@@ -47,11 +39,24 @@ public class UserInfo {
 
     @Column(name = "username", columnDefinition = "varchar(255) COMMENT '账号'")
     private String username;
+
     @Column(columnDefinition = "varchar(255) COMMENT '密码'")
     private String password;
 
     @Column(columnDefinition = "varchar(255) COMMENT '头像URL'")
     private String headUrl;
+
+    @Column(columnDefinition = "bigint COMMENT '排序字段'")
+    private Long userInfoIndex;
+
+    @Column(columnDefinition = "datetime COMMENT '最后登陆时间'")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime landingTime;
+
+    @Min(0)
+    @Max(1)
+    private Integer isDelete;
 
     @Column(columnDefinition = "varchar(255) COMMENT 'sessionKey'")
     private String sessionKey;
@@ -64,17 +69,6 @@ public class UserInfo {
 
     @Column(columnDefinition = "varchar(255) COMMENT '昵称'")
     private String nickName;
-
-    @Column(columnDefinition = "bigint COMMENT '排序字段'")
-    private Long userInfoIndex;
-
-    @Column(columnDefinition = "datetime COMMENT '最后登陆时间'")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime landingTime;
-    @Min(0)
-    @Max(1)
-    private Integer isDelete;
 	private String gender;
 	private String language;
 	private String city;
@@ -82,17 +76,25 @@ public class UserInfo {
 	private String country;
 	private String avatarUrl;
 
-
     @Column(columnDefinition = "varchar(255) COMMENT '公司名称'")
     private String companyName;
+
     @Column(columnDefinition = "varchar(255) COMMENT '职位'")
     private String position;
+
     @Column(columnDefinition = "varchar(255) COMMENT '姓名'")
     private String name;
+
     @Column(columnDefinition = "varchar(255) COMMENT '电话'")
     private String mobile;
+
     @Column(columnDefinition = "varchar(255) COMMENT 'email'")
     private String email;
+
+    @Column(columnDefinition = "datetime COMMENT '创建时间'")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private LocalDateTime createTime;
 
 
 }

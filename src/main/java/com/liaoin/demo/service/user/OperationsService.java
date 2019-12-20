@@ -3,6 +3,8 @@ package com.liaoin.demo.service.user;
 import com.liaoin.demo.common.Result;
 import com.liaoin.demo.entity.user.Operations;
 
+import java.util.Optional;
+
 /**
   * @author mc
   * Create date 2019-11-28 10:47:51
@@ -25,19 +27,12 @@ public interface OperationsService {
 	 */
     Result update(Long userId, Operations operations);
     /**
-	 * 根据主键删除
-	 *
-	 * @param id 标识
-	 * @return 前端返回格式
-	 */
-    Result deleteGetById(Long userId, Long id);
-    /**
 	 * 根据主键查询
 	 *
 	 * @param id 标识
 	 * @return 前端返回格式
 	 */
-    Result findById(Long userId, Long id);
+    Optional<Operations> findById(Long id);
     /**
 	 * 条件分页查询
 	 *
@@ -48,4 +43,15 @@ public interface OperationsService {
 	 * @return 前端返回格式
 	 */
     Result pageQuery(Long userId, Integer page, Integer size, String sort, Operations operations);
+
+	/**
+	 * 查看是否存在子级关联
+	 */
+	Boolean selectCountParentId(Long parentId);
+
+	/**
+	 * 根据ID删除数据
+	 * @param id 系统标识
+	 */
+	void deleteGetById(Long id);
 }

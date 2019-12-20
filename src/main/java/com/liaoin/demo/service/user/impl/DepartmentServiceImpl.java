@@ -7,7 +7,6 @@ import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.user.DepartmentDto;
 import com.liaoin.demo.entity.user.Department;
 import com.liaoin.demo.entity.user.DepartmentUserInfo;
-import com.liaoin.demo.entity.user.Group;
 import com.liaoin.demo.entity.user.UserInfo;
 import com.liaoin.demo.mapper.user.DepartmentMapper;
 import com.liaoin.demo.mapper.user.DepartmentUserInfoMapper;

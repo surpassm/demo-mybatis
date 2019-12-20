@@ -8,7 +8,6 @@ import lombok.*;
 import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author mc
