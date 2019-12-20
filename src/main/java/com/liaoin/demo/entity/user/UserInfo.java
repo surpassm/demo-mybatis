@@ -34,7 +34,7 @@ import java.util.*;
 @NoArgsConstructor
 @NameStyle(Style.camelhump)
 @org.hibernate.annotations.Table(appliesTo = "t_user_info", comment = "用户")
-@Table(name = "t_user_info", uniqueConstraints = {@UniqueConstraint(name = "username_unique", columnNames = {"username"})})
+@Table(name = "t_user_info", uniqueConstraints = {@UniqueConstraint(columnNames = {"username","union_Id","open_Id"})})
 public class UserInfo {
 
 
@@ -45,33 +45,47 @@ public class UserInfo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(columnDefinition="varchar(255) COMMENT '姓名'")
-	private String name;
-
-	@Column(columnDefinition="varchar(255) COMMENT '手机号码'")
-	private String mobile;
-
-	@Column(columnDefinition="varchar(255) COMMENT '用户名具有唯一约束'")
+	@Column(columnDefinition="varchar(255) COMMENT '账号'")
 	private String username;
-
 	@Column(columnDefinition="varchar(255) COMMENT '密码'")
 	private String password;
 
 	@Column(columnDefinition="varchar(255) COMMENT '头像URL'")
 	private String headUrl;
 
-	@Column(columnDefinition="int(11) COMMENT '排序字段'")
-	private Integer userInfoIndex ;
+	@Column(columnDefinition="varchar(255) COMMENT 'sessionKey'")
+	private String sessionKey;
 
+	@Column(columnDefinition="varchar(255) COMMENT 'openId'")
+	private String openId;
+
+	@Column(columnDefinition="varchar(255) COMMENT 'unionId'")
+	private String unionId;
+
+	@Column(columnDefinition="varchar(255) COMMENT '昵称'")
+	private String nickName;
+
+	@Column(columnDefinition="bigint COMMENT '排序字段'")
+	private Long userInfoIndex ;
 
 	@Column(columnDefinition="datetime COMMENT '最后登陆时间'")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private LocalDateTime landingTime;
-
 	@Min(0)
 	@Max(1)
 	private Integer isDelete;
+
+	@Column(columnDefinition="varchar(255) COMMENT '公司名称'")
+	private String companyName;
+	@Column(columnDefinition="varchar(255) COMMENT '职位'")
+	private String position;
+	@Column(columnDefinition="varchar(255) COMMENT '姓名'")
+	private String name;
+	@Column(columnDefinition="varchar(255) COMMENT '电话'")
+	private String mobile;
+	@Column(columnDefinition="varchar(255) COMMENT 'email'")
+	private String email;
 
 
 

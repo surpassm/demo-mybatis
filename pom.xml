@@ -10,12 +10,13 @@
     </parent>
     <groupId>com.liaoin</groupId>
     <artifactId>demo-mybatis</artifactId>
-    <version>0.0.1</version>
+    <version>4.0.0</version>
     <name>demo-mybatis</name>
-    <description>Demo project for Spring Boot</description>
+    <description>小程序通用项目单体架构</description>
 
     <properties>
         <java.version>1.8</java.version>
+        <weixin.java>3.6.0</weixin.java>
     </properties>
 
     <dependencies>
@@ -50,6 +51,16 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
 
         <dependency>
             <groupId>com.spring4all</groupId>
@@ -93,18 +104,15 @@
         <dependency>
             <groupId>com.github.binarywang</groupId>
             <artifactId>weixin-java-miniapp</artifactId>
-            <version>3.5.0</version>
+            <version>${weixin.java}</version>
         </dependency>
         <dependency>
             <groupId>com.github.binarywang</groupId>
             <artifactId>weixin-java-pay</artifactId>
-            <version>3.5.0</version>
+            <version>${weixin.java}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
+
 
         <dependency>
             <groupId>org.java-websocket</groupId>
@@ -128,11 +136,7 @@
             <artifactId>jjwt-jackson</artifactId>
             <version>0.10.6</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>

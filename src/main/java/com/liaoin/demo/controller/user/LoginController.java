@@ -8,11 +8,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotEmpty;
 
+import static com.liaoin.demo.common.Result.fail;
 import static com.liaoin.demo.common.Result.ok;
 
 
@@ -40,9 +42,8 @@ public class LoginController {
 
     @PostMapping("v1/in")
     @ApiOperation(value = "登录获取token", position = 1)
-    public Result loginIn(@ApiParam(value = "账号", required = true) @RequestParam @NotEmpty String username,
-                          @ApiParam(value = "密码", required = true) @RequestParam @NotEmpty String password) {
-        return userInfoService.loginIn(username, password);
+    public Result loginIn(@ApiParam(value = "登录时获取的 code", required = true) @RequestParam @NotEmpty String code) {
+        return userInfoService.loginIn(code);
     }
 
 }

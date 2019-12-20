@@ -82,9 +82,7 @@ public interface UserInfoService {
 
 	/**
 	 * 登录
-	 * @param username
-	 * @param password
 	 * @return
 	 */
-	Result loginIn(String username, String password);
+	Result loginIn(String code);
 }

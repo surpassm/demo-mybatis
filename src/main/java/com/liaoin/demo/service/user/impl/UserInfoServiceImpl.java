@@ -1,16 +1,22 @@
 package com.liaoin.demo.service.user.impl;
 
+import cn.binarywang.wx.miniapp.api.WxMaService;
+import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.liaoin.demo.common.Result;
 import com.liaoin.demo.common.ResultCode;
+import com.liaoin.demo.config.wx.WxMaConfiguration;
+import com.liaoin.demo.config.wx.WxMaProperties;
 import com.liaoin.demo.domain.user.UserInfoDto;
 import com.liaoin.demo.entity.user.*;
 import com.liaoin.demo.mapper.user.*;
 import com.liaoin.demo.service.user.UserInfoService;
+import com.liaoin.demo.util.JsonUtils;
 import com.liaoin.demo.util.JwtUtils;
 import com.liaoin.demo.util.ValidateUtil;
 import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,8 +27,10 @@ import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.liaoin.demo.common.Result.fail;
 import static com.liaoin.demo.common.Result.ok;
@@ -45,9 +53,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Resource
 	private UserRoleMapper userRoleMapper;
 	@Resource
-	private DepartmentMapper departmentMapper;
-	@Resource
 	private PasswordEncoder passwordEncoder;
+	@Resource
+	private WxMaProperties wxMaProperties;
 
 
 	@Override
@@ -139,9 +147,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 			}
 			if (userInfo.getName() != null && !"".equals(userInfo.getName().trim())) {
 				builder.where(WeekendSqls.<UserInfo>custom().andLike(UserInfo::getName, "%" + userInfo.getName() + "%"));
-			}
-			if (userInfo.getPassword() != null && !"".equals(userInfo.getPassword().trim())) {
-				builder.where(WeekendSqls.<UserInfo>custom().andLike(UserInfo::getPassword, "%" + userInfo.getPassword() + "%"));
 			}
 			if (userInfo.getUserInfoIndex() != null) {
 				builder.where(WeekendSqls.<UserInfo>custom().andEqualTo(UserInfo::getUserInfoIndex, userInfo.getUserInfoIndex()));
@@ -265,19 +270,43 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-	public Result loginIn(String username, String password) {
-		//查询用户账号是否存在
-		UserInfo userInfo = userInfoMapper.selectOne(UserInfo.builder().isDelete(0).username(username).build());
-		if (userInfo == null){
-			return fail(ResultCode.USER_LOGIN_ERROR.getCode(),ResultCode.USER_LOGIN_ERROR.getMsg());
+	public Result loginIn(String code) {
+		WxMaProperties.Config config = wxMaProperties.getConfigs().get(0);
+		final WxMaService wxService = WxMaConfiguration.getMaService(config.getAppid());
+		try {
+			WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(code);
+			String sessionKey = session.getSessionKey();
+			String openId = session.getOpenid();
+			String unionId = session.getUnionid();
+			//TODO 可以增加自己的逻辑，关联业务相关数据
+			Map<String ,String > result = new HashMap<>(1);
+			Optional<UserInfo> optional = Optional.ofNullable(userInfoMapper.selectOne(UserInfo.builder().isDelete(0).unionId(unionId).build()));
+			if (optional.isPresent()){
+				UserInfo userInfo = optional.get();
+				String token = JwtUtils.getSub(userInfo.getId().toString());
+				result.put("token",token);
+				userInfo.setLandingTime(LocalDateTime.now());
+				userInfo.setUserInfoIndex(userInfo.getId());
+				userInfoMapper.updateByPrimaryKeySelective(userInfo);
+			}else {
+				UserInfo build = UserInfo.builder().isDelete(0).unionId(unionId).landingTime(LocalDateTime.now()).openId(openId).build();
+				userInfoMapper.insert(build);
+				String token = JwtUtils.getSub(build.getId().toString());
+				result.put("token",token);
+			}
+			result.put("openId",openId);
+			result.put("unionId",unionId);
+			result.put("sessionKey",sessionKey);
+			return ok(result);
+		} catch (WxErrorException e) {
+			log.error(e.getMessage(), e);
+			return fail("验证失败");
 		}
-		if (!passwordEncoder.matches(password,userInfo.getPassword())){
-			return fail(ResultCode.USER_LOGIN_ERROR.getCode(),ResultCode.USER_LOGIN_ERROR.getMsg());
-		}
-        String token = JwtUtils.getSub(userInfo.getId().toString());
-        Map<String ,String > result = new HashMap<>(1);
-        result.put("token",token);
-		return ok(result);
+
+
+
+
+
 	}
 }
 
