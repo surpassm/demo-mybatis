@@ -45,6 +45,7 @@ public class FileManageController {
     private FileManageService fileManageService;
 
 
+	@Login
     @PostMapping("v1/getById")
     @ApiOperation(value = "根据主键删除")
     public Result deleteGetById(@ApiParam(hidden = true)@Login Long userId,
