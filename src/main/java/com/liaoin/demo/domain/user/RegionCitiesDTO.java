@@ -19,7 +19,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ApiModel(value = "城市信息表")
-public class RegionCitiesDto implements Serializable {
+public class RegionCitiesDTO implements Serializable {
 
 
     public RegionCities convertTo(){
@@ -27,21 +27,21 @@ public class RegionCitiesDto implements Serializable {
         return impl.doForward(this);
     }
 
-    public RegionCitiesDto convertFor(RegionCities regionCities){
+    public RegionCitiesDTO convertFor(RegionCities regionCities){
         ConvertImpl impl = new ConvertImpl();
         return impl.doBackward(regionCities);
     }
 
-    private static class ConvertImpl implements Convert<RegionCitiesDto, RegionCities> {
+    private static class ConvertImpl implements Convert<RegionCitiesDTO, RegionCities> {
         @Override
-        public RegionCities doForward(RegionCitiesDto dto) {
+        public RegionCities doForward(RegionCitiesDTO dto) {
             RegionCities regionCities = new RegionCities();
             BeanUtils.copyProperties(dto,regionCities);
             return regionCities;
         }
         @Override
-        public RegionCitiesDto doBackward(RegionCities regionCities) {
-            RegionCitiesDto dto = new RegionCitiesDto();
+        public RegionCitiesDTO doBackward(RegionCities regionCities) {
+            RegionCitiesDTO dto = new RegionCitiesDTO();
             BeanUtils.copyProperties(regionCities, dto);
             return dto;
         }

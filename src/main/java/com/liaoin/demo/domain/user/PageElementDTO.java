@@ -19,7 +19,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ApiModel(value = "页面元素")
-public class PageElementDto implements Serializable {
+public class PageElementDTO implements Serializable {
 
 
     public PageElement convertTo(){
@@ -27,21 +27,21 @@ public class PageElementDto implements Serializable {
         return impl.doForward(this);
     }
 
-    public PageElementDto convertFor(PageElement pageElement){
+    public PageElementDTO convertFor(PageElement pageElement){
         ConvertImpl impl = new ConvertImpl();
         return impl.doBackward(pageElement);
     }
 
-    private static class ConvertImpl implements Convert<PageElementDto, PageElement> {
+    private static class ConvertImpl implements Convert<PageElementDTO, PageElement> {
         @Override
-        public PageElement doForward(PageElementDto dto) {
+        public PageElement doForward(PageElementDTO dto) {
             PageElement pageElement = new PageElement();
             BeanUtils.copyProperties(dto,pageElement);
             return pageElement;
         }
         @Override
-        public PageElementDto doBackward(PageElement pageElement) {
-            PageElementDto dto = new PageElementDto();
+        public PageElementDTO doBackward(PageElement pageElement) {
+            PageElementDTO dto = new PageElementDTO();
             BeanUtils.copyProperties(pageElement, dto);
             return dto;
         }

@@ -1,8 +1,12 @@
 package com.liaoin.demo.service.user;
 
 import com.liaoin.demo.common.Result;
-import com.liaoin.demo.domain.user.DepartmentDto;
+import com.liaoin.demo.domain.user.DepartmentDTO;
 import com.liaoin.demo.entity.user.Department;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author mc
@@ -11,19 +15,44 @@ import com.liaoin.demo.entity.user.Department;
  * Description 部门接口
  */
 public interface DepartmentService {
+
+
+    /**
+     * 判断名称是否存在
+     * @param name name
+     * @return boolean
+     */
+    Boolean isGetName(@NotEmpty String name);
+
+    /**
+     * 根据主键查询
+     *
+     * @param id 主键
+     * @return department
+     */
+    Department getDepartmentId(@NotNull @Min(1) Long id);
+
     /**
      * 新增
      *
      * @return 前端返回格式
      */
-    Result insert(Long userId, DepartmentDto dto);
+    Department insert(Department department);
+    /**
+     * 新增
+     *
+     * @return 前端返回格式
+     */
+    Department insert(Long userId,DepartmentDTO dto);
+
+
     /**
      * 修改
      *
      * @param dto 对象
      * @return 前端返回格式
      */
-    Result update(Long userId,DepartmentDto dto);
+    Department update(Long userId, DepartmentDTO dto);
 
     /**
      * 根据主键删除
@@ -83,6 +112,7 @@ public interface DepartmentService {
      * @return
      */
     int getDepartmentName(String departmentName);
+
 
 
 }

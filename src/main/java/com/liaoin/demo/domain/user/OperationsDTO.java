@@ -19,7 +19,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ApiModel(value = "后台功能接口")
-public class OperationsDto implements Serializable {
+public class OperationsDTO implements Serializable {
 
 
     public Operations convertTo(){
@@ -27,21 +27,21 @@ public class OperationsDto implements Serializable {
         return impl.doForward(this);
     }
 
-    public OperationsDto convertFor(Operations operations){
+    public OperationsDTO convertFor(Operations operations){
         ConvertImpl impl = new ConvertImpl();
         return impl.doBackward(operations);
     }
 
-    private static class ConvertImpl implements Convert<OperationsDto, Operations> {
+    private static class ConvertImpl implements Convert<OperationsDTO, Operations> {
         @Override
-        public Operations doForward(OperationsDto dto) {
+        public Operations doForward(OperationsDTO dto) {
             Operations operations = new Operations();
             BeanUtils.copyProperties(dto,operations);
             return operations;
         }
         @Override
-        public OperationsDto doBackward(Operations operations) {
-            OperationsDto dto = new OperationsDto();
+        public OperationsDTO doBackward(Operations operations) {
+            OperationsDTO dto = new OperationsDTO();
             BeanUtils.copyProperties(operations, dto);
             return dto;
         }

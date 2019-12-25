@@ -4,10 +4,11 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.liaoin.demo.common.Result;
 import com.liaoin.demo.common.ResultCode;
-import com.liaoin.demo.domain.user.DepartmentDto;
+import com.liaoin.demo.domain.user.DepartmentDTO;
 import com.liaoin.demo.entity.user.Department;
 import com.liaoin.demo.entity.user.DepartmentUserInfo;
 import com.liaoin.demo.entity.user.UserInfo;
+import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.mapper.user.DepartmentMapper;
 import com.liaoin.demo.mapper.user.DepartmentUserInfoMapper;
 import com.liaoin.demo.mapper.user.UserInfoMapper;
@@ -19,6 +20,7 @@ import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -43,34 +45,102 @@ public class DepartmentServiceImpl implements DepartmentService {
     private UserInfoMapper userInfoMapper;
     @Resource
     private DepartmentUserInfoMapper departmentUserInfoMapper;
-    @Resource
-    private CommonImpl commonImpl;
 
+
+    /**
+     * 判断名称是否存在
+     *
+     * @param name name
+     * @return boolean
+     */
     @Override
-    public Result insert(Long userId, DepartmentDto dto) {
-        //查询名称是否存在
-        if (commonImpl.isGetName(dto.getName())){
-            return fail(ResultCode.DATA_ALREADY_EXISTED.getMsg());
-        }
-        Department department = dto.convertTo();
-        //查询父级是否存在
-        if (department.getParentId() != null){
-            Department dep = commonImpl.getDepartmentId(dto.getParentId());
-            if (dep == null){
-                return fail(ResultCode.DATA_ALREADY_EXISTED.getMsg());
-            }
-        }
-        department.setIsDelete(0);
-        department.setCreateTime(LocalDateTime.now());
-        departmentMapper.insert(department);
-        return ok(department);
+    public Boolean isGetName(String name){
+        int i = departmentMapper.selectCount(Department.builder().isDelete(0).name(name).build());
+        return i > 0;
+    }
+    /**
+     * 根据主键查询
+     *
+     * @param id 主键
+     * @return department
+     */
+    @Override
+    public Department getDepartmentId(Long id){
+        return departmentMapper.selectByPrimaryKey(id);
     }
 
-
+    /**
+     * 新增
+     *
+     * @param department 原始对象
+     * @return 新对象
+     */
     @Override
-    public Result update(Long userId, DepartmentDto dto) {
+    public Department insert(Department department) {
+        departmentMapper.insert(department);
+        return department;
+    }
+
+    /**
+     * 根据修改数据
+     *
+     * @param department 待修改对象
+     * @return 返回
+     */
+    public Department update(Department department) {
+        departmentMapper.updateByPrimaryKeySelective(department);
+        return department;
+    }
+
+    /**
+     * 根据主键查询
+     *
+     * @param id 系统标识
+     * @return Optional
+     */
+    public Optional<Department> findById(@NotNull Long id) {
+        return Optional.ofNullable(departmentMapper.selectByPrimaryKey(id));
+
+    }
+
+        /**
+         * 新增
+         *
+         * @param dto 原始对象
+         * @return 新对象
+         */
+    @Override
+    public Department insert(Long userId,DepartmentDTO dto) {
+        //查询名称是否存在
+        if (this.isGetName(dto.getName())){
+            throw new CustomException(ResultCode.ERROR.getCode(),ResultCode.DATA_ALREADY_EXISTED.getMsg());
+        }
+        //查询父级是否存在
+        if (dto.getParentId() != null){
+            Department dep = this.getDepartmentId(dto.getParentId());
+            if (dep == null){
+                throw new CustomException(ResultCode.ERROR.getCode(),ResultCode.DATA_ALREADY_EXISTED.getMsg());
+            }
+        }
+        //对象转化
+        Department department = dto.convertTo();
+        //数据初始化
+        department.setIsDelete(0);
+        department.setCreateTime(LocalDateTime.now());
+        return insert(department);
+    }
+
+    /**
+     * 修改
+     *
+     * @param userId 当前登录用户
+     * @param dto 对象
+     * @return 修改后对象
+     */
+    @Override
+    public Department update(Long userId, DepartmentDTO dto) {
         if (dto == null) {
-            return fail(ResultCode.PARAM_IS_INVALID.getMsg());
+            throw new CustomException(ResultCode.PARAM_IS_INVALID.getMsg());
         }
         //效验当前名称是否重复
         Example.Builder builder = new Example.Builder(Department.class);
@@ -79,23 +149,30 @@ public class DepartmentServiceImpl implements DepartmentService {
         builder.where(WeekendSqls.<Department>custom().andNotIn(Department::getId, Collections.singletonList(dto.getId())));
         int i = departmentMapper.selectCountByExample(builder.build());
         if ( i > 0){
-            return fail(ResultCode.DATA_ALREADY_EXISTED.getMsg());
+            throw new CustomException(ResultCode.DATA_ALREADY_EXISTED.getMsg());
         }
-
+        //查询父级是否存在
+        if (dto.getParentId() != null){
+            Department dep = this.getDepartmentId(dto.getParentId());
+            if (dep == null){
+                throw new CustomException(ResultCode.ERROR.getCode(),ResultCode.DATA_ALREADY_EXISTED.getMsg());
+            }
+        }
         Department department = dto.convertTo();
-
-
-        return ok();
+        return this.update(department);
     }
+
+
     @Override
     public Result deleteGetById(Long userId, Long id) {
         if (id == null) {
-            return fail(ResultCode.PARAM_IS_INVALID.getMsg());
+            throw new CustomException(ResultCode.PARAM_IS_INVALID.getMsg());
         }
-        Department department = departmentMapper.selectByPrimaryKey(id);
-        if (department == null) {
-            return fail(ResultCode.RESULE_DATA_NONE.getMsg());
+        Optional<Department> byId = this.findById(id);
+        if (!byId.isPresent()) {
+            throw new CustomException(ResultCode.RESULE_DATA_NONE.getMsg());
         }
+        Department department = byId.get();
 
         Department build = Department.builder().parentId(department.getId()).build();
         build.setIsDelete(0);

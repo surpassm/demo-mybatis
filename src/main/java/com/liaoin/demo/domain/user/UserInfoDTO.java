@@ -5,11 +5,11 @@ import com.liaoin.demo.annotation.Convert;
 import com.liaoin.demo.entity.user.UserInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 /**
@@ -18,6 +18,7 @@ import java.io.Serializable;
 * Version 1.0
 * Description 用户数据流
 */
+@Data
 @Getter
 @Setter
 @ApiModel(value = "用户")

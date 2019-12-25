@@ -2,8 +2,10 @@ package com.liaoin.demo.controller.user;
 
 import com.liaoin.demo.annotation.Login;
 import com.liaoin.demo.common.Result;
-import com.liaoin.demo.domain.user.DepartmentDto;
+import com.liaoin.demo.common.ResultCode;
+import com.liaoin.demo.domain.user.DepartmentDTO;
 import com.liaoin.demo.entity.user.Department;
+import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.service.user.DepartmentService;
 import io.swagger.annotations.*;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,8 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import java.time.LocalDateTime;
 
 import static com.liaoin.demo.common.Result.fail;
 import static com.liaoin.demo.common.Result.ok;
@@ -36,27 +40,27 @@ public class DepartmentController {
     @Login
     @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
-    public Result insert(@ApiParam(hidden = true) @Login Long userId,
-                         @Valid @RequestBody DepartmentDto dto, BindingResult errors) {
+    public Object insert(@ApiParam(hidden = true) @Login Long userId,
+                         @Valid @RequestBody DepartmentDTO dto, BindingResult errors) {
         if (errors.hasErrors()) {
-            return fail(errors.getAllErrors());
+            return errors.getAllErrors();
         }
-        return departmentService.insert(userId, dto);
+        return departmentService.insert(userId,dto);
     }
 
     @PostMapping("v1/update")
     @ApiOperation(value = "修改")
-    public Result update(@ApiParam(hidden = true) @Login Long userId,
-                         @RequestBody DepartmentDto dto, BindingResult errors) {
+    public Object update(@ApiParam(hidden = true) @Login Long userId,
+                         @RequestBody DepartmentDTO dto, BindingResult errors) {
         if (errors.hasErrors()) {
             return fail(errors.getAllErrors());
         }
-        return ok(departmentService.update(userId,dto));
+        return departmentService.update(userId,dto);
     }
 
     @PostMapping("v1/getById")
     @ApiOperation(value = "根据主键删除")
-    public Result deleteGetById(@ApiParam(hidden = true) @Login Long userId,
+    public Object deleteGetById(@ApiParam(hidden = true) @Login Long userId,
                                 @ApiParam(value = "主键", required = true) @RequestParam(value = "id") Long id) {
         return departmentService.deleteGetById(userId, id);
     }

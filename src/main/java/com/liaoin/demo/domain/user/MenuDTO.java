@@ -2,7 +2,7 @@ package com.liaoin.demo.domain.user;
 
 
 import com.liaoin.demo.annotation.Convert;
-import com.liaoin.demo.entity.user.Group;
+import com.liaoin.demo.entity.user.Menu;
 import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,30 +19,30 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ApiModel(value = "权限")
-public class GroupDto implements Serializable {
+public class MenuDTO implements Serializable {
 
 
-    public Group convertTo(){
+    public Menu convertTo(){
         ConvertImpl impl = new ConvertImpl();
         return impl.doForward(this);
     }
 
-    public GroupDto convertFor(Group group){
+    public MenuDTO convertFor(Menu menu){
         ConvertImpl impl = new ConvertImpl();
-        return impl.doBackward(group);
+        return impl.doBackward(menu);
     }
 
-    private static class ConvertImpl implements Convert<GroupDto, Group> {
+    private static class ConvertImpl implements Convert<MenuDTO, Menu> {
         @Override
-        public Group doForward(GroupDto dto) {
-            Group group = new Group();
-            BeanUtils.copyProperties(dto,group);
-            return group;
+        public Menu doForward(MenuDTO dto) {
+            Menu menu = new Menu();
+            BeanUtils.copyProperties(dto,menu);
+            return menu;
         }
         @Override
-        public GroupDto doBackward(Group group) {
-            GroupDto dto = new GroupDto();
-            BeanUtils.copyProperties(group, dto);
+        public MenuDTO doBackward(Menu menu) {
+            MenuDTO dto = new MenuDTO();
+            BeanUtils.copyProperties(menu, dto);
             return dto;
         }
     }

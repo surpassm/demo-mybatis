@@ -19,7 +19,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ApiModel(value = "权限表")
-public class PowerDto implements Serializable {
+public class PowerDTO implements Serializable {
 
 
     public Power convertTo(){
@@ -27,21 +27,21 @@ public class PowerDto implements Serializable {
         return impl.doForward(this);
     }
 
-    public PowerDto convertFor(Power power){
+    public PowerDTO convertFor(Power power){
         ConvertImpl impl = new ConvertImpl();
         return impl.doBackward(power);
     }
 
-    private static class ConvertImpl implements Convert<PowerDto, Power> {
+    private static class ConvertImpl implements Convert<PowerDTO, Power> {
         @Override
-        public Power doForward(PowerDto dto) {
+        public Power doForward(PowerDTO dto) {
             Power power = new Power();
             BeanUtils.copyProperties(dto,power);
             return power;
         }
         @Override
-        public PowerDto doBackward(Power power) {
-            PowerDto dto = new PowerDto();
+        public PowerDTO doBackward(Power power) {
+            PowerDTO dto = new PowerDTO();
             BeanUtils.copyProperties(power, dto);
             return dto;
         }
