@@ -1,6 +1,6 @@
 
 server:
-  port: 8080
+  port: 8081
 
 spring:
   datasource:
@@ -52,14 +52,7 @@ swagger:
   authorization:
     key-name: Authorization #head对应的key
     auth-regex: ^(?!auth).*$ #url地址中携带auth将不加入swagger token验证
-
-  docket:
-    1、user:
-      title: "用户"
-      base-package: com.liaoin.demo.controller.user
-    2、common:
-      title: "公共"
-      base-package: com.liaoin.demo.controller.common
+  base-package: com.liaoin.demo.controller.user
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
