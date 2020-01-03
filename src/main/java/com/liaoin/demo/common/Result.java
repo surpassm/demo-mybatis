@@ -1,11 +1,11 @@
 package com.liaoin.demo.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 前端JSON返回格式,自定义响应格式
@@ -32,14 +32,7 @@ public class Result<T> {
      * 响应中的数据
      */
     private T data;
-    /**
-     * 分页数据
-     */
-    private Long total;
-    /**
-     * 分页返回
-     */
-    private List<T> rows;
+
 
     public Result(T data) {
         this.code = ResultCode.SUCCESS.getCode();
@@ -55,8 +48,8 @@ public class Result<T> {
     public Result(Long total, List<T> rows) {
         this.code = ResultCode.SUCCESS.getCode();
         this.message = ResultCode.SUCCESS.getMsg();
-        this.total = total;
-        this.rows = rows;
+        this.data = (T) new PageData(total,rows);
+
     }
 
     public Result(Integer code, String message, T data) {
@@ -102,5 +95,22 @@ public class Result<T> {
         this.data = data;
     }
 
+    @Getter
+    @Setter
+    public class PageData<T>{
+        /**
+         * 分页数据
+         */
+        private Long total;
+        /**
+         * 分页返回
+         */
+        private List<T> rows;
+
+        PageData(Long total, List<T> rows){
+            this.total = total;
+            this.rows = rows;
+        }
+    }
 
 }
