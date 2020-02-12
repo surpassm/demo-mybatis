@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liaoin.demo.mapper.PowerMapper">
+
+    <select id="findMenuByPowerId" resultType="com.liaoin.demo.entity.Menu">
+        SELECT
+            m.*
+        FROM
+            m_power_menu pm
+        LEFT JOIN t_menu m ON pm.menu_id = m.id
+        WHERE
+            pm.power_id = #{powerId}
+        AND m.is_delete = 0
+        AND m.parent_id IS NULL
+    </select>
+    <select id="findOperationsByPowerId" resultType="com.liaoin.demo.entity.Operations">
+        SELECT
+            o.*
+        FROM
+            m_power_operations mo
+        LEFT JOIN t_operations o ON mo.operations_id = o.id
+        WHERE
+            mo.power_id = #{powerId}
+        AND o.is_delete = 0
+        AND o.parent_id IS NULL
+
+    </select>
+</mapper>

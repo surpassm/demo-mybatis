@@ -1,7 +1,7 @@
 package com.liaoin.demo.config.aspect;
 
 
-import com.liaoin.demo.entity.common.OperationsLog;
+import com.liaoin.demo.entity.OperationsLog;
 
 /**
  * @author Administrator

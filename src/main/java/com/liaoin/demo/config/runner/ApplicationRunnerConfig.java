@@ -1,23 +1,14 @@
 package com.liaoin.demo.config.runner;
 
-import com.liaoin.demo.entity.user.Operations;
-import com.liaoin.demo.mapper.user.OperationsMapper;
-import io.swagger.models.Path;
-import io.swagger.models.Swagger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.service.Documentation;
 import springfox.documentation.spring.web.DocumentationCache;
 import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2Mapper;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author mc
