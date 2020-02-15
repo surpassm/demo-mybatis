@@ -73,4 +73,11 @@ public interface OperationsService {
 	List<OperationsDTO> findAllParent();
 
 	List<OperationsDTO> findAllChild(Long parentId);
+
+	/**
+	 * 根据用户id获取接口列表
+	 * @param userId
+	 * @return
+	 */
+	List<Operations> findByUserId(Long userId);
 }

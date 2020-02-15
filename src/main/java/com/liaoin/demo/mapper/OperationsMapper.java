@@ -20,4 +20,6 @@ public interface OperationsMapper extends Mapper<Operations>, MySqlMapper<Operat
 	List<OperationsDTO> findAllParent();
 
 	List<OperationsDTO> findAllChild(@Param("parentId") Long parentId);
+
+	List<Operations> findByUserId(@Param("userId") Long userId);
 }

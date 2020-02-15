@@ -12,6 +12,8 @@ import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.mapper.UserGroupMapper;
 import com.liaoin.demo.mapper.UserInfoMapper;
 import com.liaoin.demo.mapper.UserRoleMapper;
+import com.liaoin.demo.service.MenuService;
+import com.liaoin.demo.service.OperationsService;
 import com.liaoin.demo.service.UserInfoService;
 import com.liaoin.demo.util.JwtUtils;
 import com.liaoin.demo.util.ValidateUtil;
@@ -49,6 +51,10 @@ public class UserInfoServiceImpl extends BaseServiceImpl implements UserInfoServ
 	private UserGroupMapper userGroupMapper;
 	@Resource
 	private UserRoleMapper userRoleMapper;
+	@Resource
+	private MenuService menuService;
+	@Resource
+	private OperationsService operationsService;
 
 	@Override
 	public UserInfo insert(UserInfo userInfo) {
@@ -259,7 +265,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl implements UserInfoServ
 	 */
 	@Override
 	public List<MenuDTO> selectUserMenu(Long userId) {
-		return null;
+		return menuService.findByUserId(userId);
 	}
 	/**
 	 * 根据用户标识获取接口
@@ -268,7 +274,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl implements UserInfoServ
 	 */
 	@Override
 	public List<Operations> selectUserOperations(Long userId) {
-		return null;
+		return operationsService.findByUserId(userId);
 	}
 	/**
 	 * 查询账号是否存在

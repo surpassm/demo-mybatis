@@ -96,4 +96,11 @@ public interface MenuService {
 	 * @return
 	 */
 	List<Menu> findByParentId(Long menuId);
+
+	/**
+	 * 根据用户ID查询菜单
+	 * @param userId
+	 * @return
+	 */
+	List<MenuDTO> findByUserId(Long userId);
 }

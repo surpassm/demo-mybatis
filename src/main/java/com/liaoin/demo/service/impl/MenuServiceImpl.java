@@ -150,5 +150,15 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
 		}
 		return select;
 	}
+
+	/**
+	 * 根据用户ID查询菜单
+	 * @param userId
+	 * @return
+	 */
+	@Override
+	public List<MenuDTO> findByUserId(Long userId) {
+		return menuMapper.findByUserId(userId);
+	}
 }
 

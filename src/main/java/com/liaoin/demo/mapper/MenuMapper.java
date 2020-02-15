@@ -29,4 +29,12 @@ public interface MenuMapper extends tk.mybatis.mapper.common.Mapper<Menu>, MySql
 	 * @return
 	 */
 	List<MenuDTO> findAllChild(@Param("parentId") Long parentId);
+
+	/**
+	 * 根据用户ID查询菜单
+	 *
+	 * @param userId 用户ID
+	 * @return 集合
+	 */
+	List<MenuDTO> findByUserId(Long userId);
 }

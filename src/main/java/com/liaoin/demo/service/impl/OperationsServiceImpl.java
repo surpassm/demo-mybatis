@@ -107,5 +107,10 @@ public class OperationsServiceImpl extends BaseServiceImpl implements Operations
 	public List<OperationsDTO> findAllChild(Long parentId) {
 		return operationsMapper.findAllChild(parentId);
 	}
+
+	@Override
+	public List<Operations> findByUserId(Long userId) {
+		return operationsMapper.findByUserId(userId);
+	}
 }
 
