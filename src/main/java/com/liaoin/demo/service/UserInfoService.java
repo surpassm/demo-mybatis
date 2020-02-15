@@ -2,11 +2,14 @@ package com.liaoin.demo.service;
 
 import com.liaoin.demo.common.Result;
 import com.liaoin.demo.common.Token;
+import com.liaoin.demo.domain.MenuDTO;
 import com.liaoin.demo.domain.UserInfoVO;
+import com.liaoin.demo.entity.Operations;
 import com.liaoin.demo.entity.UserInfo;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -66,15 +69,8 @@ public interface UserInfoService {
 	* @param vo vo
 	* @return Banner
 	*/
-	UserInfo insertVO(UserInfoVO vo);
+	UserInfo insertOrUpdate(UserInfoVO vo);
 
-	/**
-	* 修改
-	*
-	* @param vo vo
-	* @return Banner
-	*/
-	UserInfo updateVO(UserInfoVO vo);
 
 	/**
 	 * 创建超级管理员
@@ -110,4 +106,22 @@ public interface UserInfoService {
 	void deleteUserRole(Long userInfoId, Long roleId);
 
 	Result pageQueryRole(Integer page, Integer size, String sort, Long userInfoId);
+	/**
+	 * 根据用户标识获取菜单
+	 * @param userId
+	 * @return
+	 */
+	List<MenuDTO> selectUserMenu(Long userId);
+	/**
+	 * 根据用户标识获取接口
+	 * @param userId
+	 * @return
+	 */
+	List<Operations> selectUserOperations(Long userId);
+	/**
+	 * 查询账号是否存在
+	 * @param username
+	 * @return
+	 */
+	boolean getUsername(String username);
 }
