@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * Version 1.0
  * Description 用于接收授权token 需要登录才能进行操作的注解
  */
-@Target({ElementType.PARAMETER,ElementType.METHOD})
+@Target({ElementType.PARAMETER,ElementType.METHOD,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Login {
     boolean required() default true;

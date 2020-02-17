@@ -2,11 +2,13 @@ package com.liaoin.demo.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liaoin.demo.annotation.JwtConstants;
+import com.liaoin.demo.annotation.Login;
 import com.liaoin.demo.common.Result;
 import com.liaoin.demo.common.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.annotation.Resource;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Objects;
 
 /**
  * @author mc
@@ -29,13 +32,20 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		String token = request.getHeader(JwtConstants.AUTHORIZATION_HEADER_KEY);
-		if (token != null) {
-			request.setAttribute(JwtConstants.AUTHORIZATION_HEADER_KEY, token);
-			return true;
+		//判断当前被拦截的方法是否含有注解
+		if (handler instanceof HandlerMethod){
+			Login methodAnnotation = ((HandlerMethod) handler).getMethodAnnotation(Login.class);
+			if (Objects.nonNull(methodAnnotation)) {
+				String token = request.getHeader(JwtConstants.AUTHORIZATION_HEADER_KEY);
+				if (token != null) {
+					request.setAttribute(JwtConstants.AUTHORIZATION_HEADER_KEY, token);
+					return true;
+				}
+				response(request,response);
+				return false;
+			}
 		}
-		response(request,response);
-		return false;
+		return true;
 	}
 
 

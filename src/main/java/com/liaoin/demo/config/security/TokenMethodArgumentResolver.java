@@ -2,6 +2,8 @@ package com.liaoin.demo.config.security;
 
 import com.liaoin.demo.annotation.JwtConstants;
 import com.liaoin.demo.annotation.Login;
+import com.liaoin.demo.common.ResultCode;
+import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.util.JwtUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -33,7 +35,7 @@ public class TokenMethodArgumentResolver implements HandlerMethodArgumentResolve
         if (token != null) {
             return Long.parseLong(JwtUtils.getToken(token));
         }
-        throw new MissingServletRequestPartException("请携带header:Authorization");
+		throw new CustomException(ResultCode.PERMISSION_NO_ACCESS.getCode(),"请携带header:Authorization");
 
     }
 }

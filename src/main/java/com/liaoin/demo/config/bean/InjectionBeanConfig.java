@@ -73,22 +73,14 @@ public class InjectionBeanConfig {
     @Bean
     public List<String> noVerify() {
         List<String> result = new ArrayList<>();
-        result.add("/swagger-ui**");
-        result.add("/images/**");
-        result.add("/webjars/**");
-        result.add("/v2/api-docs**");
-        result.add("/swagger-resources/**");
-        result.add("/error**");
-        result.add("/websocket/socketServer.ws**");
-        result.add("/sockjs/socketServer.ws**");
-        result.add("/login/**");
-        result.add("/mobile/v1/auth/getPhone**");
-        result.add("/fileManage/v1/auth/getFileNameUrl**");
-        result.add("/fileManage/v1/auth/listUploadedFiles**");
-        result.add("/fileManage/v1/auth/getPath**");
-        result.add("/upload/**");
-        result.add("/csrf**");
-
+		result.add("/swagger-ui**");
+		result.add("/images/**");
+		result.add("/webjars/**");
+		result.add("/v2/api-docs**");
+		result.add("/swagger-resources/**");
+		result.add("/error**");
+		result.add("/csrf**");
+		result.add("/");
         return result;
     }
 
