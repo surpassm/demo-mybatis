@@ -31,7 +31,7 @@ public class TokenMethodArgumentResolver implements HandlerMethodArgumentResolve
 
     @Override
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
-        String token = (String) nativeWebRequest.getAttribute(JwtConstants.AUTHORIZATION_HEADER_KEY, RequestAttributes.SCOPE_REQUEST);
+        String token = nativeWebRequest.getHeader(JwtConstants.AUTHORIZATION_HEADER_KEY);
         if (token != null) {
             return Long.parseLong(JwtUtils.getToken(token));
         }

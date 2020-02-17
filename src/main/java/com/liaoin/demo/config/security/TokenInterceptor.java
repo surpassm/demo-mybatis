@@ -38,7 +38,6 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
 			if (Objects.nonNull(methodAnnotation)) {
 				String token = request.getHeader(JwtConstants.AUTHORIZATION_HEADER_KEY);
 				if (token != null) {
-					request.setAttribute(JwtConstants.AUTHORIZATION_HEADER_KEY, token);
 					return true;
 				}
 				response(request,response);
