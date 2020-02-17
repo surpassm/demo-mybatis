@@ -47,7 +47,7 @@ public class WebAppConfigurer implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		InterceptorRegistration interceptorRegistration = registry.addInterceptor(tokenInterceptor);
+		InterceptorRegistration interceptorRegistration = registry.addInterceptor(tokenInterceptor).addPathPatterns("/**");
 
 		interceptorRegistration.excludePathPatterns(noVerify);
 	}
