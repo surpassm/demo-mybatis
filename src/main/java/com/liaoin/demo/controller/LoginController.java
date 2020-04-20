@@ -1,5 +1,6 @@
 package com.liaoin.demo.controller;
 
+import com.liaoin.demo.annotation.ResponseResult;
 import com.liaoin.demo.service.UserInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,7 @@ public class LoginController {
 	@Resource
 	private UserInfoService userInfoService;
 
+	@ResponseResult
 	@PostMapping("pc/v1/createSupperAdmin")
 	@ApiOperation(value = "创建超级管理员[临时接口,正式环境删除]")
 	public Object createSupperAdmin() {

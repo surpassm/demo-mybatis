@@ -1,5 +1,7 @@
 package com.liaoin.demo.config.runner;
 
+import com.liaoin.demo.entity.Operations;
+import com.liaoin.demo.mapper.OperationsMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -25,8 +27,6 @@ public class ApplicationRunnerConfig implements ApplicationRunner {
 	private DocumentationCache documentationCache;
 	@Resource
 	private OperationsMapper operationsMapper;
-//	@Resource
-//	private SwaggerProperties swaggerProperties;
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {

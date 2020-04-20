@@ -28,7 +28,7 @@
 
 
 
-    <select id="pageQueryDepartmentPerson" resultType="com.liaoin.smart.oauth.entity.UserInfo">
+    <select id="pageQueryDepartmentPerson" resultType="com.liaoin.demo.entity.UserInfo">
         SELECT
             ui.id,
             ui.username,

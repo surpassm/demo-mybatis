@@ -1,5 +1,6 @@
 package com.liaoin.demo.config.handler;
 
+import com.liaoin.demo.annotation.ResponseResult;
 import com.liaoin.demo.common.Result;
 import com.liaoin.demo.common.ResultCode;
 import org.springframework.core.MethodParameter;
@@ -8,10 +9,14 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import springfox.documentation.swagger.web.ApiResourceController;
 import springfox.documentation.swagger2.web.Swagger2Controller;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +28,7 @@ import java.util.List;
  */
 @ControllerAdvice(annotations = RestController.class)
 public class ApiResultHandler implements ResponseBodyAdvice<Object> {
+    private static final String RESPONSE_RESULT_ANN = "RESPONSE_RESULT_ANN";
     /**
      * 不需要拦截的类路径，这里写的是Class
      * 如果该类所在项目没有相关的依赖，可以换成String-类的全路径
@@ -40,10 +46,12 @@ public class ApiResultHandler implements ResponseBodyAdvice<Object> {
         if (SKIP_CLASS_LIST.contains(returnType.getDeclaringClass())) {
             return false;
         }
-//        Method returnTypeMethod = returnType.getMethod();
-//        if (returnTypeMethod != null) {
-//            return !returnTypeMethod.isAnnotationPresent(RestSkip.class);
-//        }
+        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (sra != null) {
+            HttpServletRequest request = sra.getRequest();
+            ResponseResult attribute = (ResponseResult) request.getAttribute(RESPONSE_RESULT_ANN);
+            return attribute != null;
+        }
         return true;
     }
 
