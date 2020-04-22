@@ -48,8 +48,9 @@ public class AuthorizationAop {
                 if (!interfaceAuth.hasPermission(request)) {
                     throw new CustomException(ResultCode.PERMISSION_NO_ACCESS.getCode(), ResultCode.PERMISSION_NO_ACCESS.getMsg());
                 }
+            }else {
+                throw new RuntimeException("接口设置错误");
             }
-            throw new RuntimeException("接口设置错误");
         }
         return joinPoint.proceed();
     }
