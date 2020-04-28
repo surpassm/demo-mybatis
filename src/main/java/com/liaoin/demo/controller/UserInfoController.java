@@ -6,6 +6,7 @@ import com.liaoin.demo.domain.UserInfoVO;
 import com.liaoin.demo.entity.UserInfo;
 import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.service.UserInfoService;
+import com.liaoin.demo.util.ValidateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -43,11 +44,7 @@ public class UserInfoController {
     @ApiOperation(value = "新增")
     public Object insert(@ApiParam(hidden = true)@Login Long userId,
 						 @Valid @RequestBody UserInfoVO vo, BindingResult errors) {
-        if (errors.hasErrors()){
-			StringBuilder builder = new StringBuilder();
-			errors.getAllErrors().forEach(i -> builder.append(i.getDefaultMessage()).append(","));
-            throw new CustomException(ResultCode.PARAM_IS_INVALID.getCode(),builder.toString());
-		}
+		ValidateUtil.check(errors);
         return userInfoService.insertOrUpdate(vo);
     }
 
@@ -56,11 +53,7 @@ public class UserInfoController {
     @ApiOperation(value = "修改")
     public Object update(@ApiParam(hidden = true)@Login Long userId,
 						 @Valid @RequestBody UserInfoVO vo, BindingResult errors) {
-        if (errors.hasErrors()){
-			StringBuilder builder = new StringBuilder();
-			errors.getAllErrors().forEach(i -> builder.append(i.getDefaultMessage()).append(","));
-            throw new CustomException(ResultCode.PARAM_IS_INVALID.getCode(),builder.toString());
-		}
+		ValidateUtil.check(errors);
         return userInfoService.insertOrUpdate(vo);
     }
 

@@ -27,7 +27,6 @@ public interface RegionAreasService {
 	 * 修改
 	 *
 	 * @param regionAreas 对象
-	 * @return 前端返回格式
 	 */
     void update(RegionAreas regionAreas);
 
@@ -35,7 +34,6 @@ public interface RegionAreasService {
 	 * 根据主键删除
 	 *
 	 * @param id 标识
-	 * @return 前端返回格式
 	 */
 	void deleteById(@NotNull @Min(1) Long id);
 

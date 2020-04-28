@@ -133,11 +133,11 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
 	}
 	/**
 	 * 根据角色ID分页查询部门
-	 * @param page
-	 * @param size
-	 * @param sort
-	 * @param roleId
-	 * @return
+	 * @param page 当前页
+	 * @param size 大小
+	 * @param sort 排序
+	 * @param roleId 角色标识
+	 * @return Result
 	 */
 	@Override
 	public Result pageQueryDepartment(Integer page, Integer size, String sort, Long roleId) {
@@ -163,11 +163,11 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
 	}
 	/**
 	 * 根据角色ID分页查询权限
-	 * @param page
-	 * @param size
-	 * @param sort
-	 * @param roleId
-	 * @return
+	 * @param page 当前页
+	 * @param size 大小
+	 * @param sort 排序
+	 * @param roleId 角色标识
+	 * @return Result
 	 */
 	@Override
 	public Result pageQueryPower(Integer page, Integer size, String sort, Long roleId) {

@@ -5,6 +5,7 @@ import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.OperationsVO;
 import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.service.OperationsService;
+import com.liaoin.demo.util.ValidateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -41,11 +42,7 @@ public class OperationsController {
     @ApiOperation(value = "新增")
     public Object insert(@ApiParam(hidden = true)@Login Long userId,
 						 @Valid @RequestBody OperationsVO vo, BindingResult errors) {
-        if (errors.hasErrors()){
-			StringBuilder builder = new StringBuilder();
-			errors.getAllErrors().forEach(i -> builder.append(i.getDefaultMessage()).append(","));
-            throw new CustomException(ResultCode.PARAM_IS_INVALID.getCode(),builder.toString());
-		}
+        ValidateUtil.check(errors);
         return operationsService.insertOrUpdate(vo);
     }
 
@@ -54,11 +51,7 @@ public class OperationsController {
     @ApiOperation(value = "修改")
     public Object update(@ApiParam(hidden = true)@Login Long userId,
 						 @Valid @RequestBody OperationsVO vo, BindingResult errors) {
-        if (errors.hasErrors()){
-			StringBuilder builder = new StringBuilder();
-			errors.getAllErrors().forEach(i -> builder.append(i.getDefaultMessage()).append(","));
-            throw new CustomException(ResultCode.PARAM_IS_INVALID.getCode(),builder.toString());
-		}
+        ValidateUtil.check(errors);
         return operationsService.insertOrUpdate(vo);
     }
 

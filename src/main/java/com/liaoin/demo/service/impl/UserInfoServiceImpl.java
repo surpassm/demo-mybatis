@@ -142,11 +142,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl implements UserInfoServ
 	}
 
 
-	/**
-	 * 创建超级管理员
-	 *
-	 * @return
-	 */
+
 	@Override
 	public UserInfo createSupperAdmin() {
 		String username = "admin";
@@ -176,6 +172,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl implements UserInfoServ
 	 * @param password 密码
 	 * @return token
 	 */
+	@Override
 	public Token login(String username, String password) {
 		Optional<UserInfo> userInfoOptional = findOne(UserInfo.builder()
 				.username(username)
@@ -258,29 +255,17 @@ public class UserInfoServiceImpl extends BaseServiceImpl implements UserInfoServ
 		Page<Role> all = (Page<Role>) userInfoMapper.findRoleByUserId(userInfoId);
 		return ok(all.getTotal(), all.getResult());
 	}
-	/**
-	 * 根据用户标识获取菜单
-	 * @param userId
-	 * @return
-	 */
+
 	@Override
 	public List<MenuDTO> selectUserMenu(Long userId) {
 		return menuService.findByUserId(userId);
 	}
-	/**
-	 * 根据用户标识获取接口
-	 * @param userId
-	 * @return
-	 */
+
 	@Override
 	public List<Operations> selectUserOperations(Long userId) {
 		return operationsService.findByUserId(userId);
 	}
-	/**
-	 * 查询账号是否存在
-	 * @param username
-	 * @return
-	 */
+
 	@Override
 	public boolean getUsername(String username) {
 		Optional<UserInfo> one = findOne(UserInfo.builder().username(username).isDelete(0).build());

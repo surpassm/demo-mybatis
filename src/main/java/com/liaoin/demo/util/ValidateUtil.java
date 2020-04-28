@@ -1,6 +1,10 @@
 package com.liaoin.demo.util;
 
 
+import com.liaoin.demo.common.ResultCode;
+import com.liaoin.demo.exception.CustomException;
+import org.springframework.validation.BindingResult;
+
 import java.util.regex.Pattern;
 
 /**
@@ -10,6 +14,17 @@ import java.util.regex.Pattern;
  * Description 效验工具集
  */
 public class ValidateUtil {
+
+	public static void check(BindingResult errors){
+		if (errors.hasErrors()){
+			StringBuilder builder = new StringBuilder();
+			errors.getAllErrors().forEach(i -> builder.append(i.getDefaultMessage()).append(","));
+			throw new CustomException(ResultCode.PARAM_IS_INVALID.getCode(),builder.toString());
+		}
+	}
+
+
+
 	/**
 	 * 效验手机号码是否为1开头和11位
 	 */
@@ -84,4 +99,7 @@ public class ValidateUtil {
 	public static boolean isBankCode(String str) {
 		return str != null && BANKCODE.matcher(str).matches();
 	}
+
+
+
 }

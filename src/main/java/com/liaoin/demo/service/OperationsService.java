@@ -29,7 +29,6 @@ public interface OperationsService {
 	 * 修改
 	 *
 	 * @param operations 对象
-	 * @return 前端返回格式
 	 */
     void update(Operations operations);
 
@@ -37,7 +36,6 @@ public interface OperationsService {
 	 * 根据主键删除
 	 *
 	 * @param id 标识
-	 * @return 前端返回格式
 	 */
 	void deleteById(@NotNull @Min(1) Long id);
 
@@ -69,15 +67,23 @@ public interface OperationsService {
 	*/
 	Operations insertOrUpdate(OperationsVO vo);
 
-
+	/**
+	 * 查询所有父级
+	 * @return OperationsDTO
+	 */
 	List<OperationsDTO> findAllParent();
 
+	/**
+	 * 根据父级ID查询所有子级
+	 * @param parentId parentId
+	 * @return OperationsDTO
+	 */
 	List<OperationsDTO> findAllChild(Long parentId);
 
 	/**
 	 * 根据用户id获取接口列表
-	 * @param userId
-	 * @return
+	 * @param userId userId
+	 * @return Operations
 	 */
 	List<Operations> findByUserId(Long userId);
 }
