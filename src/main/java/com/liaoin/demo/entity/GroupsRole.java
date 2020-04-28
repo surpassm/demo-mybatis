@@ -23,9 +23,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "m_group_role")
-@org.hibernate.annotations.Table(appliesTo = "m_group_role", comment = "组角色")
-public class GroupRole implements Serializable {
+@Table
+@org.hibernate.annotations.Table(appliesTo = "groups_role", comment = "组角色")
+public class GroupsRole implements Serializable {
 
 	@Id
 	@Min(0)
@@ -34,7 +34,7 @@ public class GroupRole implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(targetEntity = Group.class)
+	@ManyToOne(targetEntity = Groups.class)
 	@JoinColumn(name = "group_id", referencedColumnName = "id")
 	private Long groupId;
 	@ManyToOne(targetEntity = Role.class)

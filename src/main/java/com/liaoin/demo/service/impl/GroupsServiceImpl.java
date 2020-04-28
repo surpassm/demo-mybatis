@@ -3,16 +3,16 @@ package com.liaoin.demo.service.impl;
 import com.github.pagehelper.Page;
 import com.liaoin.demo.common.Result;
 import com.liaoin.demo.common.ResultCode;
-import com.liaoin.demo.domain.GroupDTO;
-import com.liaoin.demo.domain.GroupVO;
+import com.liaoin.demo.domain.GroupsDTO;
+import com.liaoin.demo.domain.GroupsVO;
 import com.liaoin.demo.entity.*;
 import com.liaoin.demo.exception.CustomException;
-import com.liaoin.demo.mapper.GroupDepartmentMapper;
-import com.liaoin.demo.mapper.GroupMapper;
-import com.liaoin.demo.mapper.GroupMenuMapper;
-import com.liaoin.demo.mapper.GroupRoleMapper;
+import com.liaoin.demo.mapper.GroupsDepartmentMapper;
+import com.liaoin.demo.mapper.GroupsMapper;
+import com.liaoin.demo.mapper.GroupsMenuMapper;
+import com.liaoin.demo.mapper.GroupsRoleMapper;
 import com.liaoin.demo.service.DepartmentService;
-import com.liaoin.demo.service.GroupService;
+import com.liaoin.demo.service.GroupsService;
 import com.liaoin.demo.service.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,15 +37,15 @@ import static com.liaoin.demo.common.Result.ok;
 @Slf4j
 @Service
 @Transactional(rollbackFor={RuntimeException.class, Exception.class})
-public class GroupServiceImpl extends BaseServiceImpl implements GroupService {
+public class GroupsServiceImpl extends BaseServiceImpl implements GroupsService {
     @Resource
-    private GroupMapper groupMapper;
+    private GroupsMapper groupsMapper;
     @Resource
-	private GroupDepartmentMapper groupDepartmentMapper;
+	private GroupsDepartmentMapper groupsDepartmentMapper;
     @Resource
-	private GroupRoleMapper groupRoleMapper;
+	private GroupsRoleMapper groupsRoleMapper;
     @Resource
-	private GroupMenuMapper groupMenuMapper;
+	private GroupsMenuMapper groupsMenuMapper;
     @Resource
 	private DepartmentService departmentService;
     @Resource
@@ -54,87 +54,87 @@ public class GroupServiceImpl extends BaseServiceImpl implements GroupService {
 
 
     @Override
-    public Group insert(Group group) {
-        groupMapper.insert(group);
-        return group;
+    public Groups insert(Groups groups) {
+        groupsMapper.insert(groups);
+        return groups;
     }
 
     @Override
-    public void update(Group group) {
-        groupMapper.updateByPrimaryKeySelective(group);
+    public void update(Groups groups) {
+        groupsMapper.updateByPrimaryKeySelective(groups);
     }
 
     @Override
     public void deleteById(Long id){
-        Optional<Group> byId = this.findById(id);
+        Optional<Groups> byId = this.findById(id);
         if (!byId.isPresent()) {
             throw new CustomException(ResultCode.ERROR.getCode(), ResultCode.RESULT_DATA_NONE.getMsg());
         }
-        Group group = byId.get();
-        group.setIsDelete(1);
-        this.update(group);
+        Groups groups = byId.get();
+        groups.setIsDelete(1);
+        this.update(groups);
     }
 
 
     @Override
-    public Optional<Group> findById(Long id) {
-        return Optional.ofNullable(groupMapper.selectByPrimaryKey(id));
+    public Optional<Groups> findById(Long id) {
+        return Optional.ofNullable(groupsMapper.selectByPrimaryKey(id));
 
     }
 
     @Override
-    public Result pageQuery(Integer page, Integer size, String sort, GroupVO groupVO) {
+    public Result pageQuery(Integer page, Integer size, String sort, GroupsVO groupsVO) {
 		super.pageQuery(page,size,sort);
-        Example.Builder builder = new Example.Builder(Group.class);
-        builder.where(WeekendSqls.<Group>custom().andEqualTo(Group::getIsDelete, 0));
-        if(groupVO != null){
+        Example.Builder builder = new Example.Builder(Groups.class);
+        builder.where(WeekendSqls.<Groups>custom().andEqualTo(Groups::getIsDelete, 0));
+        if(groupsVO != null){
         }
-		builder.where(WeekendSqls.<Group>custom().andIsNull(Group::getParentId));
-        Page<Group> all = (Page<Group>) groupMapper.selectByExample(builder.build());
+		builder.where(WeekendSqls.<Groups>custom().andIsNull(Groups::getParentId));
+        Page<Groups> all = (Page<Groups>) groupsMapper.selectByExample(builder.build());
         return ok(all.getTotal(),all.getResult());
     }
 
     @Override
-    public Group insertOrUpdate(GroupVO vo) {
-		Group group = vo.convertTo();
+    public Groups insertOrUpdate(GroupsVO vo) {
+		Groups groups = vo.convertTo();
 		//父级效验
-		Long parentId = group.getParentId();
+		Long parentId = groups.getParentId();
 		if (parentId != null){
 			if (!findById(parentId).isPresent()){
 				throw new CustomException(ResultCode.RESULT_DATA_NONE.getCode(),ResultCode.RESULT_DATA_NONE.getMsg());
 			}
 		}
-		if (group.getId() == null){
-			group.setIsDelete(0);
-			this.insert(group);
+		if (groups.getId() == null){
+			groups.setIsDelete(0);
+			this.insert(groups);
 		}else {
-			this.update(group);
+			this.update(groups);
 		}
-		return group;
+		return groups;
     }
 
 	@Override
-	public List<GroupDTO> findAllParent() {
-		return groupMapper.findAllParent();
+	public List<GroupsDTO> findAllParent() {
+		return groupsMapper.findAllParent();
 	}
 
 	@Override
-	public List<GroupDTO> findAllChild(Long parentId) {
-		return groupMapper.findAllChild(parentId);
+	public List<GroupsDTO> findAllChild(Long parentId) {
+		return groupsMapper.findAllChild(parentId);
 	}
 
 	@Override
 	public void addGroupDepartment(Long groupId, Long departmentId) {
-		GroupDepartment groupDepartment = GroupDepartment.builder().groupId(groupId).departmentId(departmentId).build();
-		int i = groupDepartmentMapper.selectCount(groupDepartment);
+		GroupsDepartment groupsDepartment = GroupsDepartment.builder().groupId(groupId).departmentId(departmentId).build();
+		int i = groupsDepartmentMapper.selectCount(groupsDepartment);
 		if ( i == 0){
-			List<GroupDepartment> groupDepartments = new ArrayList<>();
+			List<GroupsDepartment> groupsDepartments = new ArrayList<>();
 			List<Department> departments = departmentService.findByParentId(departmentId);
 			for (Department department : departments) {
-				groupDepartments.add(GroupDepartment.builder().groupId(groupId).departmentId(department.getId()).build());
+				groupsDepartments.add(GroupsDepartment.builder().groupId(groupId).departmentId(department.getId()).build());
 			}
-			groupDepartments.add(groupDepartment);
-			groupDepartmentMapper.insertList(groupDepartments);
+			groupsDepartments.add(groupsDepartment);
+			groupsDepartmentMapper.insertList(groupsDepartments);
 		}else {
 			throw new CustomException(ResultCode.DATA_ALREADY_EXISTED.getCode(),ResultCode.DATA_ALREADY_EXISTED.getMsg());
 		}
@@ -144,9 +144,9 @@ public class GroupServiceImpl extends BaseServiceImpl implements GroupService {
 	public void deleteGroupDepartment(Long groupId, Long departmentId) {
 		List<Department> departments = departmentService.findByParentId(departmentId);
 		for (Department department : departments) {
-			groupDepartmentMapper.delete(GroupDepartment.builder().departmentId(department.getId()).groupId(groupId).build());
+			groupsDepartmentMapper.delete(GroupsDepartment.builder().departmentId(department.getId()).groupId(groupId).build());
 		}
-		groupDepartmentMapper.delete(GroupDepartment.builder().departmentId(departmentId).groupId(groupId).build());
+		groupsDepartmentMapper.delete(GroupsDepartment.builder().departmentId(departmentId).groupId(groupId).build());
 	}
 	/**
 	 * 根据组ID分页查询部门
@@ -159,7 +159,7 @@ public class GroupServiceImpl extends BaseServiceImpl implements GroupService {
 	@Override
 	public Result pageQueryDepartment(Integer page, Integer size, String sort, Long groupId) {
 		super.pageQuery(page,size,sort);
-		Page<Department> all = (Page<Department>) groupMapper.findDepartmentByGroupId(groupId);
+		Page<Department> all = (Page<Department>) groupsMapper.findDepartmentByGroupId(groupId);
 		return ok(all.getTotal(),all.getResult());
 	}
 	/**
@@ -169,16 +169,16 @@ public class GroupServiceImpl extends BaseServiceImpl implements GroupService {
 	 */
 	@Override
 	public void addGroupMenu(Long groupId, Long menuId) {
-		GroupMenu build = GroupMenu.builder().groupId(groupId).menuId(menuId).build();
-		int i = groupMenuMapper.selectCount(build);
+		GroupsMenu build = GroupsMenu.builder().groupId(groupId).menuId(menuId).build();
+		int i = groupsMenuMapper.selectCount(build);
 		if ( i == 0){
-			List<GroupMenu> groupMenus = new ArrayList<>();
+			List<GroupsMenu> groupsMenus = new ArrayList<>();
 			List<Menu> menus = menuService.findByParentId(menuId);
 			for (Menu menu : menus) {
-				groupMenus.add(GroupMenu.builder().groupId(groupId).menuId(menu.getId()).build());
+				groupsMenus.add(GroupsMenu.builder().groupId(groupId).menuId(menu.getId()).build());
 			}
-			groupMenus.add(build);
-			groupMenuMapper.insertList(groupMenus);
+			groupsMenus.add(build);
+			groupsMenuMapper.insertList(groupsMenus);
 		}else {
 			throw new CustomException(ResultCode.DATA_ALREADY_EXISTED.getCode(),ResultCode.DATA_ALREADY_EXISTED.getMsg());
 		}
@@ -192,9 +192,9 @@ public class GroupServiceImpl extends BaseServiceImpl implements GroupService {
 	public void deleteGroupMenu(Long groupId, Long menuId) {
 		List<Menu> menus = menuService.findByParentId(menuId);
 		for (Menu menu : menus) {
-			groupMenuMapper.delete(GroupMenu.builder().groupId(groupId).menuId(menu.getId()).build());
+			groupsMenuMapper.delete(GroupsMenu.builder().groupId(groupId).menuId(menu.getId()).build());
 		}
-		groupMenuMapper.delete(GroupMenu.builder().groupId(groupId).menuId(menuId).build());
+		groupsMenuMapper.delete(GroupsMenu.builder().groupId(groupId).menuId(menuId).build());
 	}
 	/**
 	 * 根据组ID分页查询菜单
@@ -207,7 +207,7 @@ public class GroupServiceImpl extends BaseServiceImpl implements GroupService {
 	@Override
 	public Result pageQueryMenu(Integer page, Integer size, String sort, Long groupId) {
 		super.pageQuery(page,size,sort);
-		Page<Menu> all = (Page<Menu>) groupMapper.findMenuByGroupId(groupId);
+		Page<Menu> all = (Page<Menu>) groupsMapper.findMenuByGroupId(groupId);
 		return ok(all.getTotal(),all.getResult());
 	}
 
@@ -218,10 +218,10 @@ public class GroupServiceImpl extends BaseServiceImpl implements GroupService {
 	 */
 	@Override
 	public void addGroupRole(Long groupId, Long roleId) {
-		GroupRole build = GroupRole.builder().groupId(groupId).roleId(roleId).build();
-		int i = groupRoleMapper.selectCount(build);
+		GroupsRole build = GroupsRole.builder().groupId(groupId).roleId(roleId).build();
+		int i = groupsRoleMapper.selectCount(build);
 		if ( i == 0){
-			groupRoleMapper.insert(build);
+			groupsRoleMapper.insert(build);
 		}else {
 			throw new CustomException(ResultCode.DATA_ALREADY_EXISTED.getCode(),ResultCode.DATA_ALREADY_EXISTED.getMsg());
 		}
@@ -233,7 +233,7 @@ public class GroupServiceImpl extends BaseServiceImpl implements GroupService {
 	 */
 	@Override
 	public void deleteGroupRole(Long groupId, Long roleId) {
-		groupRoleMapper.delete(GroupRole.builder().groupId(groupId).roleId(roleId).build());
+		groupsRoleMapper.delete(GroupsRole.builder().groupId(groupId).roleId(roleId).build());
 	}
 	/**
 	 * 根据组ID分页查询角色
@@ -246,7 +246,7 @@ public class GroupServiceImpl extends BaseServiceImpl implements GroupService {
 	@Override
 	public Result pageQueryRole(Integer page, Integer size, String sort, Long groupId) {
 		super.pageQuery(page,size,sort);
-		Page<Role> all = (Page<Role>) groupMapper.findRoleByGroupId(groupId);
+		Page<Role> all = (Page<Role>) groupsMapper.findRoleByGroupId(groupId);
 		return ok(all.getTotal(),all.getResult());
 	}
 }

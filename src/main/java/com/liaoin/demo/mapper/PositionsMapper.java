@@ -1,7 +1,7 @@
 package com.liaoin.demo.mapper;
 
-import com.liaoin.demo.domain.PositionDTO;
-import com.liaoin.demo.entity.Position;
+import com.liaoin.demo.domain.PositionsDTO;
+import com.liaoin.demo.entity.Positions;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;
@@ -14,10 +14,10 @@ import java.util.List;
   * Version 1.0
   * Description 职位持久层
   */
-public interface PositionMapper extends Mapper<Position>, MySqlMapper<Position> {
+public interface PositionsMapper extends Mapper<Positions>, MySqlMapper<Positions> {
 
 
-	List<PositionDTO> findAllParent();
+	List<PositionsDTO> findAllParent();
 
-	List<PositionDTO> findAllChild(@Param("parentId") Long parentId);
+	List<PositionsDTO> findAllChild(@Param("parentId") Long parentId);
 }

@@ -23,8 +23,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "t_menu")
-@org.hibernate.annotations.Table(appliesTo = "t_menu", comment = "菜单")
+@Table
+@org.hibernate.annotations.Table(appliesTo = "menu", comment = "菜单")
 public class Menu implements Serializable {
 
 	@Id

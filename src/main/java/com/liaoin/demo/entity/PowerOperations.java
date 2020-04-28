@@ -23,8 +23,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "m_power_operations")
-@org.hibernate.annotations.Table(appliesTo = "m_power_operations", comment = "权限与API接口关联表")
+@Table
+@org.hibernate.annotations.Table(appliesTo = "power_operations", comment = "权限与API接口关联表")
 public class PowerOperations implements Serializable {
 	@Id
 	@Min(0)

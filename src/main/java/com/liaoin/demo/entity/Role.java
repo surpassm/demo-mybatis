@@ -26,8 +26,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "t_role")
-@org.hibernate.annotations.Table(appliesTo = "t_role", comment = "角色")
+@Table
+@org.hibernate.annotations.Table(appliesTo = "role", comment = "角色")
 public class Role implements Serializable {
 
 

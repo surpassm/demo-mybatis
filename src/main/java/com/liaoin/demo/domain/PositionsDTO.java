@@ -3,7 +3,7 @@ package com.liaoin.demo.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.liaoin.demo.annotation.Convert;
-import com.liaoin.demo.entity.Position;
+import com.liaoin.demo.entity.Positions;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -26,7 +26,7 @@ import java.util.List;
 @Getter
 @Setter
 @ApiModel(value = "职位")
-public class PositionDTO implements Serializable {
+public class PositionsDTO implements Serializable {
 
 
 	@ApiModelProperty(value = "系统标识",position = 0)
@@ -45,7 +45,7 @@ public class PositionDTO implements Serializable {
 	@ApiModelProperty(value = "部门名稱",position = 4)
 	private Long departmentName;
 
-	private List<PositionDTO> childes;
+	private List<PositionsDTO> childes;
 
 
 
@@ -57,31 +57,31 @@ public class PositionDTO implements Serializable {
 
 
 
-    public Position convertTo(){
+    public Positions convertTo(){
         ConvertImpl impl = new ConvertImpl();
         return impl.doForward(this);
     }
 
-    public PositionDTO convertFor(Position position){
+    public PositionsDTO convertFor(Positions positions){
         ConvertImpl impl = new ConvertImpl();
-        return impl.doBackward(position,this);
+        return impl.doBackward(positions,this);
     }
 
-    private static class ConvertImpl implements Convert<PositionDTO, Position> {
+    private static class ConvertImpl implements Convert<PositionsDTO, Positions> {
         @Override
-        public Position doForward(PositionDTO dto) {
-            Position position = new Position();
-            BeanUtils.copyProperties(dto,position);
-            return position;
+        public Positions doForward(PositionsDTO dto) {
+            Positions positions = new Positions();
+            BeanUtils.copyProperties(dto, positions);
+            return positions;
         }
         @Override
-        public PositionDTO doBackward(Position position) {
-            PositionDTO dto = new PositionDTO();
-            BeanUtils.copyProperties(position, dto);
+        public PositionsDTO doBackward(Positions positions) {
+            PositionsDTO dto = new PositionsDTO();
+            BeanUtils.copyProperties(positions, dto);
             return dto;
         }
-        public PositionDTO doBackward(Position position, PositionDTO dto) {
-            BeanUtils.copyProperties(position, dto);
+        public PositionsDTO doBackward(Positions positions, PositionsDTO dto) {
+            BeanUtils.copyProperties(positions, dto);
             return dto;
         }
     }

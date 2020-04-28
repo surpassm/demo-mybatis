@@ -20,11 +20,11 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Builder
+@Table
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "m_role_power")
-@org.hibernate.annotations.Table(appliesTo = "m_role_power", comment = "权限与角色关联表")
+@org.hibernate.annotations.Table(appliesTo = "role_power", comment = "权限与角色关联表")
 public class RolePower implements Serializable {
 	@Id
 	@Min(0)

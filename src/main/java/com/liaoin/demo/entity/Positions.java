@@ -28,9 +28,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ApiModel(value = "职位")
 @NameStyle(Style.camelhump)
-@Table(name = "t_position")
-@org.hibernate.annotations.Table(appliesTo = "t_position", comment = "职位")
-public class Position implements Serializable {
+@Table
+@org.hibernate.annotations.Table(appliesTo = "positions", comment = "职位")
+public class Positions implements Serializable {
 
 	@Id
 	@Min(0)

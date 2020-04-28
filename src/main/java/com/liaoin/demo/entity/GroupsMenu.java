@@ -25,9 +25,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ApiModel(value = "组权限")
 @NameStyle(Style.camelhump)
-@Table(name = "m_group_menu")
-@org.hibernate.annotations.Table(appliesTo = "m_group_menu", comment = "组权限")
-public class GroupMenu implements Serializable {
+@Table
+@org.hibernate.annotations.Table(appliesTo = "groups_menu", comment = "组权限")
+public class GroupsMenu implements Serializable {
 
 
 
@@ -40,7 +40,7 @@ public class GroupMenu implements Serializable {
 	public Long id;
 
 	@ApiModelProperty(value="组系统标识",example = "1")
-	@ManyToOne(targetEntity = Group.class)
+	@ManyToOne(targetEntity = Groups.class)
 	@JoinColumn(name = "group_id", referencedColumnName = "id")
 	private Long groupId;
 

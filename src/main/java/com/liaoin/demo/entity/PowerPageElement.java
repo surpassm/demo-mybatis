@@ -23,8 +23,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "m_power_page_element")
-@org.hibernate.annotations.Table(appliesTo = "m_power_page_element", comment = "权限与页面关联表")
+@Table
+@org.hibernate.annotations.Table(appliesTo = "power_page_element", comment = "权限与页面关联表")
 public class PowerPageElement implements Serializable {
 	@Id
 	@Min(0)

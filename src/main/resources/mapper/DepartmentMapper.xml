@@ -11,7 +11,7 @@
         <result column="name" property="name"/>
     </resultMap>
     <select id="findAllParent" resultMap="ResultMapParentDTO">
-        select * from t_department where parent_id is null and is_delete = 0
+        select * from department where parent_id is null and is_delete = 0
     </select>
 
     <resultMap id="ResultMapChildesDTO" type="com.liaoin.demo.domain.DepartmentDTO">
@@ -23,7 +23,7 @@
     </resultMap>
 
     <select id="findAllChild" resultMap = "ResultMapChildesDTO">
-        select * from t_department where parent_id = #{parentId} and is_delete = 0
+        select * from department where parent_id = #{parentId} and is_delete = 0
     </select>
 
 
@@ -36,8 +36,8 @@
             ui.type_enum,
             ui.user_info_index
         FROM
-            t_user_info ui
-        LEFT JOIN m_department_user_info du ON ui.id = du.user_id
+            user_info ui
+        LEFT JOIN department_user_info du ON ui.id = du.user_id
         WHERE
             du.department_id = #{departmentId}
     </select>

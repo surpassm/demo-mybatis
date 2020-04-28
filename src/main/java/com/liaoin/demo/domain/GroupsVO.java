@@ -2,7 +2,7 @@ package com.liaoin.demo.domain;
 
 
 import com.liaoin.demo.annotation.Convert;
-import com.liaoin.demo.entity.Group;
+import com.liaoin.demo.entity.Groups;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 @Data
 @ApiModel(value = "权限VO")
-public class GroupVO implements Serializable {
+public class GroupsVO implements Serializable {
 
 
 	@ApiModelProperty(value = "系统标识",position = 0)
@@ -36,31 +36,31 @@ public class GroupVO implements Serializable {
 
 
 
-    public Group convertTo(){
+    public Groups convertTo(){
         ConvertImpl impl = new ConvertImpl();
         return impl.doForward(this);
     }
 
-    public GroupVO convertFor(Group group){
+    public GroupsVO convertFor(Groups groups){
         ConvertImpl impl = new ConvertImpl();
-        return impl.doBackward(group,this);
+        return impl.doBackward(groups,this);
     }
 
-    private static class ConvertImpl implements Convert<GroupVO, Group> {
+    private static class ConvertImpl implements Convert<GroupsVO, Groups> {
         @Override
-        public Group doForward(GroupVO vo) {
-            Group group = new Group();
-            BeanUtils.copyProperties(vo,group);
-            return group;
+        public Groups doForward(GroupsVO vo) {
+            Groups groups = new Groups();
+            BeanUtils.copyProperties(vo, groups);
+            return groups;
         }
         @Override
-        public GroupVO doBackward(Group group) {
-                GroupVO vo = new GroupVO();
-                BeanUtils.copyProperties(group, vo);
+        public GroupsVO doBackward(Groups groups) {
+                GroupsVO vo = new GroupsVO();
+                BeanUtils.copyProperties(groups, vo);
                 return vo;
         }
-        public GroupVO doBackward(Group group, GroupVO vo) {
-                BeanUtils.copyProperties(group, vo);
+        public GroupsVO doBackward(Groups groups, GroupsVO vo) {
+                BeanUtils.copyProperties(groups, vo);
                 return vo;
         }
     }

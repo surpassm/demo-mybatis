@@ -23,8 +23,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "m_power_menu")
-@org.hibernate.annotations.Table(appliesTo = "m_power_menu", comment = "权限与菜单关联表")
+@Table
+@org.hibernate.annotations.Table(appliesTo = "power_menu", comment = "权限与菜单关联表")
 public class PowerMenu implements Serializable {
 	@Id
 	@Min(0)

@@ -2,9 +2,9 @@ package com.liaoin.demo.controller;
 
 import com.liaoin.demo.annotation.Login;
 import com.liaoin.demo.common.ResultCode;
-import com.liaoin.demo.domain.GroupVO;
+import com.liaoin.demo.domain.GroupsVO;
 import com.liaoin.demo.exception.CustomException;
-import com.liaoin.demo.service.GroupService;
+import com.liaoin.demo.service.GroupsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -29,10 +29,10 @@ import static com.liaoin.demo.common.Result.ok;
 @RestController
 @RequestMapping("/group/")
 @Api(tags  =  "组Api")
-public class GroupController {
+public class GroupsController {
 
     @Resource
-    private GroupService groupService;
+    private GroupsService groupsService;
 
 
 
@@ -40,26 +40,26 @@ public class GroupController {
     @PostMapping("v1/insert")
     @ApiOperation(value = "新增")
     public Object insert(@ApiParam(hidden = true)@Login Long userId,
-						 @Valid @RequestBody GroupVO vo, BindingResult errors) {
+						 @Valid @RequestBody GroupsVO vo, BindingResult errors) {
         if (errors.hasErrors()){
 			StringBuilder builder = new StringBuilder();
 			errors.getAllErrors().forEach(i -> builder.append(i.getDefaultMessage()).append(","));
             throw new CustomException(ResultCode.PARAM_IS_INVALID.getCode(),builder.toString());
 		}
-        return groupService.insertOrUpdate(vo);
+        return groupsService.insertOrUpdate(vo);
     }
 
     @Login
     @PostMapping("v1/update")
     @ApiOperation(value = "修改")
     public Object update(@ApiParam(hidden = true)@Login Long userId,
-						 @Valid @RequestBody GroupVO vo, BindingResult errors) {
+						 @Valid @RequestBody GroupsVO vo, BindingResult errors) {
         if (errors.hasErrors()){
 			StringBuilder builder = new StringBuilder();
 			errors.getAllErrors().forEach(i -> builder.append(i.getDefaultMessage()).append(","));
             throw new CustomException(ResultCode.PARAM_IS_INVALID.getCode(),builder.toString());
 		}
-        return groupService.insertOrUpdate(vo);
+        return groupsService.insertOrUpdate(vo);
     }
 
     @Login
@@ -67,7 +67,7 @@ public class GroupController {
     @ApiOperation(value = "根据主键删除")
     public Object deleteGetById(@ApiParam(hidden = true)@Login Long userId,
                                 @ApiParam(value = "主键",required = true)@RequestParam(value = "id")@NotNull @Min(1) Long id) {
-        groupService.deleteById(id);
+        groupsService.deleteById(id);
 		return ok();
     }
 
@@ -76,7 +76,7 @@ public class GroupController {
     @ApiOperation(value = "根据主键查询")
     public Object findById(@ApiParam(hidden = true)@Login Long userId,
                            @ApiParam(value = "主键",required = true)@RequestParam(value = "id") @NotNull @Min(1) Long id) {
-        return groupService.findById(id);
+        return groupsService.findById(id);
     }
 
     @Login
@@ -86,15 +86,15 @@ public class GroupController {
                             @ApiParam(value = "第几页", required = true,example = "1") @RequestParam(value = "page") @NotNull @Min(0) Integer page,
                             @ApiParam(value = "多少条", required = true,example = "10")@RequestParam(value = "size") @NotNull @Min(1) Integer size,
                             @ApiParam(value = "排序字段")@RequestParam(value = "sort",required = false) String sort,
-                            @RequestBody GroupVO vo) {
-        return groupService.pageQuery(page, size, sort, vo);
+                            @RequestBody GroupsVO vo) {
+        return groupsService.pageQuery(page, size, sort, vo);
     }
 
 	@Login
 	@PostMapping("v1/findAllParent")
 	@ApiOperation(value = "查询所有父级")
 	public Object findAllChild(@ApiParam(hidden = true)@Login Long userId) {
-		return groupService.findAllParent();
+		return groupsService.findAllParent();
 	}
 
 	@Login
@@ -102,7 +102,7 @@ public class GroupController {
 	@ApiOperation(value = "根据父级ID查询所有子级")
 	public Object findAllChild(@ApiParam(hidden = true)@Login Long userId,
 							   @ApiParam(value = "父级ID",required = true)@RequestParam(value = "parentId") @NotNull @Min(1) Long parentId) {
-		return groupService.findAllChild(parentId);
+		return groupsService.findAllChild(parentId);
 	}
 
 	@Login
@@ -111,7 +111,7 @@ public class GroupController {
 	public Object addGroupDepartment(@ApiParam(hidden = true)@Login Long userId,
 									 @ApiParam(value = "组主键",required = true)@RequestParam(value = "groupId") @NotNull @Min(1) Long groupId,
 									 @ApiParam(value = "部门主键",required = true)@RequestParam(value = "departmentId") @NotNull @Min(1) Long departmentId) {
-		groupService.addGroupDepartment(groupId,departmentId);
+		groupsService.addGroupDepartment(groupId,departmentId);
 		return ok();
 	}
 	@Login
@@ -120,7 +120,7 @@ public class GroupController {
 	public Object deleteGroupDepartment(@ApiParam(hidden = true)@Login Long userId,
 									 	@ApiParam(value = "组主键",required = true)@RequestParam(value = "groupId") @NotNull @Min(1) Long groupId,
 										@ApiParam(value = "部门主键",required = true)@RequestParam(value = "departmentId") @NotNull @Min(1) Long departmentId) {
-		groupService.deleteGroupDepartment(groupId,departmentId);
+		groupsService.deleteGroupDepartment(groupId,departmentId);
 		return ok();
 	}
 	@Login
@@ -131,7 +131,7 @@ public class GroupController {
 									  @ApiParam(value = "多少条", required = true,example = "10")@RequestParam(value = "size") @NotNull @Min(1) Integer size,
 									  @ApiParam(value = "组主键",required = true)@RequestParam(value = "groupId") @NotNull @Min(1) Long groupId,
 									  @ApiParam(value = "排序字段")@RequestParam(value = "sort",required = false) String sort) {
-		return groupService.pageQueryDepartment(page, size, sort, groupId);
+		return groupsService.pageQueryDepartment(page, size, sort, groupId);
 	}
 
 	@Login
@@ -140,7 +140,7 @@ public class GroupController {
 	public Object addGroupMenu(@ApiParam(hidden = true)@Login Long userId,
 							   @ApiParam(value = "组主键",required = true)@RequestParam(value = "groupId") @NotNull @Min(1) Long groupId,
 							   @ApiParam(value = "菜单主键",required = true)@RequestParam(value = "menuId") @NotNull @Min(1) Long menuId) {
-		groupService.addGroupMenu(groupId,menuId);
+		groupsService.addGroupMenu(groupId,menuId);
 		return ok();
 	}
 	@Login
@@ -149,7 +149,7 @@ public class GroupController {
 	public Object deleteGroupMenu(@ApiParam(hidden = true)@Login Long userId,
 								  @ApiParam(value = "组主键",required = true)@RequestParam(value = "groupId") @NotNull @Min(1) Long groupId,
 								  @ApiParam(value = "菜单主键",required = true)@RequestParam(value = "menuId") @NotNull @Min(1) Long menuId) {
-		groupService.deleteGroupMenu(groupId,menuId);
+		groupsService.deleteGroupMenu(groupId,menuId);
 		return ok();
 	}
 
@@ -161,7 +161,7 @@ public class GroupController {
 							    @ApiParam(value = "多少条", required = true,example = "10")@RequestParam(value = "size") @NotNull @Min(1) Integer size,
 							    @ApiParam(value = "组主键",required = true)@RequestParam(value = "groupId") @NotNull @Min(1) Long groupId,
 							    @ApiParam(value = "排序字段")@RequestParam(value = "sort",required = false) String sort) {
-		return groupService.pageQueryMenu(page, size, sort, groupId);
+		return groupsService.pageQueryMenu(page, size, sort, groupId);
 	}
 
 	@Login
@@ -170,7 +170,7 @@ public class GroupController {
 	public Object addGroupRole(@ApiParam(hidden = true)@Login Long userId,
 							   @ApiParam(value = "组主键",required = true)@RequestParam(value = "groupId") @NotNull @Min(1) Long groupId,
 							   @ApiParam(value = "角色主键",required = true)@RequestParam(value = "roleId") @NotNull @Min(1) Long roleId) {
-		groupService.addGroupRole(groupId,roleId);
+		groupsService.addGroupRole(groupId,roleId);
 		return ok();
 	}
 	@Login
@@ -179,7 +179,7 @@ public class GroupController {
 	public Object deleteGroupRole(@ApiParam(hidden = true)@Login Long userId,
 								  @ApiParam(value = "组主键",required = true)@RequestParam(value = "groupId") @NotNull @Min(1) Long groupId,
 								  @ApiParam(value = "角色主键",required = true)@RequestParam(value = "roleId") @NotNull @Min(1) Long roleId) {
-		groupService.deleteGroupRole(groupId,roleId);
+		groupsService.deleteGroupRole(groupId,roleId);
 		return ok();
 	}
 	@Login
@@ -190,6 +190,6 @@ public class GroupController {
 								@ApiParam(value = "多少条", required = true,example = "10")@RequestParam(value = "size") @NotNull @Min(1) Integer size,
 								@ApiParam(value = "组主键",required = true)@RequestParam(value = "groupId") @NotNull @Min(1) Long groupId,
 								@ApiParam(value = "排序字段")@RequestParam(value = "sort",required = false) String sort) {
-		return groupService.pageQueryRole(page, size, sort, groupId);
+		return groupsService.pageQueryRole(page, size, sort, groupId);
 	}
 }

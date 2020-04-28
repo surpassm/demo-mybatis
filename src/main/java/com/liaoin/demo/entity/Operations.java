@@ -27,8 +27,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "t_operations")
-@org.hibernate.annotations.Table(appliesTo = "t_operations", comment = "后台功能接口")
+@Table
+@org.hibernate.annotations.Table(appliesTo = "operations", comment = "后台功能接口")
 public class Operations implements Serializable {
 	@Id
 	@Min(0)

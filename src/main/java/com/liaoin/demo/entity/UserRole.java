@@ -20,11 +20,11 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Builder
+@Table
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "m_user_role")
-@org.hibernate.annotations.Table(appliesTo = "m_user_role", comment = "用户角色")
+@org.hibernate.annotations.Table(appliesTo = "user_role", comment = "用户角色")
 public class UserRole implements Serializable {
 
 

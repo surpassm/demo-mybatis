@@ -2,7 +2,7 @@ package com.liaoin.demo.domain;
 
 
 import com.liaoin.demo.annotation.Convert;
-import com.liaoin.demo.entity.Group;
+import com.liaoin.demo.entity.Groups;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -22,7 +22,7 @@ import java.util.List;
 @Getter
 @Setter
 @ApiModel(value = "权限")
-public class GroupDTO implements Serializable {
+public class GroupsDTO implements Serializable {
 
 
 
@@ -36,7 +36,7 @@ public class GroupDTO implements Serializable {
 	private String describes;
 	@ApiModelProperty(value = "父级",position = 3)
 	private Long parentId;
-	private List<GroupDTO> childes;
+	private List<GroupsDTO> childes;
 
 
 
@@ -45,31 +45,31 @@ public class GroupDTO implements Serializable {
 
 
 
-    public Group convertTo(){
+    public Groups convertTo(){
         ConvertImpl impl = new ConvertImpl();
         return impl.doForward(this);
     }
 
-    public GroupDTO convertFor(Group group){
+    public GroupsDTO convertFor(Groups groups){
         ConvertImpl impl = new ConvertImpl();
-        return impl.doBackward(group,this);
+        return impl.doBackward(groups,this);
     }
 
-    private static class ConvertImpl implements Convert<GroupDTO, Group> {
+    private static class ConvertImpl implements Convert<GroupsDTO, Groups> {
         @Override
-        public Group doForward(GroupDTO dto) {
-            Group group = new Group();
-            BeanUtils.copyProperties(dto,group);
-            return group;
+        public Groups doForward(GroupsDTO dto) {
+            Groups groups = new Groups();
+            BeanUtils.copyProperties(dto, groups);
+            return groups;
         }
         @Override
-        public GroupDTO doBackward(Group group) {
-            GroupDTO dto = new GroupDTO();
-            BeanUtils.copyProperties(group, dto);
+        public GroupsDTO doBackward(Groups groups) {
+            GroupsDTO dto = new GroupsDTO();
+            BeanUtils.copyProperties(groups, dto);
             return dto;
         }
-        public GroupDTO doBackward(Group group, GroupDTO dto) {
-            BeanUtils.copyProperties(group, dto);
+        public GroupsDTO doBackward(Groups groups, GroupsDTO dto) {
+            BeanUtils.copyProperties(groups, dto);
             return dto;
         }
     }

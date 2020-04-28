@@ -3,7 +3,7 @@ package com.liaoin.demo.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.liaoin.demo.annotation.Convert;
-import com.liaoin.demo.entity.Position;
+import com.liaoin.demo.entity.Positions;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 
 @Data
 @ApiModel(value = "职位VO")
-public class PositionVO implements Serializable {
+public class PositionsVO implements Serializable {
 
 	@ApiModelProperty(value = "系统标识",position = 0)
 	private Long id;
@@ -44,31 +44,31 @@ public class PositionVO implements Serializable {
 
 
 
-    public Position convertTo(){
+    public Positions convertTo(){
         ConvertImpl impl = new ConvertImpl();
         return impl.doForward(this);
     }
 
-    public PositionVO convertFor(Position position){
+    public PositionsVO convertFor(Positions positions){
         ConvertImpl impl = new ConvertImpl();
-        return impl.doBackward(position,this);
+        return impl.doBackward(positions,this);
     }
 
-    private static class ConvertImpl implements Convert<PositionVO, Position> {
+    private static class ConvertImpl implements Convert<PositionsVO, Positions> {
         @Override
-        public Position doForward(PositionVO vo) {
-            Position position = new Position();
-            BeanUtils.copyProperties(vo,position);
-            return position;
+        public Positions doForward(PositionsVO vo) {
+            Positions positions = new Positions();
+            BeanUtils.copyProperties(vo, positions);
+            return positions;
         }
         @Override
-        public PositionVO doBackward(Position position) {
-                PositionVO vo = new PositionVO();
-                BeanUtils.copyProperties(position, vo);
+        public PositionsVO doBackward(Positions positions) {
+                PositionsVO vo = new PositionsVO();
+                BeanUtils.copyProperties(positions, vo);
                 return vo;
         }
-        public PositionVO doBackward(Position position, PositionVO vo) {
-                BeanUtils.copyProperties(position, vo);
+        public PositionsVO doBackward(Positions positions, PositionsVO vo) {
+                BeanUtils.copyProperties(positions, vo);
                 return vo;
         }
     }

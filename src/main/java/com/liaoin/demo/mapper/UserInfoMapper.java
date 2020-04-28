@@ -1,6 +1,6 @@
 package com.liaoin.demo.mapper;
 
-import com.liaoin.demo.entity.Group;
+import com.liaoin.demo.entity.Groups;
 import com.liaoin.demo.entity.Role;
 import com.liaoin.demo.entity.UserInfo;
 import org.apache.ibatis.annotations.Param;
@@ -20,5 +20,5 @@ public interface UserInfoMapper extends Mapper<UserInfo>, MySqlMapper<UserInfo> 
 
 	List<Role> findRoleByUserId(@Param("userInfoId") Long userInfoId);
 
-	List<Group> findGroupByUserId(@Param("userInfoId") Long userInfoId);
+	List<Groups> findGroupByUserId(@Param("userInfoId") Long userInfoId);
 }

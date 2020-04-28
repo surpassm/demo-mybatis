@@ -3,14 +3,14 @@ package com.liaoin.demo.service.impl;
 import com.github.pagehelper.Page;
 import com.liaoin.demo.common.Result;
 import com.liaoin.demo.common.ResultCode;
-import com.liaoin.demo.domain.PositionDTO;
-import com.liaoin.demo.domain.PositionVO;
+import com.liaoin.demo.domain.PositionsDTO;
+import com.liaoin.demo.domain.PositionsVO;
 import com.liaoin.demo.entity.Department;
-import com.liaoin.demo.entity.Position;
+import com.liaoin.demo.entity.Positions;
 import com.liaoin.demo.exception.CustomException;
-import com.liaoin.demo.mapper.PositionMapper;
+import com.liaoin.demo.mapper.PositionsMapper;
 import com.liaoin.demo.service.DepartmentService;
-import com.liaoin.demo.service.PositionService;
+import com.liaoin.demo.service.PositionsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,56 +34,56 @@ import static com.liaoin.demo.common.Result.ok;
 @Slf4j
 @Service
 @Transactional(rollbackFor={RuntimeException.class, Exception.class})
-public class PositionServiceImpl extends BaseServiceImpl implements PositionService {
+public class PositionsServiceImpl extends BaseServiceImpl implements PositionsService {
     @Resource
-    private PositionMapper positionMapper;
+    private PositionsMapper positionsMapper;
     @Resource
 	private DepartmentService departmentService;
 
     @Override
-    public Position insert(Position position) {
-        positionMapper.insert(position);
-        return position;
+    public Positions insert(Positions positions) {
+        positionsMapper.insert(positions);
+        return positions;
     }
 
     @Override
-    public void update(Position position) {
-        positionMapper.updateByPrimaryKeySelective(position);
+    public void update(Positions positions) {
+        positionsMapper.updateByPrimaryKeySelective(positions);
     }
 
     @Override
     public void deleteById(Long id){
-        Optional<Position> byId = this.findById(id);
+        Optional<Positions> byId = this.findById(id);
         if (!byId.isPresent()) {
             throw new CustomException(ResultCode.ERROR.getCode(), ResultCode.RESULT_DATA_NONE.getMsg());
         }
-        Position position = byId.get();
-        position.setIsDelete(1);
-        position.setUpdateTime(LocalDateTime.now());
-        this.update(position);
+        Positions positions = byId.get();
+        positions.setIsDelete(1);
+        positions.setUpdateTime(LocalDateTime.now());
+        this.update(positions);
     }
 
 
     @Override
-    public Optional<Position> findById(Long id) {
-        return Optional.ofNullable(positionMapper.selectByPrimaryKey(id));
+    public Optional<Positions> findById(Long id) {
+        return Optional.ofNullable(positionsMapper.selectByPrimaryKey(id));
 
     }
 
     @Override
-    public Result pageQuery(Integer page, Integer size, String sort, PositionVO positionVO) {
+    public Result pageQuery(Integer page, Integer size, String sort, PositionsVO positionsVO) {
 		super.pageQuery(page,size,sort);
-        Example.Builder builder = new Example.Builder(Position.class);
-        builder.where(WeekendSqls.<Position>custom().andEqualTo(Position::getIsDelete, 0));
-        if(positionVO != null){
+        Example.Builder builder = new Example.Builder(Positions.class);
+        builder.where(WeekendSqls.<Positions>custom().andEqualTo(Positions::getIsDelete, 0));
+        if(positionsVO != null){
         }
-        Page<Position> all = (Page<Position>) positionMapper.selectByExample(builder.build());
+        Page<Positions> all = (Page<Positions>) positionsMapper.selectByExample(builder.build());
         return ok(all.getTotal(),all.getResult());
     }
 
     @Override
-    public Position insertOrUpdate(PositionVO vo) {
-		Position convert = vo.convertTo();
+    public Positions insertOrUpdate(PositionsVO vo) {
+		Positions convert = vo.convertTo();
 		//父级效验
 		Long parentId = convert.getParentId();
 		if (parentId != null){
@@ -107,13 +107,13 @@ public class PositionServiceImpl extends BaseServiceImpl implements PositionServ
 
 
 	@Override
-	public List<PositionDTO> findAllParent() {
-		return positionMapper.findAllParent();
+	public List<PositionsDTO> findAllParent() {
+		return positionsMapper.findAllParent();
 	}
 
 	@Override
-	public List<PositionDTO> findAllChild(Long parentId) {
-		return positionMapper.findAllChild(parentId);
+	public List<PositionsDTO> findAllChild(Long parentId) {
+		return positionsMapper.findAllChild(parentId);
 	}
 }
 

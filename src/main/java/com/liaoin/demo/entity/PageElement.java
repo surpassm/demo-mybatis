@@ -22,8 +22,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "t_page_element")
-@org.hibernate.annotations.Table(appliesTo = "t_page_element", comment = "页面元素")
+@Table
+@org.hibernate.annotations.Table(appliesTo = "page_element", comment = "页面元素")
 public class PageElement implements Serializable {
 
 	@Id

@@ -13,7 +13,7 @@
         <result column="apiUrl" property="apiUrl"/>
     </resultMap>
     <select id="findAllParent" resultMap="ResultMapParentDTO">
-        select * from t_operations where parent_id is null and is_delete = 0
+        select * from operations where parent_id is null and is_delete = 0
     </select>
 
     <resultMap id="ResultMapChildesDTO" type="com.liaoin.demo.domain.OperationsDTO">
@@ -27,7 +27,7 @@
     </resultMap>
 
     <select id="findAllChild" resultMap = "ResultMapChildesDTO">
-        select * from t_operations where parent_id = #{parentId} and is_delete = 0
+        select * from operations where parent_id = #{parentId} and is_delete = 0
     </select>
 
     <select id="findByUserId" resultType="com.liaoin.demo.entity.Operations">
@@ -36,14 +36,14 @@
             operations.api_url,
             operations.`name`
         FROM
-            t_operations operations
+            operations operations
         LEFT JOIN (
             SELECT
                 powerOperations.operations_id
             FROM
-                m_user_role userRole
-            LEFT JOIN m_role_power rolePower ON userRole.role_id = rolePower.role_id
-            LEFT JOIN m_power_operations powerOperations ON powerOperations.power_id = rolePower.power_id
+                user_role userRole
+            LEFT JOIN role_power rolePower ON userRole.role_id = rolePower.role_id
+            LEFT JOIN power_operations powerOperations ON powerOperations.power_id = rolePower.power_id
             WHERE
                 userRole.user_id = #{userId}
         ) operationses ON operationses.operations_id = operations.id

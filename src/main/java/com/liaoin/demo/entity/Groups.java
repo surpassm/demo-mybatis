@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 /**
  * @author mc
- * Create date 2019/3/14 18:15
+ * Create date 2019/3/14 17:57
  * Version 1.0
  * Description
  */
@@ -23,9 +23,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "m_user_group")
-@org.hibernate.annotations.Table(appliesTo = "m_user_group", comment = "用户组")
-public class UserGroup implements Serializable {
+@Table
+@org.hibernate.annotations.Table(appliesTo = "groups", comment = "组")
+public class Groups implements Serializable {
 
 
 	@Id
@@ -35,12 +35,16 @@ public class UserGroup implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(targetEntity = UserInfo.class)
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	private Long userId;
-	@ManyToOne(targetEntity = Group.class)
-	@JoinColumn(name = "group_id", referencedColumnName = "id")
-	private Long groupId;
+
+	@Column(columnDefinition="varchar(255) COMMENT '名称'")
+	private String name;
+
+	@Column(columnDefinition="varchar(255) COMMENT '描述'")
+	private String describes;
+
+	@OneToOne(targetEntity = Groups.class)
+	@JoinColumn(name = "parent_id", referencedColumnName = "id")
+	private Long parentId;
 
 	@Min(0)
 	@Max(1)

@@ -75,6 +75,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
         Example.Builder builder = new Example.Builder(Department.class);
         builder.where(WeekendSqls.<Department>custom().andEqualTo(Department::getIsDelete, 0));
         if(departmentVO != null){
+        	//todo 根据业务编写
         }
 		builder.where(WeekendSqls.<Department>custom().andIsNull(Department::getParentId));
         Page<Department> all = (Page<Department>) departmentMapper.selectByExample(builder.build());

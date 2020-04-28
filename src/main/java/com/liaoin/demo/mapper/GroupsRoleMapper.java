@@ -1,6 +1,6 @@
 package com.liaoin.demo.mapper;
 
-import com.liaoin.demo.entity.GroupRole;
+import com.liaoin.demo.entity.GroupsRole;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;
 
@@ -10,7 +10,7 @@ import tk.mybatis.mapper.common.MySqlMapper;
   * Version 1.0
   * Description 组角色持久层
   */
-public interface GroupRoleMapper extends Mapper<GroupRole>, MySqlMapper<GroupRole> {
+public interface GroupsRoleMapper extends Mapper<GroupsRole>, MySqlMapper<GroupsRole> {
 
 
 }

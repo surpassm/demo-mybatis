@@ -1,6 +1,6 @@
 package com.liaoin.demo.mapper;
 
-import com.liaoin.demo.entity.UserGroup;
+import com.liaoin.demo.entity.UserGroups;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;
 
@@ -10,7 +10,7 @@ import tk.mybatis.mapper.common.MySqlMapper;
   * Version 1.0
   * Description 用户组持久层
   */
-public interface UserGroupMapper extends Mapper<UserGroup>, MySqlMapper<UserGroup> {
+public interface UserGroupsMapper extends Mapper<UserGroups>, MySqlMapper<UserGroups> {
 
 
 }

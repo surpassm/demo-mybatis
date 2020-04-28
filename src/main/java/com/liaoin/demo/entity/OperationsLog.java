@@ -26,8 +26,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ApiModel(value = "日志管理")
 @NameStyle(Style.camelhump)
-@Table(name = "t_operations_log")
-@org.hibernate.annotations.Table(appliesTo = "t_operations_log", comment = "日志管理")
+@Table
+@org.hibernate.annotations.Table(appliesTo = "operations_log", comment = "日志管理")
 public class OperationsLog implements Serializable {
 	@Id
 	@KeySql(useGeneratedKeys = true)

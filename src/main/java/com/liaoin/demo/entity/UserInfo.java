@@ -26,8 +26,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "t_user_info", uniqueConstraints = {@UniqueConstraint(columnNames="username")})
-@org.hibernate.annotations.Table(appliesTo = "t_user_info", comment = "用户")
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames="username")})
+@org.hibernate.annotations.Table(appliesTo = "user_info", comment = "用户")
 public class UserInfo implements Serializable {
 
 

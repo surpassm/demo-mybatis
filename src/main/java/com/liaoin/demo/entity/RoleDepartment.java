@@ -23,8 +23,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "m_role_department")
-@org.hibernate.annotations.Table(appliesTo = "m_role_department", comment = "角色部门")
+@Table
+@org.hibernate.annotations.Table(appliesTo = "role_department", comment = "角色部门")
 public class RoleDepartment implements Serializable {
 
     @Id

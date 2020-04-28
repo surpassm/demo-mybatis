@@ -26,8 +26,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "t_power")
-@org.hibernate.annotations.Table(appliesTo = "t_power", comment = "权限表")
+@Table
+@org.hibernate.annotations.Table(appliesTo = "power", comment = "权限表")
 public class Power implements Serializable {
 
     @Id

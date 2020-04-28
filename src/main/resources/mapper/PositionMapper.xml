@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.liaoin.demo.mapper.PositionMapper">
+<mapper namespace="com.liaoin.demo.mapper.PositionsMapper">
 
-    <resultMap id="ResultMapParentDTO" type="com.liaoin.demo.domain.PositionDTO">
+    <resultMap id="ResultMapParentDTO" type="com.liaoin.demo.domain.PositionsDTO">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="parent_id" property="parentId"/>
         <result column="create_time" property="createTime"/>
@@ -21,14 +21,14 @@
             positions.`name`,
             department.`name` AS department_name
         FROM
-            t_position positions
-        LEFT JOIN t_department department ON department.id = positions.department_id
+            positions positions
+        LEFT JOIN department department ON department.id = positions.department_id
         WHERE
             positions.parent_id IS NULL
         AND positions.is_delete = 0
     </select>
 
-    <resultMap id="ResultMapChildesDTO" type="com.liaoin.demo.domain.PositionDTO">
+    <resultMap id="ResultMapChildesDTO" type="com.liaoin.demo.domain.PositionsDTO">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="parent_id" property="parentId"/>
         <result column="create_time" property="createTime"/>
@@ -47,8 +47,8 @@
             positions.`name`,
             department.`name` AS department_name
         FROM
-            t_position positions
-        LEFT JOIN t_department department ON department.id = positions.department_id
+            positions positions
+        LEFT JOIN department department ON department.id = positions.department_id
         WHERE
             positions.parent_id = #{parentId}
         AND positions.is_delete = 0

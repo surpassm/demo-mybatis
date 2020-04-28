@@ -8,8 +8,8 @@
         SELECT
             d.*
         FROM
-            m_role_department rd
-        LEFT JOIN t_department d ON rd.department_id = d.id
+            role_department rd
+        LEFT JOIN department d ON rd.department_id = d.id
         WHERE
             rd.role_id = #{roleId}
         AND d.is_delete = 0
@@ -19,8 +19,8 @@
         SELECT
             p.*
         FROM
-            m_role_power rp
-        LEFT JOIN t_power p ON rp.power_id = p.id
+            role_power rp
+        LEFT JOIN power p ON rp.power_id = p.id
         WHERE
             rp.role_id = 1
         AND p.is_delete = 0

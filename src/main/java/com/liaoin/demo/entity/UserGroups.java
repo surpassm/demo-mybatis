@@ -6,12 +6,13 @@ import tk.mybatis.mapper.annotation.NameStyle;
 import tk.mybatis.mapper.code.Style;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 /**
  * @author mc
- * Create date 2020/2/1 13:18
+ * Create date 2019/3/14 18:15
  * Version 1.0
  * Description
  */
@@ -19,12 +20,14 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Builder
+@Table
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "m_group_department")
-@org.hibernate.annotations.Table(appliesTo = "m_group_department", comment = "组部门")
-public class GroupDepartment implements Serializable {
+@org.hibernate.annotations.Table(appliesTo = "user_groups", comment = "用户组")
+public class UserGroups implements Serializable {
+
+
 	@Id
 	@Min(0)
 	@KeySql(useGeneratedKeys = true)
@@ -32,12 +35,14 @@ public class GroupDepartment implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(targetEntity = Group.class)
+	@ManyToOne(targetEntity = UserInfo.class)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private Long userId;
+	@ManyToOne(targetEntity = Groups.class)
 	@JoinColumn(name = "group_id", referencedColumnName = "id")
 	private Long groupId;
 
-	@ManyToOne(targetEntity = Department.class)
-	@JoinColumn(name = "department_id", referencedColumnName = "id")
-	private Long departmentId;
-
+	@Min(0)
+	@Max(1)
+	private Integer isDelete;
 }

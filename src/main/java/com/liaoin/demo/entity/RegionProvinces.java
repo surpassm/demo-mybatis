@@ -22,8 +22,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "t_region_provinces")
-@org.hibernate.annotations.Table(appliesTo = "t_region_provinces", comment = "省")
+@Table
+@org.hibernate.annotations.Table(appliesTo = "region_provinces", comment = "省")
 public class RegionProvinces implements Serializable {
 
 	@Id

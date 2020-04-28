@@ -16,7 +16,7 @@
         <result column="menu_url" property="menuUrl"/>
     </resultMap>
     <select id="findAllParent" resultMap="ResultMapParentDTO">
-        select * from t_menu where parent_id is null and is_delete = 0
+        select * from menu where parent_id is null and is_delete = 0
     </select>
 
     <resultMap id="ResultMapChildesDTO" type="com.liaoin.demo.domain.MenuDTO">
@@ -33,7 +33,7 @@
     </resultMap>
 
     <select id="findAllChild" resultMap = "ResultMapChildesDTO">
-        select * from t_menu where parent_id = #{parentId} and is_delete = 0
+        select * from menu where parent_id = #{parentId} and is_delete = 0
     </select>
 
     <select id="findByUserId" resultMap="ResultMapChildesDTO">
@@ -45,14 +45,14 @@
             menu.menu_url,
             menu.parent_id
         FROM
-            t_menu menu
+            menu menu
         LEFT JOIN (
             SELECT
                 powerMenu.menu_id
             FROM
-                m_user_role userRole
-            LEFT JOIN m_role_power rolePower ON userRole.role_id = rolePower.role_id
-            LEFT JOIN m_power_menu powerMenu ON powerMenu.power_id = rolePower.power_id
+                user_role userRole
+            LEFT JOIN role_power rolePower ON userRole.role_id = rolePower.role_id
+            LEFT JOIN power_menu powerMenu ON powerMenu.power_id = rolePower.power_id
             WHERE
                 userRole.user_id = #{userId}
         ) menus ON menus.menu_id = menu.id

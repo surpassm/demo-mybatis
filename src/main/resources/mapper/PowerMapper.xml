@@ -8,8 +8,8 @@
         SELECT
             m.*
         FROM
-            m_power_menu pm
-        LEFT JOIN t_menu m ON pm.menu_id = m.id
+            power_menu pm
+        LEFT JOIN menu m ON pm.menu_id = m.id
         WHERE
             pm.power_id = #{powerId}
         AND m.is_delete = 0
@@ -19,7 +19,7 @@
         SELECT
             o.*
         FROM
-            m_power_operations mo
+            power_operations mo
         LEFT JOIN t_operations o ON mo.operations_id = o.id
         WHERE
             mo.power_id = #{powerId}

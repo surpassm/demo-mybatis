@@ -9,7 +9,7 @@ import com.liaoin.demo.domain.MenuDTO;
 import com.liaoin.demo.domain.UserInfoVO;
 import com.liaoin.demo.entity.*;
 import com.liaoin.demo.exception.CustomException;
-import com.liaoin.demo.mapper.UserGroupMapper;
+import com.liaoin.demo.mapper.UserGroupsMapper;
 import com.liaoin.demo.mapper.UserInfoMapper;
 import com.liaoin.demo.mapper.UserRoleMapper;
 import com.liaoin.demo.service.MenuService;
@@ -48,7 +48,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl implements UserInfoServ
 	@Resource
 	private PasswordEncoder passwordEncoder;
 	@Resource
-	private UserGroupMapper userGroupMapper;
+	private UserGroupsMapper userGroupsMapper;
 	@Resource
 	private UserRoleMapper userRoleMapper;
 	@Resource
@@ -217,9 +217,9 @@ public class UserInfoServiceImpl extends BaseServiceImpl implements UserInfoServ
 
 	@Override
 	public void addUserGroup(Long userInfoId, Long groupId) {
-		UserGroup build = UserGroup.builder().groupId(groupId).userId(userInfoId).build();
-		if (userGroupMapper.selectCount(build) == 0) {
-			userGroupMapper.insert(build);
+		UserGroups build = UserGroups.builder().groupId(groupId).userId(userInfoId).build();
+		if (userGroupsMapper.selectCount(build) == 0) {
+			userGroupsMapper.insert(build);
 		} else {
 			throw new CustomException(ResultCode.DATA_ALREADY_EXISTED.getCode(), ResultCode.DATA_ALREADY_EXISTED.getMsg());
 		}
@@ -227,13 +227,13 @@ public class UserInfoServiceImpl extends BaseServiceImpl implements UserInfoServ
 
 	@Override
 	public void deleteUserGroup(Long userInfoId, Long groupId) {
-		userGroupMapper.delete(UserGroup.builder().groupId(groupId).userId(userInfoId).build());
+		userGroupsMapper.delete(UserGroups.builder().groupId(groupId).userId(userInfoId).build());
 	}
 
 	@Override
 	public Result pageQueryGroup(Integer page, Integer size, String sort, Long userInfoId) {
 		super.pageQuery(page, size, sort);
-		Page<Group> all = (Page<Group>) userInfoMapper.findGroupByUserId(userInfoId);
+		Page<Groups> all = (Page<Groups>) userInfoMapper.findGroupByUserId(userInfoId);
 		return ok(all.getTotal(), all.getResult());
 	}
 

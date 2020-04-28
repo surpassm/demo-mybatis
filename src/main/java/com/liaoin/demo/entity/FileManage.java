@@ -23,8 +23,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "t_file_manage")
-@org.hibernate.annotations.Table(appliesTo = "t_file_manage", comment = "文件管理")
+@Table
+@org.hibernate.annotations.Table(appliesTo = "file_manage", comment = "文件管理")
 public class FileManage implements Serializable {
 
 	@Id

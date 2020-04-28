@@ -1,8 +1,8 @@
 package com.liaoin.demo.mapper;
 
-import com.liaoin.demo.domain.GroupDTO;
+import com.liaoin.demo.domain.GroupsDTO;
 import com.liaoin.demo.entity.Department;
-import com.liaoin.demo.entity.Group;
+import com.liaoin.demo.entity.Groups;
 import com.liaoin.demo.entity.Menu;
 import com.liaoin.demo.entity.Role;
 import org.apache.ibatis.annotations.Param;
@@ -17,12 +17,12 @@ import java.util.List;
   * Version 1.0
   * Description 权限持久层
   */
-public interface GroupMapper extends Mapper<Group>, MySqlMapper<Group> {
+public interface GroupsMapper extends Mapper<Groups>, MySqlMapper<Groups> {
 
 
-	List<GroupDTO> findAllParent();
+	List<GroupsDTO> findAllParent();
 
-	List<GroupDTO> findAllChild(@Param("parentId") Long parentId);
+	List<GroupsDTO> findAllChild(@Param("parentId") Long parentId);
 
 	List<Department> findDepartmentByGroupId(@Param("groupId") Long groupId);
 
