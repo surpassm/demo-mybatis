@@ -23,15 +23,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table
-@org.hibernate.annotations.Table(appliesTo = "groups", comment = "组")
+@Table(name = "t_groups")
+@org.hibernate.annotations.Table(appliesTo = "t_groups", comment = "组")
 public class Groups implements Serializable {
 
 
 	@Id
 	@Min(0)
 	@KeySql(useGeneratedKeys = true)
-	@Column(columnDefinition="bigint COMMENT '系统标识'")
+	@Column(columnDefinition = "bigint COMMENT '系统标识'")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 

@@ -42,7 +42,7 @@ public class OperationsLog implements Serializable {
     /**
      * 功能
      */
-    private String function;
+    private String functions;
     /**
      * 接口
      */

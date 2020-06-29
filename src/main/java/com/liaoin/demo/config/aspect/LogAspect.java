@@ -57,7 +57,7 @@ public class LogAspect {
 			if (joinPoint.getSignature().getName().equals(method.getName())) {
 				if (method.isAnnotationPresent(ApiOperation.class)) {
 					ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
-					operationsLog.setFunction(apiOperation.value());
+					operationsLog.setFunctions(apiOperation.value());
 				}
 			}
 		}

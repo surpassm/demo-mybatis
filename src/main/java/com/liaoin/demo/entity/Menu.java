@@ -28,7 +28,6 @@ import java.io.Serializable;
 public class Menu implements Serializable {
 
 	@Id
-	@Min(0)
 	@KeySql(useGeneratedKeys = true)
 	@Column(columnDefinition="bigint COMMENT '系统标识'")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
