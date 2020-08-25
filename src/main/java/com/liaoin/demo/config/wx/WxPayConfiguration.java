@@ -17,9 +17,9 @@ import org.springframework.context.annotation.Configuration;
  * Version 1.0
  * Description 微信支付配置
  */
-@Configuration
-@ConditionalOnClass(WxPayService.class)
-@EnableConfigurationProperties(WxPayProperties.class)
+//@Configuration
+//@ConditionalOnClass(WxPayService.class)
+//@EnableConfigurationProperties(WxPayProperties.class)
 public class WxPayConfiguration {
   private WxPayProperties properties;
 

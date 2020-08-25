@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
  * Description 微信小程序配置
  */
 
-@Configuration
-@EnableConfigurationProperties(WxMaProperties.class)
+//@Configuration
+//@EnableConfigurationProperties(WxMaProperties.class)
 public class WxMaConfiguration {
     private WxMaProperties properties;
 

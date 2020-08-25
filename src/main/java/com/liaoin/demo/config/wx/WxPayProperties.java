@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Description 微信支付数据配置
  */
 
-@ConfigurationProperties(prefix = "wx.pay")
+//@ConfigurationProperties(prefix = "wx.pay")
 public class WxPayProperties {
   /**
    * 设置微信公众号或者小程序等的appid
