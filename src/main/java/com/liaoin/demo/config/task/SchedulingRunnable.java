@@ -7,7 +7,6 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 /**
  * @author mc
@@ -17,12 +16,17 @@ import java.util.logging.Logger;
  */
 @Slf4j
 public class SchedulingRunnable implements Runnable {
-
-
+    /**
+     * 实体名称
+     */
     private String beanName;
-
+    /**
+     * 方法名称
+     */
     private String methodName;
-
+    /**
+     * 方法参数
+     */
     private String params;
 
     public SchedulingRunnable(String beanName, String methodName) {
