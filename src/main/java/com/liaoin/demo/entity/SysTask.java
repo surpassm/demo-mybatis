@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
 @Table
-@org.hibernate.annotations.Table(appliesTo = "sys_task", comment = "角色")
+@org.hibernate.annotations.Table(appliesTo = "sys_task", comment = "动态定时任务定义实体")
 public class SysTask {
 
     /**
