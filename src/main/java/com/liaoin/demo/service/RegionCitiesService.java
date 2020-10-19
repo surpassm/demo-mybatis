@@ -1,6 +1,6 @@
 package com.liaoin.demo.service;
 
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.domain.RegionCitiesVO;
 import com.liaoin.demo.entity.RegionCities;
 
@@ -54,7 +54,7 @@ public interface RegionCitiesService {
 	 * @param vo 查询条件
 	 * @return 前端返回格式
 	 */
-    Result pageQuery(Integer page, Integer size, String sort, RegionCitiesVO vo);
+    R pageQuery(Integer page, Integer size, String sort, RegionCitiesVO vo);
 
 
 	/**

@@ -2,7 +2,7 @@ package com.liaoin.demo.service.impl;
 
 import com.github.pagehelper.Page;
 import com.liaoin.demo.annotation.JwtConstants;
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.common.Token;
 import com.liaoin.demo.domain.MenuDTO;
@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.liaoin.demo.common.Result.ok;
+import static com.liaoin.demo.common.R.ok;
 
 
 /**
@@ -91,7 +91,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl implements UserInfoServ
 	}
 
 	@Override
-	public Result pageQuery(Integer page, Integer size, String sort, UserInfoVO userInfoVO) {
+	public R pageQuery(Integer page, Integer size, String sort, UserInfoVO userInfoVO) {
 		super.pageQuery(page, size, sort);
 		Example.Builder builder = new Example.Builder(UserInfo.class);
 		builder.where(WeekendSqls.<UserInfo>custom().andEqualTo(UserInfo::getIsDelete, 0));
@@ -228,7 +228,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl implements UserInfoServ
 	}
 
 	@Override
-	public Result pageQueryGroup(Integer page, Integer size, String sort, Long userInfoId) {
+	public R pageQueryGroup(Integer page, Integer size, String sort, Long userInfoId) {
 		super.pageQuery(page, size, sort);
 		Page<Groups> all = (Page<Groups>) userInfoMapper.findGroupByUserId(userInfoId);
 		return ok(all.getTotal(), all.getResult());
@@ -250,7 +250,7 @@ public class UserInfoServiceImpl extends BaseServiceImpl implements UserInfoServ
 	}
 
 	@Override
-	public Result pageQueryRole(Integer page, Integer size, String sort, Long userInfoId) {
+	public R pageQueryRole(Integer page, Integer size, String sort, Long userInfoId) {
 		super.pageQuery(page, size, sort);
 		Page<Role> all = (Page<Role>) userInfoMapper.findRoleByUserId(userInfoId);
 		return ok(all.getTotal(), all.getResult());

@@ -3,7 +3,7 @@ package com.liaoin.demo.config.aspect;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liaoin.demo.annotation.JwtConstants;
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.entity.OperationsLog;
 import com.liaoin.demo.mapper.OperationsLogMapper;
 import com.liaoin.demo.util.JwtUtils;
@@ -100,14 +100,14 @@ public class LogAspect {
 
 	@AfterReturning(pointcut = "execution(* com.liaoin.*.service..*.insert*(..)) || " +
 			"execution(* com.liaoin.*.service..*.update*(..)) || " +
-			"execution(* com.liaoin.*.service..*.deleteById*(..))", returning = "result")
-	public void setLogData(Result result) throws JsonProcessingException {
-		if (200 == result.getCode()) {
+			"execution(* com.liaoin.*.service..*.deleteById*(..))", returning = "r")
+	public void setLogData(R r) throws JsonProcessingException {
+		if (200 == r.getCode()) {
 			// 获取日志
 			OperationsLog operationsLog = LogHolder.get();
 			// 数据
-			if (result.getData() != null) {
-				String data = objectMapper.writeValueAsString(result.getData());
+			if (r.getData() != null) {
+				String data = objectMapper.writeValueAsString(r.getData());
 				operationsLog.setData(data);
 			}
 			// 操作结束时间

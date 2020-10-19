@@ -1,7 +1,7 @@
 package com.liaoin.demo.service.impl;
 
 import com.github.pagehelper.Page;
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.RoleVO;
 import com.liaoin.demo.entity.*;
@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.liaoin.demo.common.Result.ok;
+import static com.liaoin.demo.common.R.ok;
 
 
 /**
@@ -74,7 +74,7 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
     }
 
     @Override
-    public Result pageQuery(Integer page, Integer size, String sort, RoleVO roleVO) {
+    public R pageQuery(Integer page, Integer size, String sort, RoleVO roleVO) {
 		super.pageQuery(page,size,sort);
         Example.Builder builder = new Example.Builder(Role.class);
         builder.where(WeekendSqls.<Role>custom().andEqualTo(Role::getIsDelete, 0));
@@ -141,7 +141,7 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
 	 * @return Result
 	 */
 	@Override
-	public Result pageQueryDepartment(Integer page, Integer size, String sort, Long roleId) {
+	public R pageQueryDepartment(Integer page, Integer size, String sort, Long roleId) {
 		super.pageQuery(page,size,sort);
 		Page<Department> all = (Page<Department>) roleMapper.findDepartmentByRoleId(roleId);
 		return ok(all.getTotal(),all.getResult());
@@ -171,7 +171,7 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
 	 * @return Result
 	 */
 	@Override
-	public Result pageQueryPower(Integer page, Integer size, String sort, Long roleId) {
+	public R pageQueryPower(Integer page, Integer size, String sort, Long roleId) {
 		super.pageQuery(page,size,sort);
 		Page<Power> all = (Page<Power>) roleMapper.findPowerByRoleId(roleId);
 		return ok(all.getTotal(),all.getResult());

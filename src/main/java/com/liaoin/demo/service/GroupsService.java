@@ -1,6 +1,6 @@
 package com.liaoin.demo.service;
 
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.domain.GroupsDTO;
 import com.liaoin.demo.domain.GroupsVO;
 import com.liaoin.demo.entity.Groups;
@@ -56,7 +56,7 @@ public interface GroupsService {
      * @param vo   查询条件
      * @return 前端返回格式
      */
-    Result pageQuery(Integer page, Integer size, String sort, GroupsVO vo);
+    R pageQuery(Integer page, Integer size, String sort, GroupsVO vo);
 
 
     /**
@@ -107,7 +107,7 @@ public interface GroupsService {
      * @param groupId 组主键
      * @return Result
      */
-    Result pageQueryDepartment(Integer page, Integer size, String sort, Long groupId);
+    R pageQueryDepartment(Integer page, Integer size, String sort, Long groupId);
 
     /**
      * 添加组菜单
@@ -134,7 +134,7 @@ public interface GroupsService {
      * @param groupId 组主键
      * @return Result
      */
-    Result pageQueryMenu(Integer page, Integer size, String sort, Long groupId);
+    R pageQueryMenu(Integer page, Integer size, String sort, Long groupId);
 
     /**
      * 添加组角色
@@ -161,5 +161,5 @@ public interface GroupsService {
      * @param groupId 组主键
      * @return Result
      */
-    Result pageQueryRole(Integer page, Integer size, String sort, Long groupId);
+    R pageQueryRole(Integer page, Integer size, String sort, Long groupId);
 }

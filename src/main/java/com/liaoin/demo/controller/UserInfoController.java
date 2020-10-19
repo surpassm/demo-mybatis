@@ -22,7 +22,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
-import static com.liaoin.demo.common.Result.ok;
+import static com.liaoin.demo.common.R.ok;
 
 
 /**

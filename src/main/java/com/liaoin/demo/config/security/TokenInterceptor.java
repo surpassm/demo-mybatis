@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liaoin.demo.annotation.JwtConstants;
 import com.liaoin.demo.annotation.Login;
 import com.liaoin.demo.annotation.ResponseResult;
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.common.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -72,7 +72,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         try (PrintWriter out = response.getWriter()) {
             log.error("请求地址:" + request.getRequestURI() + ResultCode.PERMISSION_NO_ACCESS.getMsg() + ",请携带token");
-            out.write(objectMapper.writeValueAsString(new Result(ResultCode.PERMISSION_NO_ACCESS.getCode(), ResultCode.PERMISSION_NO_ACCESS.getMsg(), "")));
+            out.write(objectMapper.writeValueAsString(new R(ResultCode.PERMISSION_NO_ACCESS.getCode(), ResultCode.PERMISSION_NO_ACCESS.getMsg(), "")));
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();

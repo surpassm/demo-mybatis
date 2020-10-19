@@ -1,7 +1,7 @@
 package com.liaoin.demo.service.impl;
 
 import com.github.pagehelper.Page;
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.RegionAreasVO;
 import com.liaoin.demo.entity.RegionAreas;
@@ -16,7 +16,7 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.util.Optional;
 
-import static com.liaoin.demo.common.Result.ok;
+import static com.liaoin.demo.common.R.ok;
 
 
 /**
@@ -61,7 +61,7 @@ public class RegionAreasServiceImpl extends BaseServiceImpl implements RegionAre
     }
 
     @Override
-    public Result pageQuery(Integer page, Integer size, String sort, RegionAreasVO regionAreasVO) {
+    public R pageQuery(Integer page, Integer size, String sort, RegionAreasVO regionAreasVO) {
 		super.pageQuery(page,size,sort);
         Example.Builder builder = new Example.Builder(RegionAreas.class);
         if(regionAreasVO != null){

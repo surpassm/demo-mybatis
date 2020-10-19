@@ -23,8 +23,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @NameStyle(Style.camelhump)
-@Table(name = "t_groups")
-@org.hibernate.annotations.Table(appliesTo = "t_groups", comment = "组")
+@Table(name = "groups")
+@org.hibernate.annotations.Table(appliesTo = "groups", comment = "组")
 public class Groups implements Serializable {
 
 

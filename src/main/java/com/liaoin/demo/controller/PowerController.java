@@ -1,9 +1,7 @@
 package com.liaoin.demo.controller;
 
 import com.liaoin.demo.annotation.Login;
-import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.PowerVO;
-import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.service.PowerService;
 import com.liaoin.demo.util.ValidateUtil;
 import io.swagger.annotations.Api;
@@ -17,7 +15,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import static com.liaoin.demo.common.Result.ok;
+import static com.liaoin.demo.common.R.ok;
 
 
 /**

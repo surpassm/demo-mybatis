@@ -1,7 +1,7 @@
 package com.liaoin.demo.service.impl;
 
 import com.github.pagehelper.Page;
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.DepartmentDTO;
 import com.liaoin.demo.domain.DepartmentVO;
@@ -22,7 +22,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
-import static com.liaoin.demo.common.Result.ok;
+import static com.liaoin.demo.common.R.ok;
 
 
 /**
@@ -70,7 +70,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
     }
 
     @Override
-    public Result pageQuery(Integer page, Integer size, String sort, DepartmentVO departmentVO) {
+    public R pageQuery(Integer page, Integer size, String sort, DepartmentVO departmentVO) {
 		super.pageQuery(page,size,sort);
         Example.Builder builder = new Example.Builder(Department.class);
         builder.where(WeekendSqls.<Department>custom().andEqualTo(Department::getIsDelete, 0));
@@ -134,7 +134,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
 		departmentUserInfoMapper.delete(DepartmentUserInfo.builder().departmentId(departmentId).userId(userInfoId).build());
 	}
 	@Override
-	public Result pageQueryDepartmentPerson(Long departmentId,Integer page, Integer size, String sort) {
+	public R pageQueryDepartmentPerson(Long departmentId, Integer page, Integer size, String sort) {
 		super.pageQuery(page,size,sort);
 		Page<UserInfo> all = (Page<UserInfo>) departmentMapper.pageQueryDepartmentPerson(departmentId);
 		return ok(all.getTotal(),all.getResult());

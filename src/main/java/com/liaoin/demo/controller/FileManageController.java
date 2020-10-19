@@ -2,7 +2,7 @@ package com.liaoin.demo.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.liaoin.demo.annotation.Login;
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.entity.FileManage;
 import com.liaoin.demo.common.SurpassmFile;
 import com.liaoin.demo.exception.CustomException;
@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.liaoin.demo.common.Result.fail;
-import static com.liaoin.demo.common.Result.ok;
+import static com.liaoin.demo.common.R.fail;
+import static com.liaoin.demo.common.R.ok;
 
 
 /**
@@ -48,8 +48,8 @@ public class FileManageController {
 	@Login
     @PostMapping("v1/getById")
     @ApiOperation(value = "根据主键删除")
-    public Result deleteGetById(@ApiParam(hidden = true)@Login Long userId,
-								@ApiParam(value = "主键",required = true)@RequestParam(value = "id") @NotNull Integer id) {
+    public R deleteGetById(@ApiParam(hidden = true)@Login Long userId,
+						   @ApiParam(value = "主键",required = true)@RequestParam(value = "id") @NotNull Integer id) {
 		FileManage byId = fileManageService.findById(id);
 		if (byId == null){
 			return fail();
@@ -60,19 +60,19 @@ public class FileManageController {
 
     @PostMapping("v1/findById")
     @ApiOperation(value = "根据主键查询")
-    public Result findById(@ApiParam(hidden = true)@Login Long userId,
-                           @ApiParam(value = "主键",required = true)@RequestParam(value = "id") Integer id) {
+    public R findById(@ApiParam(hidden = true)@Login Long userId,
+					  @ApiParam(value = "主键",required = true)@RequestParam(value = "id") Integer id) {
 		FileManage byId = fileManageService.findById(id);
 		return ok(byId);
     }
 
     @PostMapping("v1/pageQuery")
     @ApiOperation(value = "条件分页查询")
-    public Result pageQuery(@ApiParam(hidden = true)@Login Long userId,
-                            @ApiParam(value = "第几页", required = true) @RequestParam(value = "page") Integer page,
-                            @ApiParam(value = "多少条",required = true)@RequestParam(value = "size") Integer size,
-                            @ApiParam(value = "排序字段")@RequestParam(value = "sort",required = false) String sort,
-                            FileManage fileManage) {
+    public R pageQuery(@ApiParam(hidden = true)@Login Long userId,
+					   @ApiParam(value = "第几页", required = true) @RequestParam(value = "page") Integer page,
+					   @ApiParam(value = "多少条",required = true)@RequestParam(value = "size") Integer size,
+					   @ApiParam(value = "排序字段")@RequestParam(value = "sort",required = false) String sort,
+					   FileManage fileManage) {
 		PageInfo<FileManage> fileManagePageInfo = fileManageService.pageQuery(page, size, sort, fileManage);
 		return ok(fileManagePageInfo);
     }
@@ -81,13 +81,13 @@ public class FileManageController {
 
 	@PostMapping("v1/insert/upload")
 	@ApiOperation("单文件上传（存入数据库）")
-	public Result insert(@ApiParam(hidden = true)@Login Long userId, HttpServletRequest request, @RequestParam MultipartFile file) {
+	public R insert(@ApiParam(hidden = true)@Login Long userId, HttpServletRequest request, @RequestParam MultipartFile file) {
 		SurpassmFile surpassmFile = fileManageService.insert(request, file);
 		return ok(surpassmFile);
 	}
 	@PostMapping("v1/insert/batchUpload")
 	@ApiOperation(value = "批量文件上传（存入数据库,无法使用，存在消耗冲突）",hidden = true)
-	public Result insertBatch(@ApiParam(hidden = true) @Login Long userId, HttpServletRequest request, @RequestParam(required = false)@NotNull MultipartFile[] files) {
+	public R insertBatch(@ApiParam(hidden = true) @Login Long userId, HttpServletRequest request, @RequestParam(required = false)@NotNull MultipartFile[] files) {
 		try {
 			fileManageService.insertBatch(request,files);
 		} catch (Exception e) {
@@ -98,8 +98,8 @@ public class FileManageController {
 
 	@PostMapping("v1/upload")
 	@ApiOperation(value = "单文件上传（不存入数据库）")
-	public Result store(@ApiParam(hidden = true) @Login Long userId,
-						@RequestParam("file") MultipartFile file) {
+	public R store(@ApiParam(hidden = true) @Login Long userId,
+				   @RequestParam("file") MultipartFile file) {
 		SurpassmFile store = fileManageService.store(file);
 		return ok(store);
 	}
@@ -117,14 +117,14 @@ public class FileManageController {
 	}
 
 	@ExceptionHandler(CustomException.class)
-	public Result handleStorageFileNotFound(CustomException exc) {
+	public R handleStorageFileNotFound(CustomException exc) {
 		return fail("文件有重名,请重命名文件");
 	}
 
 
 	@GetMapping("v1/auth/listUploadedFiles")
 	@ApiOperation(value = "返回所有文件列表")
-	public Result listUploadedFiles() {
+	public R listUploadedFiles() {
 		List<String> serveFile = fileManageService
 				.loadAll()
 				.stream()

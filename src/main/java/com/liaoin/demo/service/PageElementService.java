@@ -1,6 +1,6 @@
 package com.liaoin.demo.service;
 
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.domain.PageElementVO;
 import com.liaoin.demo.entity.PageElement;
 
@@ -54,7 +54,7 @@ public interface PageElementService {
 	 * @param vo 查询条件
 	 * @return 前端返回格式
 	 */
-    Result pageQuery(Integer page, Integer size, String sort, PageElementVO vo);
+    R pageQuery(Integer page, Integer size, String sort, PageElementVO vo);
 
 
 	/**

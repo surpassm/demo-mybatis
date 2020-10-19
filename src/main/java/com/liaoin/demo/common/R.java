@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Result<T> {
+public class R<T> {
     /**
      * 响应业务状态
      */
@@ -34,57 +34,57 @@ public class Result<T> {
     private T data;
 
 
-    public Result(T data) {
+    public R(T data) {
         this.code = ResultCode.SUCCESS.getCode();
         this.message = ResultCode.SUCCESS.getMsg();
         this.data = data;
     }
 
-    public Result(Integer code, String message) {
+    public R(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public Result(Long total, List<T> rows) {
+    public R(Long total, List<T> rows) {
         this.code = ResultCode.SUCCESS.getCode();
         this.message = ResultCode.SUCCESS.getMsg();
         this.data = (T) new PageData(total,rows);
 
     }
 
-    public Result(Integer code, String message, T data) {
+    public R(Integer code, String message, T data) {
         this.code = code;
         this.message = message;
         this.data = data;
     }
 
-    public static <T> Result<T> ok(T data) {
-        return new Result<>(data);
+    public static <T> R<T> ok(T data) {
+        return new R<>(data);
     }
 
-    public static <T> Result<T> ok(Long total, List<T> rows) {
-        return new Result<>(total, rows);
+    public static <T> R<T> ok(Long total, List<T> rows) {
+        return new R<>(total, rows);
     }
 
-    public static Result ok() {
-        return new Result<>("");
+    public static R ok() {
+        return new R<>("");
     }
 
-    public static Result fail() {
-        return new Result(ResultCode.ERROR.getCode(), ResultCode.ERROR.getMsg());
+    public static R fail() {
+        return new R(ResultCode.ERROR.getCode(), ResultCode.ERROR.getMsg());
     }
 
-    public static Result fail(String msg) {
-        return new Result(ResultCode.ERROR.getCode(), msg);
+    public static R fail(String msg) {
+        return new R(ResultCode.ERROR.getCode(), msg);
     }
 
-    public static Result fail(Integer code, String msg) {
-        return new Result(code, msg);
+    public static R fail(Integer code, String msg) {
+        return new R(code, msg);
     }
 
 
-    public static Result fail(Object data) {
-        return new Result<>(ResultCode.ERROR.getCode(), ResultCode.ERROR.getMsg(), data);
+    public static R fail(Object data) {
+        return new R<>(ResultCode.ERROR.getCode(), ResultCode.ERROR.getMsg(), data);
     }
 
     public Object getData() {

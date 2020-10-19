@@ -1,7 +1,7 @@
 package com.liaoin.demo.service.impl;
 
 import com.github.pagehelper.Page;
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.OperationsDTO;
 import com.liaoin.demo.domain.OperationsVO;
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.liaoin.demo.common.Result.ok;
+import static com.liaoin.demo.common.R.ok;
 
 
 /**
@@ -65,7 +65,7 @@ public class OperationsServiceImpl extends BaseServiceImpl implements Operations
     }
 
     @Override
-    public Result pageQuery(Integer page, Integer size, String sort, OperationsVO operationsVO) {
+    public R pageQuery(Integer page, Integer size, String sort, OperationsVO operationsVO) {
 		super.pageQuery(page,size,sort);
         Example.Builder builder = new Example.Builder(Operations.class);
 		builder.where(WeekendSqls.<Operations>custom().andEqualTo(Operations::getIsDelete,0));

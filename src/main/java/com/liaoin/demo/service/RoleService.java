@@ -1,6 +1,6 @@
 package com.liaoin.demo.service;
 
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.domain.RoleVO;
 import com.liaoin.demo.entity.Role;
 
@@ -55,7 +55,7 @@ public interface RoleService {
      * @param vo   查询条件
      * @return 前端返回格式
      */
-    Result pageQuery(Integer page, Integer size, String sort, RoleVO vo);
+    R pageQuery(Integer page, Integer size, String sort, RoleVO vo);
 
 
     /**
@@ -91,7 +91,7 @@ public interface RoleService {
      * @param roleId 角色标识
      * @return Result
      */
-    Result pageQueryDepartment(Integer page, Integer size, String sort, Long roleId);
+    R pageQueryDepartment(Integer page, Integer size, String sort, Long roleId);
 
     /**
      * 添加角色权限
@@ -118,7 +118,7 @@ public interface RoleService {
      * @param roleId 角色标识
      * @return Result
      */
-    Result pageQueryPower(Integer page, Integer size, String sort, Long roleId);
+    R pageQueryPower(Integer page, Integer size, String sort, Long roleId);
 
 
     /**

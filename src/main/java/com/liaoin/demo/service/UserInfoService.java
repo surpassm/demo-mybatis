@@ -1,6 +1,6 @@
 package com.liaoin.demo.service;
 
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.common.Token;
 import com.liaoin.demo.domain.MenuDTO;
 import com.liaoin.demo.domain.UserInfoVO;
@@ -59,7 +59,7 @@ public interface UserInfoService {
      * @param vo   查询条件
      * @return 前端返回格式
      */
-    Result pageQuery(Integer page, Integer size, String sort, UserInfoVO vo);
+    R pageQuery(Integer page, Integer size, String sort, UserInfoVO vo);
 
 
     /**
@@ -121,7 +121,7 @@ public interface UserInfoService {
      * @param userInfoId 用户标识
      * @return result
      */
-    Result pageQueryGroup(Integer page, Integer size, String sort, Long userInfoId);
+    R pageQueryGroup(Integer page, Integer size, String sort, Long userInfoId);
 
     /**
      * 添加用户角色
@@ -148,7 +148,7 @@ public interface UserInfoService {
      * @param userInfoId 用户标识
      * @return result
      */
-    Result pageQueryRole(Integer page, Integer size, String sort, Long userInfoId);
+    R pageQueryRole(Integer page, Integer size, String sort, Long userInfoId);
 
     /**
      * 根据用户标识获取菜单

@@ -1,7 +1,7 @@
 package com.liaoin.demo.service.impl;
 
 import com.github.pagehelper.Page;
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.MenuDTO;
 import com.liaoin.demo.domain.MenuVO;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.liaoin.demo.common.Result.ok;
+import static com.liaoin.demo.common.R.ok;
 
 
 /**
@@ -73,7 +73,7 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
     }
 
     @Override
-    public Result pageQuery(Integer page, Integer size, String sort, MenuVO menuVO) {
+    public R pageQuery(Integer page, Integer size, String sort, MenuVO menuVO) {
         super.pageQuery(page, size, sort);
         Example.Builder builder = new Example.Builder(Menu.class);
         builder.where(WeekendSqls.<Menu>custom().andEqualTo(Menu::getIsDelete, 0));

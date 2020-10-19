@@ -1,7 +1,7 @@
 package com.liaoin.demo.config.handler;
 
 import com.liaoin.demo.annotation.ResponseResult;
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.common.ResultCode;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import springfox.documentation.swagger.web.ApiResourceController;
 import springfox.documentation.swagger2.web.Swagger2Controller;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,9 +59,9 @@ public class ApiResultHandler implements ResponseBodyAdvice<Object> {
         if (MediaType.IMAGE_JPEG.getType().equalsIgnoreCase(selectedContentType.getType())) {
             return body;
         }
-        if (body instanceof Result) {
+        if (body instanceof R) {
             return body;
         }
-        return new Result<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMsg(), body);
+        return new R<>(ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMsg(), body);
     }
 }

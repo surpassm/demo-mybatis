@@ -1,6 +1,6 @@
 package com.liaoin.demo.service;
 
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.domain.PowerVO;
 import com.liaoin.demo.entity.Power;
 
@@ -54,7 +54,7 @@ public interface PowerService {
      * @param vo   查询条件
      * @return 前端返回格式
      */
-    Result pageQuery(Integer page, Integer size, String sort, PowerVO vo);
+    R pageQuery(Integer page, Integer size, String sort, PowerVO vo);
 
 
     /**
@@ -90,7 +90,7 @@ public interface PowerService {
      * @param powerId 权限标识
      * @return result
      */
-    Result pageQueryMenu(Integer page, Integer size, String sort, Long powerId);
+    R pageQueryMenu(Integer page, Integer size, String sort, Long powerId);
 
     /**
      * 添加权限接口
@@ -117,5 +117,5 @@ public interface PowerService {
      * @param powerId 权限
      * @return Result
      */
-    Result pageQueryOperations(Integer page, Integer size, String sort, Long powerId);
+    R pageQueryOperations(Integer page, Integer size, String sort, Long powerId);
 }

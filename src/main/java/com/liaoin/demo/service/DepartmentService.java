@@ -1,6 +1,6 @@
 package com.liaoin.demo.service;
 
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.domain.DepartmentDTO;
 import com.liaoin.demo.domain.DepartmentVO;
 import com.liaoin.demo.entity.Department;
@@ -56,7 +56,7 @@ public interface DepartmentService {
      * @param vo   查询条件
      * @return 前端返回格式
      */
-    Result pageQuery(Integer page, Integer size, String sort, DepartmentVO vo);
+    R pageQuery(Integer page, Integer size, String sort, DepartmentVO vo);
 
 
     /**
@@ -116,7 +116,7 @@ public interface DepartmentService {
      * @param sort         排序
      * @return result
      */
-    Result pageQueryDepartmentPerson(Long departmentId, Integer page, Integer size, String sort);
+    R pageQueryDepartmentPerson(Long departmentId, Integer page, Integer size, String sort);
 
     /**
      * 根据父级ID查询所有子级

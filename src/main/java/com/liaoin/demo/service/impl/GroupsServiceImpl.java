@@ -1,7 +1,7 @@
 package com.liaoin.demo.service.impl;
 
 import com.github.pagehelper.Page;
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.GroupsDTO;
 import com.liaoin.demo.domain.GroupsVO;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.liaoin.demo.common.Result.ok;
+import static com.liaoin.demo.common.R.ok;
 
 
 /**
@@ -83,7 +83,7 @@ public class GroupsServiceImpl extends BaseServiceImpl implements GroupsService 
     }
 
     @Override
-    public Result pageQuery(Integer page, Integer size, String sort, GroupsVO groupsVO) {
+    public R pageQuery(Integer page, Integer size, String sort, GroupsVO groupsVO) {
 		super.pageQuery(page,size,sort);
         Example.Builder builder = new Example.Builder(Groups.class);
         builder.where(WeekendSqls.<Groups>custom().andEqualTo(Groups::getIsDelete, 0));
@@ -157,7 +157,7 @@ public class GroupsServiceImpl extends BaseServiceImpl implements GroupsService 
 	 * @return
 	 */
 	@Override
-	public Result pageQueryDepartment(Integer page, Integer size, String sort, Long groupId) {
+	public R pageQueryDepartment(Integer page, Integer size, String sort, Long groupId) {
 		super.pageQuery(page,size,sort);
 		Page<Department> all = (Page<Department>) groupsMapper.findDepartmentByGroupId(groupId);
 		return ok(all.getTotal(),all.getResult());
@@ -205,7 +205,7 @@ public class GroupsServiceImpl extends BaseServiceImpl implements GroupsService 
 	 * @return
 	 */
 	@Override
-	public Result pageQueryMenu(Integer page, Integer size, String sort, Long groupId) {
+	public R pageQueryMenu(Integer page, Integer size, String sort, Long groupId) {
 		super.pageQuery(page,size,sort);
 		Page<Menu> all = (Page<Menu>) groupsMapper.findMenuByGroupId(groupId);
 		return ok(all.getTotal(),all.getResult());
@@ -244,7 +244,7 @@ public class GroupsServiceImpl extends BaseServiceImpl implements GroupsService 
 	 * @return
 	 */
 	@Override
-	public Result pageQueryRole(Integer page, Integer size, String sort, Long groupId) {
+	public R pageQueryRole(Integer page, Integer size, String sort, Long groupId) {
 		super.pageQuery(page,size,sort);
 		Page<Role> all = (Page<Role>) groupsMapper.findRoleByGroupId(groupId);
 		return ok(all.getTotal(),all.getResult());

@@ -1,7 +1,7 @@
 package com.liaoin.demo.service.impl;
 
 import com.github.pagehelper.Page;
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.PowerVO;
 import com.liaoin.demo.entity.*;
@@ -18,10 +18,9 @@ import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
-import static com.liaoin.demo.common.Result.ok;
+import static com.liaoin.demo.common.R.ok;
 
 
 /**
@@ -76,7 +75,7 @@ public class PowerServiceImpl extends BaseServiceImpl implements PowerService {
 	}
 
     @Override
-    public Result pageQuery(Integer page, Integer size, String sort, PowerVO powerVO) {
+    public R pageQuery(Integer page, Integer size, String sort, PowerVO powerVO) {
 		super.pageQuery(page,size,sort);
         Example.Builder builder = new Example.Builder(Power.class);
         builder.where(WeekendSqls.<Power>custom().andEqualTo(Power::getIsDelete, 0));
@@ -129,7 +128,7 @@ public class PowerServiceImpl extends BaseServiceImpl implements PowerService {
 	}
 
 	@Override
-	public Result pageQueryMenu(Integer page, Integer size, String sort, Long powerId) {
+	public R pageQueryMenu(Integer page, Integer size, String sort, Long powerId) {
 		super.pageQuery(page,size,sort);
 		Page<Menu> all = (Page<Menu>) powerMapper.findMenuByPowerId(powerId);
 		return ok(all.getTotal(),all.getResult());
@@ -151,7 +150,7 @@ public class PowerServiceImpl extends BaseServiceImpl implements PowerService {
 	}
 
 	@Override
-	public Result pageQueryOperations(Integer page, Integer size, String sort, Long powerId) {
+	public R pageQueryOperations(Integer page, Integer size, String sort, Long powerId) {
 		super.pageQuery(page,size,sort);
 		Page<Operations> all = (Page<Operations>) powerMapper.findOperationsByPowerId(powerId);
 		return ok(all.getTotal(),all.getResult());

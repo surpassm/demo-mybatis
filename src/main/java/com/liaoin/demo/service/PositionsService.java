@@ -1,6 +1,6 @@
 package com.liaoin.demo.service;
 
-import com.liaoin.demo.common.Result;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.domain.PositionsDTO;
 import com.liaoin.demo.domain.PositionsVO;
 import com.liaoin.demo.entity.Positions;
@@ -56,7 +56,7 @@ public interface PositionsService {
      * @param vo   查询条件
      * @return 前端返回格式
      */
-    Result pageQuery(Integer page, Integer size, String sort, PositionsVO vo);
+    R pageQuery(Integer page, Integer size, String sort, PositionsVO vo);
 
 
     /**
