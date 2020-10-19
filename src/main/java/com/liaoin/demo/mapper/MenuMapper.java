@@ -37,4 +37,6 @@ public interface MenuMapper extends tk.mybatis.mapper.common.Mapper<Menu>, MySql
 	 * @return 集合
 	 */
 	List<MenuDTO> findByUserId(Long userId);
+
+	List<MenuDTO> findAll();
 }

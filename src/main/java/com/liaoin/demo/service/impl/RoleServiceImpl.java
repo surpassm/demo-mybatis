@@ -20,6 +20,7 @@ import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static com.liaoin.demo.common.Result.ok;
@@ -174,6 +175,11 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
 		super.pageQuery(page,size,sort);
 		Page<Power> all = (Page<Power>) roleMapper.findPowerByRoleId(roleId);
 		return ok(all.getTotal(),all.getResult());
+	}
+
+	@Override
+	public List<Role> findAll() {
+		return roleMapper.select(Role.builder().isDelete(0).isEnable(1).build());
 	}
 
 }

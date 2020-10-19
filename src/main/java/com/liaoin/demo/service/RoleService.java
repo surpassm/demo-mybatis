@@ -6,6 +6,7 @@ import com.liaoin.demo.entity.Role;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -118,4 +119,11 @@ public interface RoleService {
      * @return Result
      */
     Result pageQueryPower(Integer page, Integer size, String sort, Long roleId);
+
+
+    /**
+     * 查询所有角色信息
+     * @return
+     */
+    List<Role> findAll();
 }

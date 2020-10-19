@@ -18,6 +18,7 @@ import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static com.liaoin.demo.common.Result.ok;
@@ -155,6 +156,8 @@ public class PowerServiceImpl extends BaseServiceImpl implements PowerService {
 		Page<Operations> all = (Page<Operations>) powerMapper.findOperationsByPowerId(powerId);
 		return ok(all.getTotal(),all.getResult());
 	}
+
+
 
 }
 

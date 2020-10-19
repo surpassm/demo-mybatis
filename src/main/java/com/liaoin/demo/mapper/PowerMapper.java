@@ -21,4 +21,11 @@ public interface PowerMapper extends Mapper<Power>, MySqlMapper<Power> {
 	List<Menu> findMenuByPowerId(@Param("powerId") Long powerId);
 
 	List<Operations> findOperationsByPowerId(@Param("powerId") Long powerId);
+
+	/**
+	 * 根据角色ID查询权限
+	 * @param roleId
+	 * @return
+	 */
+	List<Power> findPowerByRoleId(@Param("roleId") Long roleId);
 }

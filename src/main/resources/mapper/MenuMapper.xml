@@ -29,16 +29,19 @@
         <result column="path" property="path"/>
         <result column="menu_icon" property="menuIcon"/>
         <result column="menu_url" property="menuUrl"/>
-        <collection property="childes" ofType="NewsLabel" select="findAllChild" column="id"/>
+        <collection property="children" ofType="NewsLabel" select="findAllChild" column="id"/>
     </resultMap>
 
     <select id="findAllChild" resultMap = "ResultMapChildesDTO">
-        select * from menu where parent_id = #{parentId} and is_delete = 0
+        select * from menu WHERE   is_delete = 0  and parent_id = #{parentId} and type = 0
     </select>
 
     <select id="findByUserId" resultMap="ResultMapChildesDTO">
         SELECT DISTINCT
             (menu.id),
+            menu.`name`,
+            menu.`path`,
+            menu.`type`,
             menu.describes,
             menu.menu_icon,
             menu.menu_index,
@@ -57,6 +60,12 @@
                 userRole.user_id = #{userId}
         ) menus ON menus.menu_id = menu.id
         WHERE
+	        menu.parent_id IS NULL
 
+    </select>
+
+
+    <select id="findAll" resultMap = "ResultMapChildesDTO">
+        select * from menu WHERE is_delete = 0 and type = 0 and parent_id is null
     </select>
 </mapper>

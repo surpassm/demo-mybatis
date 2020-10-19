@@ -5,6 +5,7 @@ import com.liaoin.demo.common.Token;
 import com.liaoin.demo.domain.MenuDTO;
 import com.liaoin.demo.domain.UserInfoVO;
 import com.liaoin.demo.entity.Operations;
+import com.liaoin.demo.entity.Role;
 import com.liaoin.demo.entity.UserInfo;
 
 import javax.validation.constraints.Min;
@@ -172,4 +173,26 @@ public interface UserInfoService {
      * @return boolean
      */
     boolean getUsername(String username);
+
+
+
+
+    /**
+     * 是否启用禁用
+     *
+     * @param id
+     * @param isEnable
+     */
+    void isEnable(Long userId, Long id, Integer isEnable);
+
+    void resetPassword(Long userId, Long id);
+
+    /**
+     * 查询当前登录人授予用户的角色列表
+     *
+     * @param loginUserId 当前登录人
+     * @param userInfoId  用户
+     * @return dto
+     */
+    List<Role> selectBindRole(@NotNull Long loginUserId, @NotNull Long userInfoId);
 }

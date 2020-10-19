@@ -6,8 +6,10 @@ import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.MenuDTO;
 import com.liaoin.demo.domain.MenuVO;
 import com.liaoin.demo.entity.Menu;
+import com.liaoin.demo.entity.PowerMenu;
 import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.mapper.MenuMapper;
+import com.liaoin.demo.mapper.PowerMenuMapper;
 import com.liaoin.demo.service.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,10 @@ import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.liaoin.demo.common.Result.ok;
 
@@ -34,6 +38,10 @@ import static com.liaoin.demo.common.Result.ok;
 public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
     @Resource
     private MenuMapper menuMapper;
+    @Resource
+    private PowerMenuMapper powerMenuMapper;
+
+
 
     @Override
     public Menu insert(Menu menu) {
@@ -163,7 +171,57 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
      */
     @Override
     public List<MenuDTO> findByUserId(Long userId) {
-        return menuMapper.findByUserId(userId);
+        List<MenuDTO> menus = menuMapper.findByUserId(userId);
+        List<MenuDTO> result = new ArrayList<>();
+        recursionFindByUserId(menus,result);
+
+        return result;
+    }
+
+    /**
+     * 递归返回
+     */
+    public void recursionFindByUserId(List<MenuDTO> menus,List<MenuDTO> result){
+        for (MenuDTO menu : menus) {
+            if (menu.getChildren().size() > 0){
+                recursionFindByUserId(menu.getChildren(),result);
+            }else {
+                result.add(menu);
+            }
+
+        }
+    }
+
+
+    @Override
+    public List<MenuDTO> findAll(Long powerId) {
+        List<Long> menuIds = powerMenuMapper.select(PowerMenu.builder().powerId(powerId).build()).stream().map(PowerMenu::getMenuId).collect(Collectors.toList());
+        List<MenuDTO> menus = menuMapper.findAll();
+        recursion(menus,menuIds);
+        return menus;
+    }
+
+    /**
+     * 递归处理数据
+     */
+    public void recursion(List<MenuDTO> menus,List<Long> menuIds){
+        for (MenuDTO menu : menus) {
+            if (menuIds != null && menuIds.size() > 0 ) {
+                for (Long menuId : menuIds) {
+                    if (menu.getId().equals(menuId)) {
+                        menu.setIsCheck(true);
+                    }
+                    if (menu.getIsCheck() == null || !menu.getIsCheck()){
+                        menu.setIsCheck(false);
+                    }
+                }
+            }else{
+                menu.setIsCheck(false);
+            }
+            if (menu.getChildren().size() > 0){
+                recursion(menu.getChildren(),menuIds);
+            }
+        }
     }
 }
 

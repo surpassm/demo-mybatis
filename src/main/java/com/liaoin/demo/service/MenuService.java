@@ -101,4 +101,9 @@ public interface MenuService {
 	 * @return
 	 */
 	List<MenuDTO> findByUserId(Long userId);
+
+	/**
+	 * 查询所有菜单
+	 */
+	List<MenuDTO> findAll(Long powerId);
 }

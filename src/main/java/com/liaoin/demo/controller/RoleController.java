@@ -1,6 +1,7 @@
 package com.liaoin.demo.controller;
 
 import com.liaoin.demo.annotation.Login;
+import com.liaoin.demo.annotation.ResponseResult;
 import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.RoleVO;
 import com.liaoin.demo.exception.CustomException;
@@ -142,4 +143,14 @@ public class RoleController {
 								@ApiParam(value = "排序字段")@RequestParam(value = "sort",required = false) String sort) {
 		return roleService.pageQueryPower(page, size, sort, roleId);
 	}
+
+
+	@Login
+	@PostMapping("v1/findAll")
+	@ApiOperation(value = "查询所有角色信息")
+	@ResponseResult
+	public Object findAll(@ApiParam(hidden = true)@Login Long userId) {
+		return roleService.findAll();
+	}
+
 }

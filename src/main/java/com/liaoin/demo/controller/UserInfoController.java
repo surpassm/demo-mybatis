@@ -1,6 +1,7 @@
 package com.liaoin.demo.controller;
 
 import com.liaoin.demo.annotation.Login;
+import com.liaoin.demo.annotation.ResponseResult;
 import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.UserInfoVO;
 import com.liaoin.demo.entity.UserInfo;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -152,4 +154,35 @@ public class UserInfoController {
 							  @ApiParam(value = "账号",required = true)@RequestParam(value = "username") @NotEmpty String username) {
 		return userInfoService.getUsername(username);
 	}
+
+	@Login
+	@PostMapping("v1/isEnable")
+	@ApiOperation(value = "是否启用禁用")
+	@ResponseResult
+	public Object isEnable(@ApiParam(hidden = true) @Login Long userId,
+						   @ApiParam(value = "主键", required = true) @RequestParam(value = "id") @NotNull @Min(1) Long id,
+						   @ApiParam(value = "是否启用0=否、1=是", required = true) @RequestParam(value = "isEnable") @NotNull @Min(0) @Max(1) Integer isEnable) {
+		userInfoService.isEnable(userId, id, isEnable);
+		return ok();
+	}
+
+	@Login
+	@PostMapping("v1/resetPassword")
+	@ApiOperation(value = "重置密码")
+	@ResponseResult
+	public Object resetPassword(@ApiParam(hidden = true) @Login Long userId,
+								@ApiParam(value = "主键", required = true) @RequestParam(value = "id") @NotNull @Min(1) Long id) {
+		userInfoService.resetPassword(userId, id);
+		return ok();
+	}
+
+	@Login
+	@PostMapping("v1/selectBindRole")
+	@ApiOperation(value = "查询当前登录人授予用户的角色列表")
+	@ResponseResult
+	public Object selectBindRole(@ApiParam(hidden = true) @Login Long userId,
+								 @ApiParam(value = "用户ID", required = true) @RequestParam(value = "userInfoId") @NotNull @Min(0) Long userInfoId) {
+		return userInfoService.selectBindRole(userId,userInfoId);
+	}
+
 }

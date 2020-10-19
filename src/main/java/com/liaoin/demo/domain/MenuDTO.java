@@ -42,8 +42,10 @@ public class MenuDTO implements Serializable {
 	private String menuIcon;
 	@ApiModelProperty(value = "菜单url后台权限控制",position = 8)
 	private String menuUrl;
-	@ApiModelProperty(value = "子级",position = 9)
-	private List<MenuDTO> childes;
+    @ApiModelProperty(value = "是否勾选0=否、1=是",position = 8)
+    private Boolean isCheck;
+    @ApiModelProperty(value = "子级",position = 9)
+    private List<MenuDTO> children;
 
 
 

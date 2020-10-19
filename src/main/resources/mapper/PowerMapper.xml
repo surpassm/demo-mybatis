@@ -27,4 +27,15 @@
         AND o.parent_id IS NULL
 
     </select>
+
+    <select id="findPowerByRoleId" resultType="com.liaoin.demo.entity.Power">
+        SELECT
+            p.*
+        FROM
+            role_power rp
+        LEFT JOIN power p ON rp.power_id = p.id
+        WHERE
+            rp.role_id = #{roleId}
+        AND p.is_delete = 0
+    </select>
 </mapper>

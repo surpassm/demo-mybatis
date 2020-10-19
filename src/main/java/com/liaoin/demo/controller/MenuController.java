@@ -1,6 +1,7 @@
 package com.liaoin.demo.controller;
 
 import com.liaoin.demo.annotation.Login;
+import com.liaoin.demo.annotation.ResponseResult;
 import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.MenuVO;
 import com.liaoin.demo.exception.CustomException;
@@ -97,5 +98,14 @@ public class MenuController {
 							   @ApiParam(value = "父级ID",required = true)@RequestParam(value = "parentId") @NotNull @Min(1) Long parentId) {
 		return menuService.findAllChild(parentId);
 	}
+
+
+    @Login
+    @PostMapping("v1/findAll")
+    @ApiOperation(value = "查询所有菜单")
+    @ResponseResult
+    public Object findAll(@ApiParam(hidden = true) @Login Long userId,@ApiParam(value = "权限id", required = true) @RequestParam(value = "powerId") @NotNull @Min(1) Long powerId) {
+        return menuService.findAll(powerId);
+    }
 
 }

@@ -271,5 +271,62 @@ public class UserInfoServiceImpl extends BaseServiceImpl implements UserInfoServ
 		Optional<UserInfo> one = findOne(UserInfo.builder().username(username).isDelete(0).build());
 		return one.isPresent();
 	}
+
+
+	@Override
+	public void isEnable(Long userId, Long id, Integer isEnable) {
+		Optional<UserInfo> userInfoOptional = this.selectByPrimaryKey(id);
+		if (!userInfoOptional.isPresent()) {
+			throw new CustomException(ResultCode.RESULT_DATA_NONE.getCode(), ResultCode.RESULT_DATA_NONE.getMsg());
+		}
+		UserInfo userInfo = userInfoOptional.get();
+		//判断当用用户是否已经禁用
+		if (userInfo.getIsEnable().equals(isEnable)) {
+			throw new CustomException(ResultCode.PARAM_IS_INVALID.getCode(), ResultCode.PARAM_IS_INVALID.getMsg());
+		}
+		userInfo.setIsEnable(isEnable);
+		userInfo.setUpdateTime(LocalDateTime.now());
+		this.update(userInfo);
+	}
+
+	public Optional<UserInfo> selectByPrimaryKey(Long id) {
+		return Optional.ofNullable(userInfoMapper.selectByPrimaryKey(id));
+	}
+
+
+	@Override
+	public void resetPassword(Long userId, Long id) {
+		Optional<UserInfo> userInfoOptional = this.selectByPrimaryKey(id);
+		if (!userInfoOptional.isPresent()) {
+			throw new CustomException(ResultCode.RESULT_DATA_NONE.getCode(), ResultCode.RESULT_DATA_NONE.getMsg());
+		}
+		UserInfo userInfo = userInfoOptional.get();
+		String password = userInfo.getPassword();
+		//判断当前用户是否已经是默认密码
+		if (passwordEncoder.matches("123456", password)) {
+			throw new CustomException(ResultCode.ERROR.getCode(), "已是默认密码");
+		}
+		String encode = passwordEncoder.encode("123456");
+		userInfo.setPassword(encode);
+		userInfo.setUpdateTime(LocalDateTime.now());
+		this.update(userInfo);
+	}
+
+	@Override
+	public List<Role> selectBindRole(Long loginUserId, Long userInfoId) {
+		//查询当前登录人的角色列表
+		List<Role> loginRoles = userInfoMapper.findRoleByUserId(loginUserId);
+		List<Role> userRoles = userInfoMapper.findRoleByUserId(userInfoId);
+		for (Role loginRole : loginRoles) {
+			for (Role userRole : userRoles) {
+				if (loginRole.getId().equals(userRole.getId())){
+					loginRole.setIsBind(true);
+				}else if (loginRole.getIsBind() == null || !loginRole.getIsBind()){
+					loginRole.setIsBind(false);
+				}
+			}
+		}
+		return loginRoles;
+	}
 }
 
