@@ -1,6 +1,10 @@
 package com.liaoin.demo.config.swagger;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -15,9 +19,8 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import javax.annotation.Resource;
+import java.util.*;
 
 /**
  * @author mc
@@ -25,55 +28,55 @@ import java.util.List;
  * Version 1.0
  * Description
  */
-@Configuration
 @EnableSwagger2
-public class SwaggerConfig {
-    @Value("${swagger.base-package}")
-    private String basePackage;
+@Configuration
+@EnableConfigurationProperties(SwaggerProperties.class)
+public class SwaggerConfig implements BeanFactoryAware {
+    private BeanFactory beanFactory;
 
-    @Value("${swagger.title}")
-    private String title;
-
-    @Value("${swagger.description}")
-    private String description;
-
-    @Value("${swagger.authorization.key-name}")
-    private String keyName;
-
-    @Value("${swagger.authorization.auth-regex}")
-    private String authRegex;
+    @Resource
+    private SwaggerProperties swaggerProperties;
 
 
     @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2).
-                useDefaultResponseMessages(false)
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.regex(authRegex))
-                .build()
-                .securitySchemes(securitySchemes())
-                .securityContexts(securityContexts())
-                .apiInfo(apiInfo())
-                ;
-    }
+    public List<Docket> createRestApi(SwaggerProperties swaggerProperties) {
+        ConfigurableBeanFactory configurableBeanFactory = (ConfigurableBeanFactory) beanFactory;
+        List<Docket> docketList = new LinkedList<>();
 
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title(title).description(description)
-                .version("1.0")
-                .build();
+        Map<String, SwaggerProperties.DocketInfo> docketInfos = swaggerProperties.getDocket();
+        for (String groupName : docketInfos.keySet()) {
+            SwaggerProperties.DocketInfo docketInfo = docketInfos.get(groupName);
+
+            ApiInfo apiInfo = new ApiInfoBuilder().title(docketInfo.getTitle()).description(docketInfo.getDescription())
+                    .version("1.0")
+                    .build();
+            Docket docket = new Docket(DocumentationType.SWAGGER_12).enable(swaggerProperties.getEnabled()).
+                    useDefaultResponseMessages(false)
+                    .select()
+                    .apis(RequestHandlerSelectors.basePackage(docketInfo.getBasePackage()))
+                    .paths(PathSelectors.regex(swaggerProperties.getAuthorization().getAuthRegex()))
+                    .build()
+                    .securitySchemes(securitySchemes())
+                    .securityContexts(securityContexts())
+                    .apiInfo(apiInfo)
+                    .groupName(groupName);
+            configurableBeanFactory.registerSingleton(groupName, docket);
+            docketList.add(docket)
+            ;
+        }
+        return docketList;
     }
 
     private List<ApiKey> securitySchemes() {
         return new ArrayList(
-                Collections.singleton(new ApiKey(keyName, keyName, "header")));
+                Collections.singleton(new ApiKey(swaggerProperties.getAuthorization().getName(), swaggerProperties.getAuthorization().getKeyName(), "header")));
     }
 
     private List<SecurityContext> securityContexts() {
         return new ArrayList(
                 Collections.singleton(SecurityContext.builder()
                         .securityReferences(defaultAuth())
-                        .forPaths(PathSelectors.regex(authRegex))
+                        .forPaths(PathSelectors.regex(swaggerProperties.getAuthorization().getAuthRegex()))
                         .build())
         );
     }
@@ -83,6 +86,11 @@ public class SwaggerConfig {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         return new ArrayList(
-                Collections.singleton(new SecurityReference(keyName, authorizationScopes)));
+                Collections.singleton(new SecurityReference(swaggerProperties.getAuthorization().getKeyName(), authorizationScopes)));
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
     }
 }

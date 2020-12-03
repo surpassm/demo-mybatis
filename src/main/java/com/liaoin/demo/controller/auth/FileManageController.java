@@ -1,4 +1,4 @@
-package com.liaoin.demo.controller;
+package com.liaoin.demo.controller.auth;
 
 import com.github.pagehelper.PageInfo;
 import com.liaoin.demo.annotation.Login;

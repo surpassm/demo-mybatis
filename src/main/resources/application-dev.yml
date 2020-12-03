@@ -48,12 +48,15 @@ spring:
 
 swagger:
   enabled: true
-  title: "权限框架 API"
   authorization:
-    key-name: Authorization #head对应的key
-    auth-regex: ^(?!auth).*$ #url地址中携带auth将不加入swagger token验证
-  base-package: com.liaoin.demo.controller
-  description: "说明"
+    name: token
+    key-name: token
+    auth-regex: ^(?!auth).*$
+  docket:
+    auth:
+      title: "授权模块"
+      description: "用户管理模块"
+      base-package: com.liaoin.demo.controller.auth
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
