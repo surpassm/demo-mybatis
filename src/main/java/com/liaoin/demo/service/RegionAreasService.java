@@ -72,4 +72,11 @@ public interface RegionAreasService {
 	* @return Banner
 	*/
 	RegionAreas updateVO(RegionAreasVO vo);
+
+	/**
+	 * 根据城市代码查询区县
+	 * @param cityCode
+	 * @return
+	 */
+	R pageQueryByCityCode(String cityCode);
 }

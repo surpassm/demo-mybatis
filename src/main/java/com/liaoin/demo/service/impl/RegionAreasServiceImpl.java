@@ -12,8 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 import static com.liaoin.demo.common.R.ok;
@@ -78,6 +80,16 @@ public class RegionAreasServiceImpl extends BaseServiceImpl implements RegionAre
     @Override
     public RegionAreas updateVO(RegionAreasVO vo) {
         return null;
+    }
+
+    @Override
+    public R pageQueryByCityCode(String cityCode) {
+        Example.Builder builder = new Example.Builder(RegionAreas.class);
+        if(cityCode != null){
+            builder.where(WeekendSqls.<RegionAreas>custom().andEqualTo(RegionAreas::getCitiesCode, cityCode));
+        }
+        List<RegionAreas> regionAreas = regionAreasMapper.selectByExample(builder.build());
+        return ok(regionAreas);
     }
 }
 

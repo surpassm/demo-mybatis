@@ -80,4 +80,10 @@ public class RegionAreasController {
                             @RequestBody RegionAreasVO vo) {
         return regionAreasService.pageQuery(page, size, sort, vo);
     }
+
+    @PostMapping("v1/pageQueryByCityCode")
+    @ApiOperation(value = "根据城市code查询区县")
+    public Object pageQueryByCityCode(@ApiParam(value = "城市code")@RequestParam(value = "cityCode") @NotNull @Min(1) String cityCode) {
+        return regionAreasService.pageQueryByCityCode(cityCode);
+    }
 }

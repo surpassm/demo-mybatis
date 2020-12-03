@@ -3,6 +3,7 @@ package com.liaoin.demo.service;
 import com.liaoin.demo.common.R;
 import com.liaoin.demo.domain.MenuDTO;
 import com.liaoin.demo.domain.MenuVO;
+import com.liaoin.demo.domain.MenuVos;
 import com.liaoin.demo.entity.Menu;
 
 import javax.validation.constraints.Min;
@@ -65,7 +66,16 @@ public interface MenuService {
 	* @param vo vo
 	* @return Banner
 	*/
-	Menu insertVO(MenuVO vo);
+	@Deprecated
+	Menu insertVO(List<MenuVos> vos);
+
+	/**
+	 * 新增
+	 *
+	 * @param vos vo
+	 * @return Banner
+	 */
+	void insertList(@NotNull List<MenuVos> vos);
 
 	/**
 	* 修改

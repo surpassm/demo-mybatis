@@ -5,6 +5,7 @@ import com.liaoin.demo.common.R;
 import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.domain.MenuDTO;
 import com.liaoin.demo.domain.MenuVO;
+import com.liaoin.demo.domain.MenuVos;
 import com.liaoin.demo.entity.Menu;
 import com.liaoin.demo.entity.PowerMenu;
 import com.liaoin.demo.exception.CustomException;
@@ -94,21 +95,33 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
     }
 
     @Override
-    public Menu insertVO(MenuVO vo) {
-        Menu menu = vo.convertTo();
-        if (menu.getId() != null) {
-            throw new CustomException(ResultCode.PARAM_IS_INVALID.getCode(), ResultCode.PARAM_IS_INVALID.getMsg());
+    public Menu insertVO(List<MenuVos> vos) {
+        return null;
+    }
+
+    @Override
+    public void insertList(List<MenuVos> vos) {
+        List<Menu> menus = menuMapper.selectAll();
+        if (menus.size() > 0) {
+            throw new CustomException(ResultCode.INTERFACE_INNER_INVOKE_ERROR.getCode(), ResultCode.INTERFACE_INNER_INVOKE_ERROR.getMsg());
         }
-        //父级效验
-        Long parentId = menu.getParentId();
-        if (parentId != null) {
-            if (!findById(parentId).isPresent()) {
-                throw new CustomException(ResultCode.RESULT_DATA_NONE.getCode(), ResultCode.RESULT_DATA_NONE.getMsg());
+        menuVosFor(vos, null);
+    }
+
+    /**
+     * 递归批量新增
+     *
+     * @param vos      集合
+     * @param parentId 父级
+     */
+    public void menuVosFor(List<MenuVos> vos, Long parentId) {
+        for (MenuVos vo : vos) {
+            Menu build = Menu.builder().parentId(parentId).isDelete(0).name(vo.getName()).path(vo.getPath()).type(vo.getType()).build();
+            this.insert(build);
+            if (vo.getChildren() != null && vo.getChildren().size() != 0) {
+                menuVosFor(vo.getChildren(), build.getId());
             }
         }
-        menu.setIsDelete(0);
-        this.insert(menu);
-        return menu;
     }
 
     @Override
