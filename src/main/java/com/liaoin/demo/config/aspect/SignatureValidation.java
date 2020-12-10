@@ -38,7 +38,7 @@ public class SignatureValidation {
     private static Map<String, String> APP_INFO = new HashMap<>();
 
     static {
-        APP_INFO.put("6749e0e254f74492", "sessionsecret=tourismprod123456");
+        APP_INFO.put("6749e0e254f74492", "ab2cd45613a6085b49521974e83be9e7");
     }
 
 
