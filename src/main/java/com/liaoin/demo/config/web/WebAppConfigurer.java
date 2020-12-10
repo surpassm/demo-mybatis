@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.ysytech.imc.config.security.TokenInterceptor;
-import com.ysytech.imc.config.security.TokenMethodArgumentResolver;
+import com.liaoin.demo.config.security.TokenInterceptor;
+import com.liaoin.demo.config.security.TokenMethodArgumentResolver;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -59,6 +59,10 @@ public class WebAppConfigurer extends WebMvcConfigurationSupport {
 			String path  = new File("").getCanonicalPath();
 			registry.addResourceHandler("/upload/**").addResourceLocations("file:///"+path+"/upload/");
 			registry.addResourceHandler("/static/**").addResourceLocations("file:///"+path+"/static/");
+			registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+			registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+			registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+			super.addResourceHandlers(registry);
 		}catch (Exception e){
 		}
 	}
