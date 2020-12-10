@@ -45,8 +45,12 @@ public enum ResultCode {
 	INTERFACE_EXCEED_LOAD(60006, "接口负载过高"),
 
 	/* 权限错误：70001-79999 */
-	PERMISSION_NO_ACCESS(70001, "无访问权限");
+	PERMISSION_NO_ACCESS(70001, "无访问权限"),
+	PERMISSION_NO_DATE_ACCESS(70002, "无数据访问权限"),
+	PERMISSION_NO_AUTOGRAPH(70003, "签名验证错误"),
+	PERMISSION_OUT_TIME(70004, "请求过期，请重新请求"),
 
+		;
 	private Integer code;
 	private String msg;
 
