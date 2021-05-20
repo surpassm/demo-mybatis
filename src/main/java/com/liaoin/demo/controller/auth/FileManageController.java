@@ -3,29 +3,42 @@ package com.liaoin.demo.controller.auth;
 import com.github.pagehelper.PageInfo;
 import com.liaoin.demo.annotation.Login;
 import com.liaoin.demo.common.R;
+import com.liaoin.demo.common.ResultCode;
 import com.liaoin.demo.entity.FileManage;
 import com.liaoin.demo.common.SurpassmFile;
+import com.liaoin.demo.entity.UploadFileParam;
 import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.service.FileManageService;
+import com.liaoin.demo.util.ValidateUtil;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.liaoin.demo.common.R.fail;
 import static com.liaoin.demo.common.R.ok;
+import static org.apache.commons.lang3.StringUtils.trim;
 
 
 /**
@@ -146,5 +159,110 @@ public class FileManageController {
 				.contentType(MediaType.parseMediaType("application/octet-stream"))
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getFilename())
 				.body(file);
+	}
+
+
+	/**
+	 * 断点续传方式上传文件：用于大文件上传
+	 *
+	 * @param param
+	 * @param request
+	 * @return
+	 */
+	@PostMapping(value = "/breakpoint-upload", consumes = "multipart/*", headers = "content-type=multipart/form-data", produces = "application/json;charset=UTF-8")
+	public R breakpointResumeUpload(UploadFileParam param, HttpServletRequest request) {
+		return fileManageService.breakpointResumeUpload(param, request);
+	}
+
+	/**
+	 * 检查文件MD5（文件MD5若已存在进行秒传）
+	 *
+	 * @param md5
+	 * @param fileName
+	 */
+	@GetMapping(value = "/check-file")
+	public R checkFileMd5(String md5, String fileName) {
+		return fileManageService.checkFileMd5(md5, fileName);
+	}
+
+
+	/**
+	 * 添加文件
+	 * 断点续传完成后上传文件信息进行入库操作
+	 *
+	 * @param fileManage
+	 */
+	@PostMapping("/add")
+	public R addFile(@RequestBody FileManage fileManage, BindingResult errors) {
+		ValidateUtil.check(errors);
+		return ok(fileManageService.insert(fileManage));
+	}
+
+
+	/**
+	 * 文件下载
+	 *
+	 * @param id
+	 * @param isSource
+	 * @param request
+	 * @param response
+	 */
+	@GetMapping(value = "/download/{id}")
+	public void viewFilesImage(@PathVariable Integer id, @RequestParam(required = false) Boolean isSource, HttpServletRequest request, HttpServletResponse response) {
+		OutputStream outputStream = null;
+		InputStream inputStream = null;
+		try {
+			FileManage fileManage = fileManageService.findById(id);
+			if (fileManage == null) {
+				throw new CustomException(ResultCode.ERROR.getCode(), ResultCode.ERROR.getMsg());
+			}
+			String filename = (!basicIsEmpty(isSource) && isSource) ? fileManage.getFileOldName() : fileManage.getUrl();
+			inputStream = fileManageService.getFileInputStream(id);
+
+			response.setHeader("Content-Disposition", "attachment;filename=" + convertToFileName(request, filename));
+			// 获取输出流
+			outputStream = response.getOutputStream();
+			IOUtils.copy(inputStream, outputStream);
+		} catch (IOException e) {
+			log.error("文件下载出错", e);
+		} finally {
+			try {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+				if (outputStream != null) {
+					outputStream.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static boolean basicIsEmpty(Object object) {
+		if (null == object) {
+			return true;
+		}
+		return StringUtils.isEmpty(trim(object + ""));
+	}
+
+	/**
+	 * 转换为文件名
+	 *
+	 * @param request
+	 * @param fileName
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	public static String convertToFileName(HttpServletRequest request, String fileName) throws UnsupportedEncodingException {
+		// 针对IE或者以IE为内核的浏览器：
+		String userAgent = request.getHeader("User-Agent");
+		if (userAgent.contains("MSIE") || userAgent.contains("Trident")) {
+			fileName = URLEncoder.encode(fileName, "UTF-8");
+		} else {
+			// 非IE浏览器的处理：  
+			fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+		}
+		return fileName;
 	}
 }

@@ -1,13 +1,16 @@
 package com.liaoin.demo.service;
 
 import com.github.pagehelper.PageInfo;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.entity.FileManage;
 import com.liaoin.demo.common.SurpassmFile;
+import com.liaoin.demo.entity.UploadFileParam;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -119,4 +122,24 @@ public interface FileManageService {
      * @param file    file
      */
     void insertBatch(HttpServletRequest request, MultipartFile[] file) throws Exception;
+
+
+    /**
+     * 断点续传方式上传文件：用于大文件上传
+     * @param param
+     * @param request
+     * @return
+     */
+    R breakpointResumeUpload(UploadFileParam param, HttpServletRequest request);
+
+    /**
+     * 检查文件MD5
+     *
+     * @param md5
+     * @param fileName
+     * @return
+     */
+    R checkFileMd5(String md5, String fileName);
+
+    InputStream getFileInputStream(Integer id);
 }

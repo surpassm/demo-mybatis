@@ -3,15 +3,19 @@ package com.liaoin.demo.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.liaoin.demo.common.R;
 import com.liaoin.demo.entity.FileManage;
 import com.liaoin.demo.common.SurpassmFile;
+import com.liaoin.demo.entity.UploadFileParam;
 import com.liaoin.demo.exception.CustomException;
 import com.liaoin.demo.mapper.FileManageMapper;
 import com.liaoin.demo.service.FileManageService;
 import com.liaoin.demo.util.FileUtils;
+import com.liaoin.demo.util.LocalUpload;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
@@ -21,7 +25,10 @@ import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -219,6 +226,39 @@ public class FileManageServiceImpl implements FileManageService {
         if (fileManageList.size() > 0) {
             fileManageMapper.insertList(fileManageList);
         }
+    }
+
+    @Override
+    public R breakpointResumeUpload(UploadFileParam param, HttpServletRequest request) {
+        try {
+            return LocalUpload.fragmentFileUploader(param, FileUtils.rootPath()+"/temp/file-manager/conf", FileUtils.rootPath()+"/temp/file-manager/", 5242880L, request);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return new R(HttpStatus.OK.value(),"文件上传失败");
+    }
+
+    @Override
+    public R checkFileMd5(String md5, String fileName) {
+        try {
+            R<JSONArray> jsonArrayResult = LocalUpload.checkFileMd5(md5, fileName, FileUtils.rootPath()+"/temp/file-manager/conf", FileUtils.rootPath()+"/temp/file-manager/");
+            return jsonArrayResult;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return R.fail(12,"上传失败");
+    }
+
+    @Override
+    public InputStream getFileInputStream(Integer id) {
+        try {
+            FileManage fileManage = this.findById(id);
+            File file = new File(FileUtils.rootPath()+"/temp/file-manager/" + File.separator + fileManage.getUrl());
+            return new FileInputStream(file);
+        } catch (Exception e) {
+            log.error("获取文件输入流出错", e);
+        }
+        return null;
     }
 }
 
